@@ -19,7 +19,7 @@ def img_to_html(img_path):
     return img_html
 
 # Hier setzen Sie den Pfad zu Ihrer lokalen Bilddatei ein
-image_path = 'C:\\Users\\joels\\OneDrive - Universitaet St.Gallen\\Mastervorbereitungsstufe\\CS\\App\\PANTRY\\pexels-jane-doan-1099680.jpg'
+image_path = 'C:\Users\joels\OneDrive\Privat\Bilder\Pictures\pexels-jane-doan-1099680.jpg'
 
 # Das Bild in Markdown einfügen, unsafe_allow_html=True ermöglicht die Verwendung von HTML im Markdown
 st.markdown(img_to_html(image_path), unsafe_allow_html=True)
