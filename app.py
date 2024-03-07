@@ -23,7 +23,7 @@ st.markdown(page_bg_img, unsafe_allow_html=True)
 st.title("Pantry Pal - Conquering Leftovers, Mastering Meals")
 st.header("**Tame your kitchen with Pantry Pal**")
 
-st.write("<style>div.Widget.stTextInput>div{background-color: #333333; padding: 10px; border-radius: 5px;}</style>", unsafe_allow_html=True)
+st.write("<style>div.Widget.stTextInput>div{background-color: #333333; padding: 40px; border-radius: 5px;}</style>", unsafe_allow_html=True)
 # Eingabefeld für die Kühlschrank-Zutaten
 ingredients = st.text_input("Enter your fridge ingredients, separated by comma")
 
