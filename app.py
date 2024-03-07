@@ -28,6 +28,9 @@ body {
     color: white;
     font-size: 18px; /* Ändere die Schriftgröße hier */
 }
+.text-input-container {
+    font-size: 24px !important; /* Ändere die Schriftgröße des Eingabefeld-Textes */    
+}
 </style>
 """
 st.markdown(page_bg_img, unsafe_allow_html=True)
