@@ -9,7 +9,7 @@ body {
 }
 .stApp {
     color: white;
-    font-size: 18px; /* Ändere die Schriftgröße hier */
+    font-size: 40px; /* Ändere die Schriftgröße hier */
 }
 </style>
 """
@@ -24,7 +24,7 @@ st.write("""
 <style>
 div[data-baseweb="input"] input {
     color: black !important; /* Ändere die Schriftfarbe auf Schwarz */
-    font-size: 20px !important; /* Ändere die Schriftgröße auf 20px */
+    font-size: 30px !important; /* Ändere die Schriftgröße auf 20px */
 }
 </style>
 """, unsafe_allow_html=True)
