@@ -29,7 +29,7 @@ body {
     font-size: 18px; /* Ändere die Schriftgröße hier */
 }
 .text-input-container {
-    font-size: 24px !important; /* Ändere die Schriftgröße des Eingabefeld-Textes */    
+    font-size: 30px !important; /* Ändere die Schriftgröße des Eingabefeld-Textes */    
 }
 </style>
 """
