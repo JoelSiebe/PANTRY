@@ -4,6 +4,11 @@ import streamlit as st
 st.title("Pantry Pal - Mastering Meal, Conquering Leftovers")
 st.header("Tame your kitchen with Pantry Pal!")
 
+# Lokales Video
+video_file = "Hintergrundvideo.mp4"
+
+st.video(video_file)
+st.video(video_file, start_time=0, autoplay=True)
 # Textfeld für Eingabe
 name = st.text_input("Geben Sie Ihren Namen ein:")
 
