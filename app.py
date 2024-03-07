@@ -1,23 +1,29 @@
 import streamlit as st
 
-# Definiere das Hintergrundbild und den Stil
-page_bg_img = """
+#Hintergrund mit Stock-Foto
+page_bg_img = f"""
 <style>
-body {
+[data-testid="stAppViewContainer"] > .main {{
 background-image: url("https://i.postimg.cc/P5ksXpm2/pexels-vladimir-gladkov-6208084.jpg");
 background-size: cover;
-}
-.stApp {
-color: white;
-}
+background-position: center center;
+background-repeat: no-repeat;
+background-attachment: local;
+}}
+[data-testid="stHeader"] {{
+background: rgba(0,0,0,0);
+}}
 </style>
 """
+
 st.markdown(page_bg_img, unsafe_allow_html=True)
+
 
 # Titel und Header der Anwendung
 st.title("Pantry Pal - Conquering Leftovers, Mastering Meals")
 st.header("**Tame your kitchen with Pantry Pal**")
 
+st.write("<style>div.Widget.stTextInput>div{background-color: #333333; padding: 10px; border-radius: 5px;}</style>", unsafe_allow_html=True)
 # Eingabefeld für die Kühlschrank-Zutaten
 ingredients = st.text_input("Enter your fridge ingredients, separated by comma")
 
