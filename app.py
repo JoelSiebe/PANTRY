@@ -24,4 +24,4 @@ st.write("Sie haben die Farbe " + auswahl + " gewählt.")
 
 # Button
 if st.button("OK"):
-st.write("Vielen Dank!")
+    st.write("Vielen Dank!")
