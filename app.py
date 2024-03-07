@@ -1,19 +1,22 @@
 import streamlit as st
 
+# Definiere das Hintergrundbild
 page_bg_img = """
 <style>
 body {
-background-image: url("https://i.postimg.cc/L6kcC417/1.jpg");
-background-size: cover;
+    background-image: url("https://i.postimg.cc/L6kcC417/1.jpg");
+    background-size: cover;
 }
+
 .page {
-background-color: rgba(255,255,255,0.8);
-padding: 20px;
-border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 5px;
 }
 </style>
 """
 
+# Füge das Hintergrundbild hinzu
 st.markdown(page_bg_img, unsafe_allow_html=True)
 
 # Titel und Header der Anwendung
@@ -34,9 +37,10 @@ ingredients = st.text_input("Geben Sie Ihre Kühlschrank-Zutaten ein, getrennt d
 # In diesem Beispiel zeigen wir nur eine Platzhaltermeldung an
 # st.write("Hier werden die Rezepte basierend auf Ihren Zutaten angezeigt")
 
-# Schließen Sie die zentrierte Ausrichtung des Inhalts
+# Schließe die zentrierte Ausrichtung des Inhalts
 st.markdown('</p>')
 
 # Fußzeile der Anwendung
 st.markdown("---")
 st.write("© 2024 Pantry Pal. Alle Rechte vorbehalten.")
+
