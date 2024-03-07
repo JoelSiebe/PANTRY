@@ -4,11 +4,12 @@ import streamlit as st
 st.title("Pantry Pal - Mastering Meal, Conquering Leftovers")
 st.header("Tame your kitchen with Pantry Pal!")
 
-# Hintergrundvideo
-video_url="https://www.youtube.com/watch?v=qQY9Y8kK5eI&ab_channel=FreeStockFootageFHD"
+# Lokales Videodatei
+video_file = "stockvideo.mp4"
 
-st.video(video_url)
-st.video(video_url, start_time=0, autoplay=True)
+# Wiedergabe des Videos
+st.video(video_file)
+
 # Textfeld für Eingabe
 name = st.text_input("Geben Sie Ihren Namen ein:")
 
@@ -23,5 +24,4 @@ st.write("Sie haben die Farbe " + auswahl + " gewählt.")
 
 # Button
 if st.button("OK"):
-    st.write("Vielen Dank!")
-
+    st.write("Vielen Dank!")
