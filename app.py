@@ -5,17 +5,19 @@ st.title("Pantry Pal - Mastering Meal, Conquering Leftovers")
 st.header("Tame your kitchen with Pantry Pal!")
 
 # Hintergrundbild
-background_image = "Foto von Jane Doan von Pexels: https://www.pexels.com/de-de/foto/top-view-foto-von-food-dessert-1099680/"
-st.set_page_config(layout="wide", page_title="Pantry Pal", initial_sidebar_state="collapsed")
+background_image = "https://www.pexels.com/de-de/foto/top-view-foto-von-food-dessert-1099680/"
+st.set_page_config(
+    layout="wide",
+    page_title="Pantry Pal",
+    initial_sidebar_state="collapsed",
+)
+
 st.markdown(
     f"""
     <style>
     .stApp {{
-        background-image: url("{background_image}");
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-    }}
+        background-image: url("{https://www.pexels.com/de-de/foto/top-view-foto-von-food-dessert-1099680/}");
+        background-size: cover;  background-position: center;  background-repeat: no-repeat;  }}
     </style>
     """,
     unsafe_allow_html=True,
