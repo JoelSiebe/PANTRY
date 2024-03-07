@@ -15,7 +15,7 @@ st.markdown(
     f"""
     <style>
     .stApp {{
-        background-image: url("{background_url}");
+        background-image: url("{https://www.pexels.com/de-de/foto/top-view-foto-von-food-dessert-1099680/}");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
