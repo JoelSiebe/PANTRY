@@ -1,39 +1,25 @@
 import streamlit as st
+import base64
 
-# Hintergrundbild
-background_url = "https://www.pexels.com/de-de/foto/top-view-foto-von-food-dessert-1099680/"
+st.title("Pantry Pal - Conquering Leftovers, Mastering Meals")
+st.header("**Tame your kitchen with Pantry Pal**")
 
-# Setze Page Config
-st.set_page_config(
-    layout="wide",
-    page_title="Pantry Pal - Mastering Meals, Conquering Leftovers",
-    initial_sidebar_state="collapsed",
-)
+# Bilddateien in Bytes umwandeln
+def img_to_bytes(img_path):
+    with open(img_path, "rb") as f:
+        img_bytes = f.read()
+    encoded = base64.b64encode(img_bytes).decode()
+    return encoded
 
-# Hintergrundbild einfügen
-st.markdown(
-    f"""
-    <style>
-    .stApp {{
-        background-image: url("{https://www.pexels.com/de-de/foto/top-view-foto-von-food-dessert-1099680/}");
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-    }}
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
+# HTML-Code für das Bild generieren
+def img_to_html(img_path):
+    img_html = "<img src='data:image/png;base64,{}' class='img-fluid'>".format(
+        img_to_bytes(img_path)
+    )
+    return img_html
 
-# Titel und Untertitel
-st.title("Pantry Pal")
-st.subheader("Tame your kitchen with Pantry Pal")
+# Hier setzen Sie den Pfad zu Ihrer lokalen Bilddatei ein
+image_path = 'C:\\Users\\joels\\OneDrive - Universitaet St.Gallen\\Mastervorbereitungsstufe\\CS\\App\\PANTRY\\pexels-jane-doan-1099680.jpg'
 
-# App-Inhalt (ersetzen Sie diesen mit Ihren Funktionen)
-
-# Fügen Sie hier Ihre Streamlit-Widgets, Textblöcke, Funktionen usw. ein, um die App zu gestalten.
-
-# Beispiel:
-st.write("**Pantry Pal hilft Ihnen, Ihre Speisekammer zu organisieren, Mahlzeiten zu planen und Reste zu verwerten.**")
-
-# Fügen Sie weitere Features hinzu, um Ihre App zu individualisieren.
+# Das Bild in Markdown einfügen, unsafe_allow_html=True ermöglicht die Verwendung von HTML im Markdown
+st.markdown(img_to_html(image_path), unsafe_allow_html=True)
