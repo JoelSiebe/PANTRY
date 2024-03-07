@@ -44,7 +44,7 @@ st.write("""
 <style>
 div[data-baseweb="input"] input {
     color: black !important; /* Ändere die Schriftfarbe auf Schwarz */
-    font-size: 20px !important; /* Ändere die Schriftgröße auf 20px */
+    font-size: 50px !important; /* Ändere die Schriftgröße auf 20px */
 }
 </style>
 """, unsafe_allow_html=True)
