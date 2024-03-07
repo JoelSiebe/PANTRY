@@ -1,30 +1,35 @@
 import streamlit as st
 
-#Hintergrund mit Stock-Foto
-page_bg_img = f"""
+# Definiere das Hintergrundbild und den Stil
+page_bg_img = """
 <style>
-[data-testid="stAppViewContainer"] > .main {{
-background-image: url("https://i.postimg.cc/P5ksXpm2/pexels-vladimir-gladkov-6208084.jpg");
-background-size: cover;
-background-position: center center;
-background-repeat: no-repeat;
-background-attachment: local;
-}}
-[data-testid="stHeader"] {{
-background: rgba(0,0,0,0);
-}}
+body {
+    background-image: url("https://i.postimg.cc/P5ksXpm2/pexels-vladimir-gladkov-6208084.jpg");
+    background-size: cover;
+}
+.stApp {
+    color: white;
+    font-size: 18px; /* Ändere die Schriftgröße hier */
+}
 </style>
 """
-
 st.markdown(page_bg_img, unsafe_allow_html=True)
 
-
 # Titel und Header der Anwendung
-st.title("Pantry Pal - Conquering Leftovers, Mastering Meals")
-st.header("**Tame your kitchen with Pantry Pal**")
+st.title("Pantry Pal - Conquering Leftovers, Mastering Meals",)
+st.header("**Tame your kitchen with Pantry Pal**",)
 
-st.write("<style>div.Widget.stTextInput>div{background-color: #333333; padding: 40px; border-radius: 5px;}</style>", unsafe_allow_html=True)
-# Eingabefeld für die Kühlschrank-Zutaten
+# CSS-Stilregel für das Eingabefeld
+st.write("""
+<style>
+div[data-baseweb="input"] input {
+    color: black !important; /* Ändere die Schriftfarbe auf Schwarz */
+    font-size: 20px !important; /* Ändere die Schriftgröße auf 20px */
+}
+</style>
+""", unsafe_allow_html=True)
+
+# Eingabefeld für die Kühlschrank-Zutaten mit angepasster Schriftgröße
 ingredients = st.text_input("Enter your fridge ingredients, separated by comma")
 
 # Schaltfläche, um Rezepte basierend auf den eingegebenen Zutaten anzuzeigen
@@ -36,3 +41,4 @@ if st.button("Show Recipes"):
 # Fußzeile der Anwendung
 st.markdown("---")
 st.write("© 2024 Pantry Pal. All rights reserved.")
+
