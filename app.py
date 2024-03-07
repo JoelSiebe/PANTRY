@@ -1,7 +1,8 @@
 import streamlit as st
 
 # Titel der App
-st.title("Erste Streamlit App in VS Code")
+st.title("Pantry Pal - Mastering Meal, Conquering Leftovers")
+st.header("Tame your kitchen with Pantry Pal!")
 
 # Textfeld für Eingabe
 name = st.text_input("Geben Sie Ihren Namen ein:")
