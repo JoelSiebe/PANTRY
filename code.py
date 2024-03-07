@@ -1,3 +1,1 @@
-print("new file")
-
-
+pip install streamlit
