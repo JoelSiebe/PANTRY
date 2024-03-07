@@ -1,30 +1,29 @@
 import streamlit as st
+from streamlit_float import *
 
-# Definiere das Hintergrundbild
+# Initialize float feature/capability
+float_init()
+
+# CSS-Stil des Hintergrundbilds
 page_bg_img = """
 <style>
-body {
+[data-testid="stAppViewContainer"] > .main {
     background-image: url("https://i.postimg.cc/L6kcC417/1.jpg");
     background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: local;
 }
-
-.page {
-    background-color: rgba(255, 255, 255, 0.8);
-    padding: 20px;
-    border-radius: 5px;
+[data-testid="stHeader"] {
+    background: rgba(0,0,0,0);
 }
 </style>
 """
-
-# Füge das Hintergrundbild hinzu
 st.markdown(page_bg_img, unsafe_allow_html=True)
 
 # Titel und Header der Anwendung
 st.title("Pantry Pal - Conquering Leftovers, Mastering Meals")
 st.header("**Tame your kitchen with Pantry Pal**")
-
-# Zentrierte Ausrichtung des Inhalts
-st.markdown('<p class="page">')
 
 # Eingabefeld für die Kühlschrank-Zutaten
 ingredients = st.text_input("Geben Sie Ihre Kühlschrank-Zutaten ein, getrennt durch Komma")
@@ -37,10 +36,18 @@ ingredients = st.text_input("Geben Sie Ihre Kühlschrank-Zutaten ein, getrennt d
 # In diesem Beispiel zeigen wir nur eine Platzhaltermeldung an
 # st.write("Hier werden die Rezepte basierend auf Ihren Zutaten angezeigt")
 
-# Schließe die zentrierte Ausrichtung des Inhalts
-st.markdown('</p>')
-
 # Fußzeile der Anwendung
 st.markdown("---")
 st.write("© 2024 Pantry Pal. Alle Rechte vorbehalten.")
 
+col1, col2 = st.columns(2)
+
+# Fix/float the whole column
+col1.write("This entire column is fixed/floating")
+col1.float()
+
+with col2:
+    container = st.container()
+    # Fix/float a single container inside
+    container.write("This text is in a container that is fixed")
+    container.float()
