@@ -1,17 +1,21 @@
 import streamlit as st
 
-# Setzen des dunkelgrünen Hintergrunds
-st.markdown(
-    """
-    <style>
-    body {
-        background-color: #003300 !important;
-    color: white;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+page_bg_img = f"""
+<style>
+[data-testid="stAppViewContainer"] > .main {{
+background-image: url("https://i.postimg.cc/4xgNnkfX/Untitled-design.png");
+background-size: cover;
+background-position: center center;
+background-repeat: no-repeat;
+background-attachment: local;
+}}
+[data-testid="stHeader"] {{
+background: rgba(0,0,0,0);
+}}
+</style>
+"""
+
+st.markdown(page_bg_img, unsafe_allow_html=True)
 
 # Titel und Header der Anwendung
 st.title("Pantry Pal - Conquering Leftovers, Mastering Meals")
