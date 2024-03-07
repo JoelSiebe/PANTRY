@@ -5,8 +5,7 @@ st.title("Pantry Pal - Mastering Meal, Conquering Leftovers")
 st.header("Tame your kitchen with Pantry Pal!")
 
 # Hintergrundvideo
-video_url="https://www.pexels.com/video/people-about-to-eat-3255109/"
-
+video_url="https://www.youtube.com/watch?v=qQY9Y8kK5eI&ab_channel=FreeStockFootageFHD"
 
 st.video(video_url)
 st.video(video_url, start_time=0, autoplay=True)
