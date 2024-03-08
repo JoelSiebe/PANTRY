@@ -1,36 +1,33 @@
 import streamlit as st
 import requests
 
-# Hintergrundbild
-page_bg_img = f"""
+# CSS-Stile
+css_styles = """
 <style>
-[data-testid="stAppViewContainer"] > .main {{
+[data-testid="stAppViewContainer"] > .main {
     background-image: url("https://i.postimg.cc/cJtrkLQw/pexels-mike-murray-5701888.jpg");
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
     background-attachment: local;
-}}
-[data-testid="stHeader"] {{
+}
+
+[data-testid="stHeader"] {
     background: rgba(0,0,0,0);
-}}
-</style>
-"""
-st.markdown(page_bg_img, unsafe_allow_html=True)
+}
 
-# Titel und Header
-st.title("Pantry Pal - Conquering Leftovers, Mastering Meals",)
-st.header("**Tame your kitchen with Pantry Pal**",)
-
-# CSS Stil für Eingabefeld
-st.write("""
-<style>
 div[data-baseweb="input"] input {
     color: black !important; /* Ändere die Schriftfarbe auf Schwarz */
     font-size: 20px !important; /* Ändere die Schriftgröße auf 20px */
 }
 </style>
-""", unsafe_allow_html=True)
+"""
+
+st.markdown(css_styles, unsafe_allow_html=True)
+
+# Titel und Header
+st.title("Pantry Pal - Conquering Leftovers, Mastering Meals",)
+st.header("**Tame your kitchen with Pantry Pal**",)
 
 # Zutatenliste des Benutzers als Eingabefeld
 zutaten = st.text_input("Enter what's left in your fridge (separated by comma)")
