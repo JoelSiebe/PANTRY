@@ -18,24 +18,6 @@ page_bg_img = f"""
 """
 st.markdown(page_bg_img, unsafe_allow_html=True)
 
-# Stil (nochmals anschauen, teils redundat mit zuvor)
-page_bg_img = """
-<style>
-body {
-    background-image: url("https://i.postimg.cc/cJtrkLQw/pexels-mike-murray-5701888.jpg");
-    background-size: cover;
-}
-.stApp {
-    color: white;
-    font-size: 40px; /* Ändere die Schriftgröße hier */
-}
-.text-input-container {
-    font-size: 30px !important; /* Ändere die Schriftgröße des Eingabefeld-Textes */    
-}
-</style>
-"""
-st.markdown(page_bg_img, unsafe_allow_html=True)
-
 # Titel und Header
 st.title("Pantry Pal - Conquering Leftovers, Mastering Meals",)
 st.header("**Tame your kitchen with Pantry Pal**",)
