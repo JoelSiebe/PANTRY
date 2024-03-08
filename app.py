@@ -16,9 +16,23 @@ css_styles = """
     background: rgba(0,0,0,0);
 }
 
-div[data-baseweb="input"] input {
-    color: black !important; /* Ändere die Schriftfarbe auf Schwarz */
-    font-size: 20px !important; /* Ändere die Schriftgröße auf 20px */
+.text-input-container {
+    background-color: rgba(255, 255, 255, 0.5) !important;
+    border-radius: 10px !important;
+}
+
+.text-input-container input {
+    color: black !important; /* Schriftfarbe auf Schwarz */
+    font-size: 20px !important; /* Schriftgröße auf 20px */
+    background-color: rgba(200, 200, 200, 0.7) !important; /* Hintergrundfarbe mit Transparenz */
+    border: none !important; /* Rand entfernen */
+    border-radius: 10px !important; /* Randradius festlegen */
+    padding: 10px 15px !important; /* Innenabstand anpassen */
+}
+
+h3 {
+    font-size: 24px;
+    color: white;
 }
 </style>
 """
@@ -30,7 +44,7 @@ st.title("Pantry Pal - Conquering Leftovers, Mastering Meals",)
 st.header("**Tame your kitchen with Pantry Pal**",)
 
 # Zutatenliste des Benutzers als Eingabefeld
-zutaten = st.text_input("Enter what's left in your fridge (separated by comma)")
+zutaten = st.text_input("Enter what's left in your fridge (separated by comma)", key="ingredients", max_chars=1000)
 
 if st.button('Show recipes'):
     if zutaten:
