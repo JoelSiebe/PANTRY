@@ -72,6 +72,10 @@ if st.button('Show recipes'):
         response = requests.get(api_url, params=parameter)
         data = response.json()
 
+        # Debugging: Ausgabe der API-Antwort
+        st.write("API-Antwort:")
+        st.write(data)
+
         #Rezeptvorschläge 
         st.header("Look what we've found for you")
         for recipe in data:
