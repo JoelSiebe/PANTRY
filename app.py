@@ -19,24 +19,9 @@ css_styles = """
     background: rgba(0,0,0,0);
 }
 
-.text-input-container {
-    background-color: rgba(200, 200, 200, 0.8) !important;
-    border-radius: 20px !important;
-    padding: 20px !important;
-}
-
-.text-input-container input {
-    color: black !important; /* Schriftfarbe auf Schwarz */
-    font-size: 24px !important; /* Schriftgröße auf 24px */
-    background-color: rgba(150, 150, 150, 0.9) !important; /* Hintergrundfarbe mit Transparenz */
-    border: none !important; /* Rand entfernen */
-    border-radius: 15px !important; /* Randradius festlegen */
-    padding: 15px 20px !important; /* Innenabstand anpassen */
-}
-
-h2 {
-    font-size: 36px;
-    color: white;
+div[data-baseweb="input"] input {
+    color: black !important; /* Ändere die Schriftfarbe auf Schwarz */
+    font-size: 20px !important; /* Ändere die Schriftgröße auf 20px */
 }
 </style>
 """
