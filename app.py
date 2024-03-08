@@ -12,20 +12,14 @@ css_styles = """
     background-attachment: local;
 }
 
-[data-testid="stHeader"] {
-    background: rgba(0,0,0,0);
+[data-testid="stSidebar"][aria-expanded="true"] {
+    background-color: rgba(0, 0, 0, 0.8);
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-div[data-baseweb="input"] input {
-    color: black !important; /* Ändere die Schriftfarbe auf Schwarz */
-    font-size: 20px !important; /* Ändere die Schriftgröße auf 20px */
-}
-
-.sidebar .sidebar-content {
-    background-color: #222222;
-    color: white;
-    padding-top: 20px;
-    padding-bottom: 20px;
+[data-testid="stSidebar"][aria-expanded="false"] {
+    background-color: rgba(0, 0, 0, 0);
+    border-right: none;
 }
 </style>
 """
@@ -36,44 +30,43 @@ st.markdown(css_styles, unsafe_allow_html=True)
 st.title("Pantry Pal - Conquering Leftovers, Mastering Meals",)
 st.header("**Tame your kitchen with Pantry Pal**",)
 
-# Sidebar für Filteroptionen
-st.sidebar.header('Filter Options')
+# Boolescher Wert, um zu überprüfen, ob die Sidebar angezeigt wird
+show_sidebar = st.sidebar.checkbox("Show Sidebar")
 
-# Filter für Zubereitungszeit
-max_time = st.sidebar.slider('Maximum Preparation Time (minutes)', 0, 240, 60)
+# Eingabefeld für Zutatenliste
+if not show_sidebar:
+    zutaten = st.text_input("Enter what's left in your fridge (separated by comma)")
 
-# Filter für Schwierigkeitsgrad
-difficulty = st.sidebar.selectbox('Difficulty', ['Any', 'Easy', 'Medium', 'Hard'])
+# Wenn die Sidebar angezeigt wird
+if show_sidebar:
+    st.sidebar.header('Filter Options')
+    # Weitere Filteroptionen hier einfügen
 
-# Zutatenliste des Benutzers als Eingabefeld
-zutaten = st.sidebar.text_input("Enter what's left in your fridge (separated by comma)")
+# Button, um Filter anzuwenden und Rezepte anzuzeigen
+if not show_sidebar or st.button('Show recipes'):
+    if not show_sidebar or zutaten:
+        # Spoonacular API-URL
+        api_url = "https://api.spoonacular.com/recipes/findByIngredients"
 
-if st.sidebar.button('Apply Filters'):
-    # Spoonacular API-URL
-    api_url = "https://api.spoonacular.com/recipes/findByIngredients"
+        #API-Schlüssel
+        api_key = "06491aabe3d2435b8b21a749de46b765"
 
-    # API-Schlüssel
-    api_key = "06491aabe3d2435b8b21a749de46b765"
+        #Datenbankabfrage
+        params = {
+            'ingredients': zutaten,
+            'number': 5, #Anz. angezeiter Rezepte
+            'apiKey': api_key
+        }
 
-    # Datenbankabfrage
-    params = {
-        'ingredients': zutaten,
-        'number': 5,  # Anz. angezeiter Rezepte
-        'apiKey': api_key
-    }
+        #API-Abfrage senden
+        response = requests.get(api_url, params=params)
+        data = response.json()
 
-    # API-Abfrage senden
-    response = requests.get(api_url, params=params)
-    data = response.json()
-
-    # Rezeptvorschläge
-    st.header("Look what we've found for you")
-    for recipe in data:
-        if recipe['readyInMinutes'] <= max_time and (difficulty == 'Any' or recipe['difficulty'] == difficulty):
+        #Rezeptvorschläge 
+        st.header("Look what we've found for you")
+        for recipe in data:
             st.subheader(recipe['title'])
             st.image(recipe['image'])
-            st.write(f"Preparation Time: {recipe['readyInMinutes']} minutes")
-            st.write(f"Difficulty: {recipe['difficulty']}")
             st.write(f"Verwendete Zutaten: {', '.join([ingredient['name'] for ingredient in recipe['usedIngredients']])}")
             st.write(f"Fehlende Zutaten: {', '.join([ingredient['name'] for ingredient in recipe['missedIngredients']])}")
             st.write(f"Anzahl der fehlenden Zutaten: {recipe['missedIngredientCount']}")
