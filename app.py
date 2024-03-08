@@ -75,9 +75,12 @@ if st.button('Show recipes'):
         #Rezeptvorschläge 
         st.header("Look what we've found for you")
         for recipe in data:
-            st.subheader(recipe['title'])
+           st.subheader(recipe['title'])
             st.image(recipe['image'])
-            st.write(f"Zutaten: {', '.join(recipe['usedIngredients'] + recipe['missedIngredients'])}")
+            if 'usedIngredients' in recipe and 'missedIngredients' in recipe:
+                st.write(f"Zutaten: {', '.join(recipe['usedIngredients'] + recipe['missedIngredients'])}")
+            else:
+                st.write("Zutateninformationen nicht verfügbar")
             st.write(f"Für das komplette Rezept klicken Sie bitte auf das Bild:")
             if st.button(f"Rezept für {recipe['title']} anzeigen"):
                 if 'instructions' in recipe:
