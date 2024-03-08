@@ -17,8 +17,8 @@ css_styles = """
 st.markdown(css_styles, unsafe_allow_html=True)
 
 # Titel und Header
-st.title("Pantry Pal - Conquering Leftovers, Mastering Meals",)
-st.header("**Tame your kitchen with Pantry Pal**",)
+st.title("Pantry Pal - Conquering Leftovers, Mastering Meals")
+st.header("**Tame your kitchen with Pantry Pal**")
 
 # Zutatenliste des Benutzers als Eingabefeld
 zutaten = st.text_input("Enter what's left in your fridge (separated by comma)", key="ingredients", max_chars=1000)
@@ -96,6 +96,11 @@ if st.button('Show recipes'):
 
             st.success("Shopping list sent successfully!")
 
+        # Anzeigen der Einkaufsliste mit Checkboxen
+        for ingredient in shopping_list:
+            if st.checkbox(ingredient):
+                shopping_list.remove(ingredient)
+
 # Fußzeile der Anwendung
 st.markdown("---")
 st.write("© 2024 Pantry Pal. All rights reserved.")
@@ -112,3 +117,9 @@ if zutaten and st.button('Show recipes'):
             st.write(f"Fehlende Zutaten: {', '.join([ingredient['name'] for ingredient in recipe['missedIngredients']])}")
             st.write(f"Anzahl der fehlenden Zutaten: {recipe['missedIngredientCount']}")
             st.write(f"Anzahl der verwendeten Zutaten: {recipe['usedIngredientCount']}")
+            
+            # Nutrition information
+            nutrition_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/nutritionWidget.json?apiKey={api_key}"
+            nutrition_info = requests.get(nutrition_url).json()
+            st.subheader("Nutrition Information")
+            st.write(nutrition_info)
