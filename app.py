@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 
-# CSS-Stile
+# CSS-Stil
 css_styles = """
 <style>
 [data-testid="stAppViewContainer"] > .main {
@@ -13,22 +13,21 @@ css_styles = """
 }
 </style>
 """
+st.markdown(css_styles, unsafe_allow_html=True) #Hintergrund
 
-st.markdown(css_styles, unsafe_allow_html=True)
-
-# Titel und Header
+# Titel und Untertitel
 st.title("Pantry Pal - Conquering Leftovers, Mastering Meals")
 st.header("**Tame your kitchen with Pantry Pal**")
 
-# Zutatenliste des Benutzers als Eingabefeld
+# Versch. Zutaten des Benutzers als Eingabefeld
 zutaten = st.text_input("Enter what's left in your fridge (separated by comma)", key="ingredients", max_chars=1000)
 
 # Filteroptionen
-schwierigkeitsgrad = st.selectbox("Select Difficulty", ["Any", "Easy", "Medium", "Hard"])
-zeitdauer = st.selectbox("Select Cooking Time", ["Any", "0-15 minutes", "15-30 minutes", "30-60 minutes", "60+ minutes"])
-anzahl_zutaten = st.slider("Number of Ingredients", min_value=1, max_value=20, value=5)
+difficulty = st.selectbox("Select Difficulty", ["Any", "Easy", "Medium", "Hard"])
+duration = st.selectbox("Select Cooking Time", ["Any", "0-15 minutes", "15-30 minutes", "30-60 minutes", "60+ minutes"])
+number_ingredients = st.slider("Number of Ingredients", min_value=1, max_value=20, value=5)
 
-# Button, um Rezepte anzuzeigen und Einkaufsliste zu senden
+# Button, um Rezepte anzuzeigen und an Einkaufsliste zu senden
 if st.button('Show recipes'):
     if zutaten:
         # Spoonacular API-URL
@@ -44,21 +43,21 @@ if st.button('Show recipes'):
             'apiKey': api_key
         }
 
-        # Hinzufügen der Filterparameter
-        if schwierigkeitsgrad != "Any":
-            params['difficulty'] = schwierigkeitsgrad.lower()
-        if zeitdauer != "Any":
-            if zeitdauer == "0-15 minutes":
+        # Hinzufügen der Filteroptionen
+        if difficulty != "Any":
+            params['difficulty'] = difficulty.lower()
+        if duration != "Any":
+            if duration == "0-15 minutes":
                 params['maxReadyTime'] = 15
-            elif zeitdauer == "15-30 minutes":
+            elif duration == "15-30 minutes":
                 params['maxReadyTime'] = 30
-            elif zeitdauer == "30-60 minutes":
+            elif duration == "30-60 minutes":
                 params['maxReadyTime'] = 60
             else:
                 params['maxReadyTime'] = 60  # 60+ minutes
 
-        if anzahl_zutaten:
-            params['number'] = anzahl_zutaten
+        if number_ingredients:
+            params['number'] = number_ingredients
 
         # API-Abfrage senden
         response = requests.get(api_url, params=params)
@@ -101,10 +100,6 @@ if st.button('Show recipes'):
             if st.checkbox(ingredient):
                 shopping_list.remove(ingredient)
 
-# Fußzeile der Anwendung
-st.markdown("---")
-st.write("© 2024 Pantry Pal. All rights reserved.")
-
 # Rezepte anzeigen
 if zutaten and st.button('Show recipes'):
     if zutaten:
@@ -113,13 +108,17 @@ if zutaten and st.button('Show recipes'):
         for recipe in data:
             st.subheader(recipe['title'])
             st.image(recipe['image'])
-            st.write(f"Verwendete Zutaten: {', '.join([ingredient['name'] for ingredient in recipe['usedIngredients']])}")
-            st.write(f"Fehlende Zutaten: {', '.join([ingredient['name'] for ingredient in recipe['missedIngredients']])}")
-            st.write(f"Anzahl der fehlenden Zutaten: {recipe['missedIngredientCount']}")
-            st.write(f"Anzahl der verwendeten Zutaten: {recipe['usedIngredientCount']}")
+            st.write(f"Used ingredients: {', '.join([ingredient['name'] for ingredient in recipe['usedIngredients']])}")
+            st.write(f"Missed ingredients: {', '.join([ingredient['name'] for ingredient in recipe['missedIngredients']])}")
+            st.write(f"Number of missed ingredients: {recipe['missedIngredientCount']}")
+            st.write(f"Number of used ingredients: {recipe['usedIngredientCount']}")
             
             # Nutrition information
             nutrition_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/nutritionWidget.json?apiKey={api_key}"
             nutrition_info = requests.get(nutrition_url).json()
             st.subheader("Nutrition Information")
             st.write(nutrition_info)
+
+# Fußzeile
+st.markdown("---")
+st.write("© 2024 Pantry Pal. All rights reserved.")
