@@ -50,32 +50,33 @@ div[data-baseweb="input"] input {
 </style>
 """, unsafe_allow_html=True)
 
-#API-Schlüssel
-api_key = 1
-
 # Zutatenliste des Benutzers als Eingabefeld
-ingredients = st.text_input("Enter your fridge ingredients, separated by comma")
+zutaten = st.text_input("Enter what's left in your fridge (separated by comma)")
 
-#API-Anfrage
-url=f"https://www.themealdb.com/api/json/v1/1/list.php?a=list&i={ingredients}&apiKey={api_key}"
-response = request.get(url)
-data = response.json()
+if zutaten:
+    # Spoonacular API-URL
+    api_url = "https://api.spoonacular.com/recipes/findByIngredients"
 
-# Rezepte parsen
-rezepte = []
-for meal in data["meals"]:
-    rezepte.append({
-        "name": meal["strMeal"],
-        "image": meal["strMealThumb"],
-        "link": meal["strSource"]
-    })
+    #API-Schlüssel
+    api_key = "06491aabe3d2435b8b21a749de46b765"
 
-# Rezepte anzeigen
-st.header("Look what we've found for you")
-for rezept in rezepte:
-    st.image(rezept["image"])
-    st.write(rezept["name"])
-    st.write(rezept["link"])
+    #Datenbankabfrage
+    parameter = {
+        'ingredients': zutaten,
+        'number': 5, #Anz. angezeiter Rezepte
+        'apiKey': api_key
+    }
+
+    #API-Abfrage senden
+    response = requests.get(api_url, params=parameter)
+    data = response.json()
+
+    #Rezeptvorschläge 
+    st.header("Look what we've found for you")
+    for recipe in data:
+        st.subheader(recipe['title'])
+        st.image(recipe['image'])
+        st.write(f"Zutaten: {', '.join(recipe['usedIngredients'] + recipe['missedIngredients'])}")
 
 # Fußzeile der Anwendung
 st.markdown("---")
