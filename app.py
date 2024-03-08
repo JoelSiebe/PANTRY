@@ -5,7 +5,7 @@ import requests
 page_bg_img = f"""
 <style>
 [data-testid="stAppViewContainer"] > .main {{
-    background-image: url("https://i.postimg.cc/P5ksXpm2/pexels-vladimir-gladkov-6208084.jpg");
+    background-image: url("https://i.postimg.cc/cJtrkLQw/pexels-mike-murray-5701888.jpg");
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -22,7 +22,7 @@ st.markdown(page_bg_img, unsafe_allow_html=True)
 page_bg_img = """
 <style>
 body {
-    background-image: url("https://i.postimg.cc/P5ksXpm2/pexels-vladimir-gladkov-6208084.jpg");
+    background-image: url("https://i.postimg.cc/cJtrkLQw/pexels-mike-murray-5701888.jpg");
     background-size: cover;
 }
 .stApp {
@@ -53,30 +53,35 @@ div[data-baseweb="input"] input {
 # Zutatenliste des Benutzers als Eingabefeld
 zutaten = st.text_input("Enter what's left in your fridge (separated by comma)")
 
-if zutaten:
-    # Spoonacular API-URL
-    api_url = "https://api.spoonacular.com/recipes/findByIngredients"
+if st.button('Show recipes'):
+    if zutaten:
+        # Spoonacular API-URL
+        api_url = "https://api.spoonacular.com/recipes/findByIngredients"
 
-    #API-Schlüssel
-    api_key = "06491aabe3d2435b8b21a749de46b765"
+        #API-Schlüssel
+        api_key = "06491aabe3d2435b8b21a749de46b765"
 
-    #Datenbankabfrage
-    parameter = {
-        'ingredients': zutaten,
-        'number': 5, #Anz. angezeiter Rezepte
-        'apiKey': api_key
-    }
+        #Datenbankabfrage
+        parameter = {
+            'ingredients': zutaten,
+            'number': 5, #Anz. angezeiter Rezepte
+            'apiKey': api_key
+        }
 
-    #API-Abfrage senden
-    response = requests.get(api_url, params=parameter)
-    data = response.json()
+        #API-Abfrage senden
+        response = requests.get(api_url, params=parameter)
+        data = response.json()
 
-    #Rezeptvorschläge 
-    st.header("Look what we've found for you")
-    for recipe in data:
-        st.subheader(recipe['title'])
-        st.image(recipe['image'])
-        st.write(f"Zutaten: {', '.join(recipe['usedIngredients'] + recipe['missedIngredients'])}")
+        #Rezeptvorschläge 
+        st.header("Look what we've found for you")
+        for recipe in data:
+            st.subheader(recipe['title'])
+            st.image(recipe['image'])
+            st.write(f"Zutaten: {', '.join(recipe['usedIngredients'] + recipe['missedIngredients'])}")
+            st.write(f"Click on the picture below the see the full recipe")
+            if st.button(f"Rezept für {recipe['title']} anzeigen"):
+                st.write(f"**Anleitung:** {recipe['instructions']}")
+                st.write(f"**Quelle:** [Link zum Rezept]({recipe['spoonacularSourceUrl']})")
 
 # Fußzeile der Anwendung
 st.markdown("---")
