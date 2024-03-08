@@ -78,9 +78,12 @@ if st.button('Show recipes'):
             st.subheader(recipe['title'])
             st.image(recipe['image'])
             st.write(f"Zutaten: {', '.join(recipe['usedIngredients'] + recipe['missedIngredients'])}")
-            st.write(f"Click on the picture below the see the full recipe")
+            st.write(f"Für das komplette Rezept klicken Sie bitte auf das Bild:")
             if st.button(f"Rezept für {recipe['title']} anzeigen"):
-                st.write(f"**Anleitung:** {recipe['instructions']}")
+                if 'instructions' in recipe:
+                    st.write(f"**Anleitung:** {recipe['instructions']}")
+                else:
+                    st.write("Leider liegen keine Anweisungen für dieses Rezept vor.")
                 st.write(f"**Quelle:** [Link zum Rezept]({recipe['spoonacularSourceUrl']})")
 
 # Fußzeile der Anwendung
