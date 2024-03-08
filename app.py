@@ -1,4 +1,5 @@
 import streamlit as st
+import requests
 
 # Hintergrundbild
 page_bg_img = f"""
@@ -17,7 +18,7 @@ page_bg_img = f"""
 """
 st.markdown(page_bg_img, unsafe_allow_html=True)
 
-# Definiere das Hintergrundbild und den Stil
+# Stil (nochmals anschauen, teils redundat mit zuvor)
 page_bg_img = """
 <style>
 body {
@@ -35,11 +36,11 @@ body {
 """
 st.markdown(page_bg_img, unsafe_allow_html=True)
 
-# Titel und Header der Anwendung
+# Titel und Header
 st.title("Pantry Pal - Conquering Leftovers, Mastering Meals",)
 st.header("**Tame your kitchen with Pantry Pal**",)
 
-# CSS-Stilregel für das Eingabefeld
+# CSS Stil für Eingabefeld
 st.write("""
 <style>
 div[data-baseweb="input"] input {
@@ -49,14 +50,32 @@ div[data-baseweb="input"] input {
 </style>
 """, unsafe_allow_html=True)
 
-# Eingabefeld für die Kühlschrank-Zutaten mit angepasster Schriftgröße
+#API-Schlüssel
+api_key = 1
+
+# Zutatenliste des Benutzers als Eingabefeld
 ingredients = st.text_input("Enter your fridge ingredients, separated by comma")
 
-# Schaltfläche, um Rezepte basierend auf den eingegebenen Zutaten anzuzeigen
-if st.button("Show Recipes"):
-    # Hier kannst du die Logik zum Abrufen von Rezepten basierend auf den eingegebenen Zutaten implementieren
-    # In diesem Beispiel zeigen wir nur eine Platzhaltermeldung an
-    st.write("Here, we will display recipes based on your ingredients")
+#API-Anfrage
+url=f"https://www.themealdb.com/api/json/v1/1/list.php?a=list&i={ingredients}&apiKey={api_key}"
+response = request.get(url)
+data = response.json()
+
+# Rezepte parsen
+rezepte = []
+for meal in data["meals"]:
+    rezepte.append({
+        "name": meal["strMeal"],
+        "image": meal["strMealThumb"],
+        "link": meal["strSource"]
+    })
+
+# Rezepte anzeigen
+st.header("Look what we've found for you")
+for rezept in rezepte:
+    st.image(rezept["image"])
+    st.write(rezept["name"])
+    st.write(rezept["link"])
 
 # Fußzeile der Anwendung
 st.markdown("---")
