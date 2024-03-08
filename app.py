@@ -23,14 +23,14 @@ st.header("**Tame your kitchen with Pantry Pal**",)
 # Boolescher Wert, um zu überprüfen, ob die Sidebar angezeigt wird
 show_sidebar = st.sidebar.checkbox("Show Sidebar")
 
-# Eingabefeld für Zutatenliste
-if not show_sidebar:
-    zutaten = st.text_input("Enter what's left in your fridge (separated by comma)")
-
 # Wenn die Sidebar angezeigt wird
 if show_sidebar:
     st.sidebar.header('Filter Options')
     # Weitere Filteroptionen hier einfügen
+
+# Eingabefeld für Zutatenliste
+if not show_sidebar:
+    zutaten = st.text_input("Enter what's left in your fridge (separated by comma)")
 
 # Button, um Filter anzuwenden und Rezepte anzuzeigen
 if not show_sidebar or st.button('Show recipes'):
