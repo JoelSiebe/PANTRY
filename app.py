@@ -11,16 +11,6 @@ css_styles = """
     background-repeat: no-repeat;
     background-attachment: local;
 }
-
-[data-testid="stSidebar"][aria-expanded="true"] {
-    background-color: rgba(0, 0, 0, 0.8);
-    border-right: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-[data-testid="stSidebar"][aria-expanded="false"] {
-    background-color: rgba(0, 0, 0, 0);
-    border-right: none;
-}
 </style>
 """
 
