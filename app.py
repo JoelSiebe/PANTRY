@@ -1,8 +1,5 @@
 import streamlit as st
 import requests
-import tempfile
-import webbrowser
-import os
 
 # CSS-Stile
 css_styles = """
@@ -32,43 +29,48 @@ st.markdown(css_styles, unsafe_allow_html=True)
 st.title("Pantry Pal - Conquering Leftovers, Mastering Meals",)
 st.header("**Tame your kitchen with Pantry Pal**",)
 
+# Sidebar für Filteroptionen
+st.sidebar.header('Filter Options')
+
+# Filter für Zubereitungszeit
+max_time = st.sidebar.slider('Maximum Preparation Time (minutes)', 0, 240, 60)
+
+# Filter für Schwierigkeitsgrad
+difficulty = st.sidebar.selectbox('Difficulty', ['Any', 'Easy', 'Medium', 'Hard'])
+
 # Zutatenliste des Benutzers als Eingabefeld
-zutaten = st.text_input("Enter what's left in your fridge (separated by comma)", key="ingredients", max_chars=1000)
+zutaten = st.sidebar.text_input("Enter what's left in your fridge (separated by comma)")
 
-if st.button('Show recipes'):
-    if zutaten:
-        # Spoonacular API-URL
-        api_url = "https://api.spoonacular.com/recipes/findByIngredients"
+if st.sidebar.button('Apply Filters'):
+    # Spoonacular API-URL
+    api_url = "https://api.spoonacular.com/recipes/findByIngredients"
 
-        #API-Schlüssel
-        api_key = "06491aabe3d2435b8b21a749de46b765"
+    # API-Schlüssel
+    api_key = "06491aabe3d2435b8b21a749de46b765"
 
-        #Datenbankabfrage
-        params = {
-            'ingredients': zutaten,
-            'number': 5, #Anz. angezeiter Rezepte
-            'apiKey': api_key
-        }
+    # Datenbankabfrage
+    params = {
+        'ingredients': zutaten,
+        'number': 5,  # Anz. angezeiter Rezepte
+        'apiKey': api_key
+    }
 
-        #API-Abfrage senden
-        response = requests.get(api_url, params=params)
-        data = response.json()
+    # API-Abfrage senden
+    response = requests.get(api_url, params=params)
+    data = response.json()
 
-        # Speichern der Rezepte in einer HTML-Datei
-        html_content = "<h1>Recipes</h1>"
-        for recipe in data:
-            html_content += f"<h2>{recipe['title']}</h2>"
-            html_content += f"<img src='{recipe['image']}'><br>"
-            html_content += f"Used ingredients: {', '.join([ingredient['name'] for ingredient in recipe['usedIngredients']])}<br>"
-            html_content += f"Missing ingredients: {', '.join([ingredient['name'] for ingredient in recipe['missedIngredients']])}<br>"
-            html_content += f"Number of missing ingredients: {recipe['missedIngredientCount']}<br>"
-            html_content += f"Number of used ingredients: {recipe['usedIngredientCount']}<br><br>"
-
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".html") as tmpfile:
-            tmpfile.write(html_content.encode("utf-8"))
-            file_path = tmpfile.name
-
-        webbrowser.open_new_tab("file://" + file_path)
+    # Rezeptvorschläge
+    st.header("Look what we've found for you")
+    for recipe in data:
+        if recipe['readyInMinutes'] <= max_time and (difficulty == 'Any' or recipe['difficulty'] == difficulty):
+            st.subheader(recipe['title'])
+            st.image(recipe['image'])
+            st.write(f"Preparation Time: {recipe['readyInMinutes']} minutes")
+            st.write(f"Difficulty: {recipe['difficulty']}")
+            st.write(f"Verwendete Zutaten: {', '.join([ingredient['name'] for ingredient in recipe['usedIngredients']])}")
+            st.write(f"Fehlende Zutaten: {', '.join([ingredient['name'] for ingredient in recipe['missedIngredients']])}")
+            st.write(f"Anzahl der fehlenden Zutaten: {recipe['missedIngredientCount']}")
+            st.write(f"Anzahl der verwendeten Zutaten: {recipe['usedIngredientCount']}")
 
 # Fußzeile der Anwendung
 st.markdown("---")
