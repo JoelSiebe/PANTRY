@@ -62,36 +62,25 @@ if st.button('Show recipes'):
         api_key = "06491aabe3d2435b8b21a749de46b765"
 
         #Datenbankabfrage
-        parameter = {
+        params = {
             'ingredients': zutaten,
             'number': 5, #Anz. angezeiter Rezepte
             'apiKey': api_key
         }
 
         #API-Abfrage senden
-        response = requests.get(api_url, params=parameter)
+        response = requests.get(api_url, params=params)
         data = response.json()
-
-        # Debugging: Ausgabe der API-Antwort
-        st.write("API-Antwort:")
-        st.write(data)
 
         #Rezeptvorschläge 
         st.header("Look what we've found for you")
         for recipe in data:
-           st.subheader(recipe['title'])
-           st.image(recipe['image'])
-           if 'usedIngredients' in recipe and 'missedIngredients' in recipe:
-               st.write(f"Zutaten: {', '.join(recipe['usedIngredients'] + recipe['missedIngredients'])}")
-           else:
-               st.write("Zutateninformationen nicht verfügbar")
-           st.write(f"Für das komplette Rezept klicken Sie bitte auf das Bild:")
-           if st.button(f"Rezept für {recipe['title']} anzeigen"):
-               if 'instructions' in recipe:
-                   st.write(f"**Anleitung:** {recipe['instructions']}")
-               else:
-                   st.write("Leider liegen keine Anweisungen für dieses Rezept vor.")
-               st.write(f"**Quelle:** [Link zum Rezept]({recipe['spoonacularSourceUrl']})")
+            st.subheader(recipe['title'])
+            st.image(recipe['image'])
+            st.write(f"Verwendete Zutaten: {', '.join([ingredient['name'] for ingredient in recipe['usedIngredients']])}")
+            st.write(f"Fehlende Zutaten: {', '.join([ingredient['name'] for ingredient in recipe['missedIngredients']])}")
+            st.write(f"Anzahl der fehlenden Zutaten: {recipe['missedIngredientCount']}")
+            st.write(f"Anzahl der verwendeten Zutaten: {recipe['usedIngredientCount']}")
 
 # Fußzeile der Anwendung
 st.markdown("---")
