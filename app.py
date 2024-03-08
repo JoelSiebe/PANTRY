@@ -67,13 +67,10 @@ if st.button('Show recipes'):
         # Neue Seite für Rezepte
         st.markdown('<a href="#recipes">Go to recipes</a>', unsafe_allow_html=True)
 
-# Fußzeile der Anwendung
-st.markdown("---")
-st.write("© 2024 Pantry Pal. All rights reserved.")
+        # Einkaufsliste vorbereiten
+        ingredients_list = []
 
-# Rezepte anzeigen
-if zutaten and st.button('Show recipes'):
-    if zutaten:
+        # Rezepte anzeigen
         st.markdown('<a name="recipes"></a>', unsafe_allow_html=True)
         st.header("Look what we've found for you")
         for recipe in data:
@@ -83,3 +80,14 @@ if zutaten and st.button('Show recipes'):
             st.write(f"Fehlende Zutaten: {', '.join([ingredient['name'] for ingredient in recipe['missedIngredients']])}")
             st.write(f"Anzahl der fehlenden Zutaten: {recipe['missedIngredientCount']}")
             st.write(f"Anzahl der verwendeten Zutaten: {recipe['usedIngredientCount']}")
+            ingredients_list.extend([ingredient['name'] for ingredient in recipe['missedIngredients']])
+
+        # Anzeigen der Einkaufsliste
+        st.header("Your Shopping List")
+        unique_ingredients = set(ingredients_list)
+        for ingredient in unique_ingredients:
+            st.write(f"- {ingredient}")
+
+# Fußzeile der Anwendung
+st.markdown("---")
+st.write("© 2024 Pantry Pal. All rights reserved.")
