@@ -17,21 +17,22 @@ css_styles = """
 }
 
 .text-input-container {
-    background-color: rgba(255, 255, 255, 0.5) !important;
-    border-radius: 10px !important;
+    background-color: rgba(200, 200, 200, 0.8) !important;
+    border-radius: 20px !important;
+    padding: 20px !important;
 }
 
 .text-input-container input {
     color: black !important; /* Schriftfarbe auf Schwarz */
-    font-size: 20px !important; /* Schriftgröße auf 20px */
-    background-color: rgba(200, 200, 200, 0.7) !important; /* Hintergrundfarbe mit Transparenz */
+    font-size: 24px !important; /* Schriftgröße auf 24px */
+    background-color: rgba(150, 150, 150, 0.9) !important; /* Hintergrundfarbe mit Transparenz */
     border: none !important; /* Rand entfernen */
-    border-radius: 10px !important; /* Randradius festlegen */
-    padding: 10px 15px !important; /* Innenabstand anpassen */
+    border-radius: 15px !important; /* Randradius festlegen */
+    padding: 15px 20px !important; /* Innenabstand anpassen */
 }
 
-h3 {
-    font-size: 24px;
+h2 {
+    font-size: 36px;
     color: white;
 }
 </style>
