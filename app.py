@@ -76,18 +76,18 @@ if st.button('Show recipes'):
         st.header("Look what we've found for you")
         for recipe in data:
            st.subheader(recipe['title'])
-            st.image(recipe['image'])
-            if 'usedIngredients' in recipe and 'missedIngredients' in recipe:
-                st.write(f"Zutaten: {', '.join(recipe['usedIngredients'] + recipe['missedIngredients'])}")
-            else:
-                st.write("Zutateninformationen nicht verfügbar")
-            st.write(f"Für das komplette Rezept klicken Sie bitte auf das Bild:")
-            if st.button(f"Rezept für {recipe['title']} anzeigen"):
-                if 'instructions' in recipe:
-                    st.write(f"**Anleitung:** {recipe['instructions']}")
-                else:
-                    st.write("Leider liegen keine Anweisungen für dieses Rezept vor.")
-                st.write(f"**Quelle:** [Link zum Rezept]({recipe['spoonacularSourceUrl']})")
+           st.image(recipe['image'])
+           if 'usedIngredients' in recipe and 'missedIngredients' in recipe:
+               st.write(f"Zutaten: {', '.join(recipe['usedIngredients'] + recipe['missedIngredients'])}")
+           else:
+               st.write("Zutateninformationen nicht verfügbar")
+           st.write(f"Für das komplette Rezept klicken Sie bitte auf das Bild:")
+           if st.button(f"Rezept für {recipe['title']} anzeigen"):
+               if 'instructions' in recipe:
+                   st.write(f"**Anleitung:** {recipe['instructions']}")
+               else:
+                   st.write("Leider liegen keine Anweisungen für dieses Rezept vor.")
+               st.write(f"**Quelle:** [Link zum Rezept]({recipe['spoonacularSourceUrl']})")
 
 # Fußzeile der Anwendung
 st.markdown("---")
