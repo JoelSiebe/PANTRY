@@ -47,19 +47,19 @@ if st.button('Show recipes'):
 
         # Hinzufügen der Filteroptionen
         if difficulty != "Any":
-            params['difficulty'] = difficulty.lower()
+            parameter['difficulty'] = difficulty.lower()
         if duration != "Any":
             if duration == "0-15 minutes":
-                params['maxReadyTime'] = 15
+                parameter['maxReadyTime'] = 15
             elif duration == "15-30 minutes":
-                params['maxReadyTime'] = 30
+                parameter['maxReadyTime'] = 30
             elif duration == "30-60 minutes":
-                params['maxReadyTime'] = 60
+                parameter['maxReadyTime'] = 60
             else:
-                params['maxReadyTime'] = 60  # 60+ minutes
+                parameter['maxReadyTime'] = 60  # 60+ minutes
 
         if number_ingredients:
-            params['number'] = number_ingredients
+            parameter['number'] = number_ingredients
 
         #API-Abfrage senden
         response = requests.get(api_url, params=parameter)
