@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 import numpy as np
 import pandas as pd
+from streamlit_dynamic_filters import DynamicFilters
 
 # CSS-Stil (https://discuss.streamlit.io/t/upload-background-image/59732 // https://www.w3schools.com/cssref/pr_background-image.php)
 css_background = """   
@@ -95,7 +96,13 @@ if vietnamese:
 for cuisine in selected_cuisines:
     st.write(f"- {cuisine}")
 
-# Filteroptionen (https://docs.streamlit.io/library/api-reference/widgets)
+# Filteroptionen (https://docs.streamlit.io/library/api-reference/widgets // https://dynamic-filters-demo.streamlit.app/Columns_Example (kopiert von hier) )
+
+dynamic_filters = DynamicFilters(df, filters=['col1', 'col2', 'col3', 'col4'])
+dynamic_filters.display_filters(location='columns', num_columns=3, gap='large')
+dynamic_filters.display_df()
+
+
 difficulty = st.selectbox("Select Difficulty", ["Any", "Easy", "Medium", "Hard"])
 duration = st.selectbox("Select Cooking Time", ["Any", "0-15 minutes", "15-30 minutes", "30-60 minutes", "60+ minutes"])
 number_ingredients = st.slider("Number of Ingredients", min_value=1, max_value=20, value=5)
@@ -127,7 +134,7 @@ if st.button('Show recipes'):
             elif duration == "30-60 minutes":
                 parameter['maxReadyTime'] = 60
             else:
-                parameter['maxReadyTime'] = 60  # 60+ minutes
+                parameter['maxReadyTime'] = 60 
 
         if number_ingredients:
             parameter['number'] = number_ingredients
