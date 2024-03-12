@@ -95,8 +95,7 @@ if vietnamese:
 for cuisine in selected_cuisines:
     st.write(f"- {cuisine}")
 
-
-
+#Filteroptionen (https://docs.streamlit.io/library/api-reference/widgets)
 
 difficulty = st.selectbox("Select Difficulty", ["Any", "Easy", "Medium", "Hard"])
 duration = st.selectbox("Select Cooking Time", ["Any", "0-15 minutes", "15-30 minutes", "30-60 minutes", "60+ minutes"])
@@ -111,7 +110,7 @@ if st.button('Show recipes'):
         #API-Schlüssel (noch schauen, wie man das in einer anderen Datei macht)
         api_key = "06491aabe3d2435b8b21a749de46b765"
 
-        #Datenbankabfrage
+        #Datenbankabfrage (länder hinzufügen -> ?)
         parameter = {
             'ingredients': zutaten,
             'number': 5, #Anz. angezeigter Rezepte
@@ -147,6 +146,17 @@ if st.button('Show recipes'):
             st.write(f"Fehlende Zutaten: {', '.join([ingredient['name'] for ingredient in recipe['missedIngredients']])}")
             st.write(f"Anzahl der fehlenden Zutaten: {recipe['missedIngredientCount']}")
             st.write(f"Anzahl der verwendeten Zutaten: {recipe['usedIngredientCount']}")
+        
+            #API prüfen, ob Zubereitungschritte verfügubar
+            if 'instructions' in recipe:
+                st.subheader("Instructions:")
+                instructions = recipe['instructions'].split('\n')  # Split by newline
+                for step in instructions:
+                    st.write(f"- {step}")  # Display each step
+
+            # Wenn die Zubereitungsschritte nicht in API
+            else:
+                st.write("Recipe steps not available.")
 
 # Fußzeile der Anwendung
 st.markdown("---")
