@@ -49,9 +49,9 @@ mexican = popover.checkbox("Mexican", False)
 thai = popover.checkbox("Thai", False)
 vietnamese = popover.checkbox("Vietnamese", False)
 
-if red:
+if african:
     st.write(":red[This is a red item.]")
-if blue:
+if asian:
     st.write(":blue[This is a blue item.]")
 
 if st.button('Show recipes'):
