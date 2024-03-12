@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 import numpy as np
 import pandas as pd
-from streamlit_dynamic_filters import DynamicFilters
+import streamlit_dynamic_filters
 
 # CSS-Stil (https://discuss.streamlit.io/t/upload-background-image/59732 // https://www.w3schools.com/cssref/pr_background-image.php)
 css_background = """   
@@ -97,7 +97,7 @@ for cuisine in selected_cuisines:
     st.write(f"- {cuisine}")
 
 # Filteroptionen (https://docs.streamlit.io/library/api-reference/widgets // https://dynamic-filters-demo.streamlit.app/Columns_Example (kopiert von hier) )
-
+from streamlit_dynamic_filters import DynamicFilters
 dynamic_filters = DynamicFilters(df, filters=['col1', 'col2', 'col3', 'col4'])
 dynamic_filters.display_filters(location='columns', num_columns=3, gap='large')
 dynamic_filters.display_df()
