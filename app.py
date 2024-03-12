@@ -31,7 +31,7 @@ zutaten = st.text_input("Enter what's left in your fridge (separated by comma)")
 
 #popover (https://docs.streamlit.io/library/api-reference/layout/st.popover)
 popover = st.popover("Filter items")
-red = popover.checkbox("Show red items.", True=False)
+red = popover.checkbox("Show red items.", False)
 blue = popover.checkbox("Show blue items.", True)
 
 if red:
