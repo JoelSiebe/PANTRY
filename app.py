@@ -48,9 +48,11 @@ japanese = popover.checkbox("Japanese", False)
 mexican = popover.checkbox("Mexican", False)
 thai = popover.checkbox("Thai", False)
 vietnamese = popover.checkbox("Vietnamese", False)
+
+st.write("You've picked the following cuisines:")
  
 if african:
-    st.write(":red[This is a red item.]")
+    st.write("African")
 if asian:
     st.write(":blue[This is a blue item.]")
 
