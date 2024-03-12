@@ -26,26 +26,27 @@ st.markdown(css_background, unsafe_allow_html=True) #css_background wird angewen
 st.title("Pantry Pal - Conquering Leftovers, Mastering Meals",)
 st.header("**Tame your kitchen with Pantry Pal**",)
 
-# Zutatenliste des Benutzers als Eingabefeld
+# Versch. Zutaten des Benutzers als Eingabefeld
 zutaten = st.text_input("Enter what's left in your fridge (separated by comma)")
 
 if st.button('Show recipes'):
     if zutaten:
+
         # Spoonacular API-URL
         api_url = "https://api.spoonacular.com/recipes/findByIngredients"
 
-        #API-Schlüssel
+        #API-Schlüssel (noch schauen, wie man das in einer anderen Datei macht)
         api_key = "06491aabe3d2435b8b21a749de46b765"
 
         #Datenbankabfrage
-        params = {
+        parameter = {
             'ingredients': zutaten,
-            'number': 5, #Anz. angezeiter Rezepte
+            'number': 5, #Anz. angezeigter Rezepte
             'apiKey': api_key
         }
 
         #API-Abfrage senden
-        response = requests.get(api_url, params=params)
+        response = requests.get(api_url, params=parameter)
         data = response.json()
 
         #Rezeptvorschläge 
