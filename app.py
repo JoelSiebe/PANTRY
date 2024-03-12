@@ -148,15 +148,23 @@ if st.button('Show recipes'):
             st.write(f"Anzahl der verwendeten Zutaten: {recipe['usedIngredientCount']}")
         
             #API prüfen, ob Zubereitungschritte verfügubar
-            if 'instructions' in recipe:
-                st.subheader("Instructions:")
-                instructions = recipe['instructions'].split('\n')  # Split by newline
-                for step in instructions:
-                    st.write(f"- {step}")  # Display each step
 
-            # Wenn die Zubereitungsschritte nicht in API
-            else:
-                st.write("Recipe steps not available.")
+            #Spoonacular-API für Rezeptinformationen (https://spoonacular.com/food-api/docs#Get-Recipe-Information) / Key ist derselbe
+            api_informations_url = "https://api.spoonacular.com/recipes/{id}/information"
+            
+           if 'id' in recipe:  # Check if recipe has an ID
+                recipe_id = recipe['id']
+                instructions_url = f"https://api.spoonacular.com/recipes/{recipe_id}/information"
+                instructions_response = requests.get(instructions_url, params={'apiKey': api_key})
+                instructions_data = instructions_response.json()
+
+                if 'instructions' in instructions_data:
+                    st.subheader("Instructions:")
+                    instructions = instructions_data['instructions'].split('\n')  # Split by newline
+                    for step in instructions:
+                        st.write(f"- {step}")  # Display each step
+                else:
+                    st.write("Recipe steps not available.")
 
 # Fußzeile der Anwendung
 st.markdown("---")
