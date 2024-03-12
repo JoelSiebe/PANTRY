@@ -146,13 +146,12 @@ if st.button('Show recipes'):
             st.write(f"Fehlende Zutaten: {', '.join([ingredient['name'] for ingredient in recipe['missedIngredients']])}")
             st.write(f"Anzahl der fehlenden Zutaten: {recipe['missedIngredientCount']}")
             st.write(f"Anzahl der verwendeten Zutaten: {recipe['usedIngredientCount']}")
-        
-            #API prüfen, ob Zubereitungschritte verfügubar
+  
 
             #Spoonacular-API für Rezeptinformationen (https://spoonacular.com/food-api/docs#Get-Recipe-Information) / Key ist derselbe
             api_informations_url = "https://api.spoonacular.com/recipes/{id}/information"
             
-           if 'id' in recipe:  # Check if recipe has an ID
+            if 'id' in recipe:  #API prüfen, ob Zubereitungschritte verfügubar
                 recipe_id = recipe['id']
                 instructions_url = f"https://api.spoonacular.com/recipes/{recipe_id}/information"
                 instructions_response = requests.get(instructions_url, params={'apiKey': api_key})
