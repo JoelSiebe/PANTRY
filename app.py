@@ -17,10 +17,6 @@ css_background = """
 [data-testid="stHeader"] {
     background: rgba(0,0,0,0);
 }
-
-div[data-baseweb="input"] input {
-    color: black !important; /* Ändere die Schriftfarbe auf Schwarz */
-    font-size: 20px !important; /* Ändere die Schriftgröße auf 20px */
 </style>
 """
 
