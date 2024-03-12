@@ -3,24 +3,15 @@ import requests
 
 # CSS-Stile
 css_styles = """
-<style>
-[data-testid="stAppViewContainer"] > .main {
-    background-image: url("https://i.postimg.cc/cJtrkLQw/pexels-mike-murray-5701888.jpg");
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-attachment: local;
-}
-
-[data-testid="stHeader"] {
-    background: rgba(0,0,0,0);
-}
-
-div[data-baseweb="input"] input {
-    color: black !important; /* Ändere die Schriftfarbe auf Schwarz */
-    font-size: 20px !important; /* Ändere die Schriftgröße auf 20px */
-}
-</style>
+    <style>
+        .main-container {
+            background-image: url("https://i.postimg.cc/cJtrkLQw/pexels-mike-murray-5701888.jpg");
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: local;
+        }
+    </style>
 """
 
 st.markdown(css_styles, unsafe_allow_html=True)
