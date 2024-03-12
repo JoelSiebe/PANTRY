@@ -1,19 +1,30 @@
 import streamlit as st
 import requests
+import numpy as np
+import pandas as pd
 
-# CSS-Stil
-css_styles = """
+# CSS-Stil (inspiriert von https://www.w3schools.com/cssref/pr_background-image.php)
+css_background = """   
 <style>
 [data-testid="stAppViewContainer"] > .main {
     background-image: url("https://i.postimg.cc/cJtrkLQw/pexels-mike-murray-5701888.jpg");
-    background-size: cover;
+    background-size: cover;                 #grösse des hintergrundbilds, cover = ganzer container
     background-position: center center;
     background-repeat: no-repeat;
-    background-attachment: local;
+    background-attachment: local;        #beim scrollen fix oder bewegend - local = bewegend
 }
+
+[data-testid="stHeader"] {
+    background: rgba(0,0,0,0);
+}
+
+div[data-baseweb="input"] input {
+    color: black !important; /* Ändere die Schriftfarbe auf Schwarz */
+    font-size: 20px !important; /* Ändere die Schriftgröße auf 20px */
 </style>
 """
-st.markdown(css_styles, unsafe_allow_html=True) #Hintergrund
+
+st.markdown(css_background, unsafe_allow_html=True) #css_background wird angewendet, unsafe für Anzeige von HTML-Inhalten
 
 # Titel und Untertitel
 st.title("Pantry Pal - Conquering Leftovers, Mastering Meals")
@@ -26,6 +37,9 @@ zutaten = st.text_input("Enter what's left in your fridge (separated by comma)",
 difficulty = st.selectbox("Select Difficulty", ["Any", "Easy", "Medium", "Hard"])
 duration = st.selectbox("Select Cooking Time", ["Any", "0-15 minutes", "15-30 minutes", "30-60 minutes", "60+ minutes"])
 number_ingredients = st.slider("Number of Ingredients", min_value=1, max_value=20, value=5)
+
+
+
 
 # Button, um Rezepte anzuzeigen und an Einkaufsliste zu senden
 if st.button('Show recipes'):
