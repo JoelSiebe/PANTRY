@@ -153,7 +153,8 @@ if st.button('Show recipes'):
             
             if 'id' in recipe:  #API prüfen, ob Zubereitungschritte verfügubar 
                 recipe_id = recipe['id']
-                instructions_response = requests.get(api_informations_url, params={'apiKey': api_key})
+                instructions_url = f"https://api.spoonacular.com/recipes/{recipe_id}/information"
+                instructions_response = requests.get(instructions_url, params={'apiKey': api_key})
                 instructions_data = instructions_response.json()
 
                 if 'instructions' in instructions_data:
