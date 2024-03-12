@@ -97,6 +97,14 @@ for cuisine in selected_cuisines:
     st.write(f"- {cuisine}")
 
 # Filteroptionen (https://docs.streamlit.io/library/api-reference/widgets // https://dynamic-filters-demo.streamlit.app/Columns_Example (kopiert von hier) )
+# Beispiel-Datenrahmen df
+df = pd.DataFrame({
+    'col1': ['value1', 'value2', 'value3'],
+    'col2': [1, 2, 3],
+    'col3': ['a', 'b', 'c'],
+    'col4': [True, False, True]
+})
+
 from streamlit_dynamic_filters import DynamicFilters
 dynamic_filters = DynamicFilters(df, filters=['col1', 'col2', 'col3', 'col4'])
 dynamic_filters.display_filters(location='columns', num_columns=3, gap='large')
