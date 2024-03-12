@@ -15,7 +15,7 @@ css_background = """
 }
 
 [data-testid="stHeader"] {
-    background: rgba(0,0,0,0);
+    background: rgba(181, 179, 179);
 }
 </style>
 """
