@@ -49,12 +49,52 @@ mexican = popover.checkbox("Mexican", False)
 thai = popover.checkbox("Thai", False)
 vietnamese = popover.checkbox("Vietnamese", False)
 
-st.write("You've picked the following cuisines:")
+st.write(":white[You've picked the following cuisines:]")
+
+selected_cuisines = [] #Erstellt Liste für die angeklickten Küchen
+
+#Prüfen, ob angewhält -> wenn ja, zur Liste hinzufügen
  
 if african:
-    st.write("African")
+    selected_cuisines.append("African")
 if asian:
-    st.write(":blue[This is a blue item.]")
+    selected_cuisines.append("Asian")
+if american:
+    selected_cuisines.append("American")
+if british:
+    selected_cuisines.append("British")
+if caribbean:
+    selected_cuisines.append("Caribbean")
+if chinese:
+    selected_cuisines.append("Chinese")
+if eastern_european:
+    selected_cuisines.append("Eastern European")
+if european:
+    selected_cuisines.append("European")
+if french:
+    selected_cuisines.append("French")
+if german:
+    selected_cuisines.append("German")
+if greek:
+    selected_cuisines.append("Greek")
+if indian:
+    selected_cuisines.append("Indian")
+if italian:
+    selected_cuisines.append("Italian")
+if japanese:
+    selected_cuisines.append("Japanese")
+if mexican:
+    selected_cuisines.append("Mexican")
+if thai:
+    selected_cuisines.append("Thai")
+if vietnamese:
+    selected_cuisines.append("Vietnamese")
+
+#Die angeklickten Küchen printen
+
+for cuisine in selected_cuisines:
+    st.write(f"- {cuisine}")
+
 
 if st.button('Show recipes'):
     if zutaten:
