@@ -95,6 +95,10 @@ if vietnamese:
 for cuisine in selected_cuisines:
     st.write(f"- {cuisine}")
 
+# Filteroptionen (https://docs.streamlit.io/library/api-reference/widgets)
+difficulty = st.selectbox("Select Difficulty", ["Any", "Easy", "Medium", "Hard"])
+duration = st.selectbox("Select Cooking Time", ["Any", "0-15 minutes", "15-30 minutes", "30-60 minutes", "60+ minutes"])
+number_ingredients = st.slider("Number of Ingredients", min_value=1, max_value=20, value=5)
 
 if st.button('Show recipes'):
     if zutaten:
