@@ -13,6 +13,10 @@ css_background = """
     background-repeat: no-repeat;
     background-attachment: local;        #beim scrollen fix oder bewegend - local = bewegend
 }
+
+[data-testid="stHeader"] {
+    background: rgba(0,0,0,0);
+}
 </style>
 """
 
