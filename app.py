@@ -29,25 +29,40 @@ st.header("**Tame your kitchen with Pantry Pal**",)
 # Versch. Zutaten des Benutzers als Eingabefeld
 zutaten = st.text_input("Enter what's left in your fridge (separated by comma)")
 
-#popover (https://docs.streamlit.io/library/api-reference/layout/st.popover)
+#popover, um versch. Küchen auszuwählen anhand Liste von Tupeln (https://docs.streamlit.io/library/api-reference/layout/st.popover // GPT_1)
 popover = st.popover("Preffered Cuisine")
-african = popover.checkbox("African", False)
-asian = popover.checkbox("Asian", False)
-american = popover.checkbox("American", False)
-british = popover.checkbox("British", False)
-caribbean = popover.checkbox("Caribbean", False)
-chinese = popover.checkbox("Chinese", False)
-eastern_european = popover.checkbox("Eastern European", False)
-european = popover.checkbox("European", False)
-french = popover.checkbox("French", False)
-german = popover.checkbox("German", False)
-greek = popover.checkbox("Greek", False)
-indian = popover.checkbox("Indian", False)
-italian = popover.checkbox("Italian", False)
-japanese = popover.checkbox("Japanese", False)
-mexican = popover.checkbox("Mexican", False)
-thai = popover.checkbox("Thai", False)
-vietnamese = popover.checkbox("Vietnamese", False)
+cuisines = [
+    ("African", popover.checkbox("African", False)),
+    ("Asian", popover.checkbox("Asian", False)),
+    ("American", popover.checkbox("American", False)),
+    ("British", popover.checkbox("British", False)),
+    ("Caribbean", popover.checkbox("Caribbean", False)),
+    ("Chinese", popover.checkbox("Chinese", False)),
+    ("Eastern European", popover.checkbox("Eastern European", False)),
+    ("European", popover.checkbox("European", False)),
+    ("French", popover.checkbox("French", False)),
+    ("German", popover.checkbox("German", False)),
+    ("Greek", popover.checkbox("Greek", False)),
+    ("Indian", popover.checkbox("Indian", False)),
+    ("Italian", popover.checkbox("Italian", False)),
+    ("Japanese", popover.checkbox("Japanese", False)),
+    ("Mexican", popover.checkbox("Mexican", False)),
+    ("Thai", popover.checkbox("Thai", False)),
+    ("Vietnamese", popover.checkbox("Vietnamese", False))
+]
+
+selected_cuisines = []
+
+for cuisine_name, checkbox_value in cuisines:
+    if checkbox_value:  # Überprüfen, ob die Checkbox aktiviert ist
+        selected_cuisines.append(cuisine_name)
+
+# Printen der ausgewählten Küchen
+if selected_cuisines:
+    st.write("Selected cuisines:", selected_cuisines)
+else:
+    st.write("No cuisine selected.")
+    
 
 if african:
     st.write(":red[This is a red item.]")
