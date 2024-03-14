@@ -117,25 +117,25 @@ if st.button('Show recipes'):
             'apiKey': api_key
         }
 
-        # Hinzufügen der Filteroptionen
-        if difficulty != "Any":
-            parameter['difficulty'] = difficulty.lower()
-        if duration != "Any":
-            if duration == "0-15 minutes":
-                parameter['maxReadyTime'] = 15
-            elif duration == "15-30 minutes":
-                parameter['maxReadyTime'] = 30
-            elif duration == "30-60 minutes":
-                parameter['maxReadyTime'] = 60
-            else:
-                parameter['maxReadyTime'] = 60 
+        # # Hinzufügen der Filteroptionen
+        # if difficulty != "Any":
+        #     parameter['difficulty'] = difficulty.lower()
+        # if duration != "Any":
+        #     if duration == "0-15 minutes":
+        #         parameter['maxReadyTime'] = 15
+        #     elif duration == "15-30 minutes":
+        #         parameter['maxReadyTime'] = 30
+        #     elif duration == "30-60 minutes":
+        #         parameter['maxReadyTime'] = 60
+        #     else:
+        #         parameter['maxReadyTime'] = 60 
 
-        if number_ingredients:
-            parameter['number'] = number_ingredients
+        # if number_ingredients:
+        #     parameter['number'] = number_ingredients
 
-        #API-Abfrage senden
-        response = requests.get(api_url, params=parameter)
-        data = response.json()
+        # #API-Abfrage senden
+        # response = requests.get(api_url, params=parameter)
+        # data = response.json()
 
         #Rezeptvorschläge 
         # st.header("Look what we've found for you")
