@@ -35,6 +35,26 @@ difficulty = st.selectbox("Select Difficulty", ["Any", "Easy", "Medium", "Hard"]
 duration = st.selectbox("Select Cooking Time", ["Any", "0-15 minutes", "15-30 minutes", "30-60 minutes", "60+ minutes"])
 number_ingredients = st.slider("Number of Ingredients", min_value=1, max_value=20, value=5)
 
+# Clickboxen (quelle:https://stackoverflow.com/questions/71242486/how-to-make-n-checkboxes-in-streamlit)
+
+# 1. Create a variable to store todos.
+if not 'todolist' in st.session_state:
+    st.session_state.todolist = []
+
+# 2. Prompt the user in the form
+with st.form(key='form'):
+    todo = st.text_input(label='Enter todo description')
+    is_submit = st.form_submit_button('submit')
+
+# 3. Store todo in todolist when submit button is hit.
+if is_submit:
+    st.session_state.todolist.append(todo)
+    
+# 4. Display the contents of todolist
+with st.expander(label='List of todos', expanded=True):
+    for i, todo_text in enumerate(st.session_state.todolist):
+        st.checkbox(label=f'{todo_text}', key=i)
+
 if st.button('Show recipes'):
     if zutaten:
 
