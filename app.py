@@ -55,12 +55,12 @@ number_ingredients = st.slider("Number of Ingredients", min_value=1, max_value=2
 #     for i, cuisine_text in enumerate(st.session_state.cuisine_list):
 #         st.checkbox(label=f'{cuisine_text}', key=i)
 
-cuisines_api = ['African', 'Asian' 'noch weitere eingeben js']
+cuisines_api = ['African', 'Asian' 'American', 'British', 'Caribbean', 'Chinese', 'Eastern European', 'European', 'French', 'German', 'Greek', 'Indian', 'Italian', 'Japanese', 'Mexican', 'Thai', 'Vietnamese']
 
 if not 'cuisine_list' in st.session_state:
     st.session_state.cuisine_list = [False]*len(cuisines_api)
 
-with st.expander(label='Liste der ausgewählten Küchen', expanded=True):
+with st.expander(label='Select your favorite cuisines', expanded=True):
     for i, cuisine_text in enumerate(cuisines_api):
         st.session_state.cuisine_list[i] = st.checkbox(label=f'{cuisine_text}', key=i, value=st.session_state.cuisine_list[i])
 
