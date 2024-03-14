@@ -30,8 +30,7 @@ st.header("**Tame your kitchen with Pantry Pal**",)
 zutaten = st.text_input("Enter what's left in your fridge (separated by comma)")
 
 #popover, um versch. Küchen auszuwählen anhand Liste von Tupeln (https://docs.streamlit.io/library/api-reference/layout/st.popover // GPT_1)
-with st.container():
-    popover = st.popover("Preffered Cuisine")
+with st.popover("Preffered Cuisines"):
     african = popover.checkbox("African", False)
     asian = popover.checkbox("Asian", False)
     american = popover.checkbox("American", False)
@@ -93,8 +92,8 @@ selected_cuisines = [] #Erstellt Liste für die angeklickten Küchen
 #     selected_cuisines.append("Vietnamese")
 
 #Die angeklickten Küchen printen
-for cuisine in popover.checkboxes:
-    if popover.checkboxes[cuisine]:
+for cuisine in selected_cuisines:
+    if selected_cuisines[cuisine]:
         selected_cuisines.append(cuisine)
 
 for cuisine in selected_cuisines:
