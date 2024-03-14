@@ -31,25 +31,24 @@ zutaten = st.text_input("Enter what's left in your fridge (separated by comma)")
 
 #popover, um versch. Küchen auszuwählen anhand Liste von Tupeln (https://docs.streamlit.io/library/api-reference/layout/st.popover // GPT_1)
 with st.popover("Preffered Cuisines"):
-    african = popover.checkbox("African", False)
-    asian = popover.checkbox("Asian", False)
-    american = popover.checkbox("American", False)
-    british = popover.checkbox("British", False)
-    caribbean = popover.checkbox("Caribbean", False)
-    chinese = popover.checkbox("Chinese", False)
-    eastern_european = popover.checkbox("Eastern European", False)
-    european = popover.checkbox("European", False)
-    french = popover.checkbox("French", False)
-    german = popover.checkbox("German", False)
-    greek = popover.checkbox("Greek", False)
-    indian = popover.checkbox("Indian", False)
-    italian = popover.checkbox("Italian", False)
-    japanese = popover.checkbox("Japanese", False)
-    mexican = popover.checkbox("Mexican", False)
-    thai = popover.checkbox("Thai", False)
-    vietnamese = popover.checkbox("Vietnamese", False)
-
-st.write(":white[You've picked the following cuisines:]")
+    with st.container():
+        african = popover.checkbox("African", False)
+        asian = popover.checkbox("Asian", False)
+        american = popover.checkbox("American", False)
+        british = popover.checkbox("British", False)
+        caribbean = popover.checkbox("Caribbean", False)
+        chinese = popover.checkbox("Chinese", False)
+        eastern_european = popover.checkbox("Eastern European", False)
+        european = popover.checkbox("European", False)
+        french = popover.checkbox("French", False)
+        german = popover.checkbox("German", False)
+        greek = popover.checkbox("Greek", False)
+        indian = popover.checkbox("Indian", False)
+        italian = popover.checkbox("Italian", False)
+        japanese = popover.checkbox("Japanese", False)
+        mexican = popover.checkbox("Mexican", False)
+        thai = popover.checkbox("Thai", False)
+        vietnamese = popover.checkbox("Vietnamese", False)
 
 selected_cuisines = [] #Erstellt Liste für die angeklickten Küchen
 
@@ -92,9 +91,12 @@ selected_cuisines = [] #Erstellt Liste für die angeklickten Küchen
 #     selected_cuisines.append("Vietnamese")
 
 #Die angeklickten Küchen printen
-for cuisine in selected_cuisines:
-    if selected_cuisines[cuisine]:
-        selected_cuisines.append(cuisine)
+# for cuisine in selected_cuisines:
+#     if selected_cuisines[cuisine]:
+#         selected_cuisines.append(cuisine)
+selected_cuisines = st.session_state['selected_cuisines'] if 'selected_cuisines' in st.session_state else []
+
+st.write(":white[You've picked the following cuisines:]")
 
 for cuisine in selected_cuisines:
     st.write(f"- {cuisine}")
