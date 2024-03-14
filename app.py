@@ -149,7 +149,7 @@ if st.button('Show recipes'):
   
 
             #Spoonacular-API für Rezeptinformationen (https://spoonacular.com/food-api/docs#Get-Recipe-Information) / Key ist derselbe
-            api_informations_url = "https://api.spoonacular.com/recipes/{id}/information"
+            api_informations_url = "f"https://api.spoonacular.com/recipes/{recipe['id']}/information""
             
             if 'id' in recipe:  #API prüfen, ob Zubereitungschritte verfügubar 
                 recipe_id = recipe['id']
