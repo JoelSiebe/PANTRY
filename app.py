@@ -138,14 +138,14 @@ if st.button('Show recipes'):
         data = response.json()
 
         #Rezeptvorschläge 
-        st.header("Look what we've found for you")
-        for recipe in data:
-            st.subheader(recipe['title'])
-            st.image(recipe['image'])
-            st.write(f"Used ingredients: {', '.join([ingredient['name'] for ingredient in recipe['usedIngredients']])}")
-            st.write(f"Missing ingredients: {', '.join([ingredient['name'] for ingredient in recipe['missedIngredients']])}")
-            st.write(f"Number of missing ingredients: {recipe['missedIngredientCount']}")
-            st.write(f"Number of used ingredients: {recipe['usedIngredientCount']}")
+        # st.header("Look what we've found for you")
+        # for recipe in data:
+        #     st.subheader(recipe['title'])
+        #     st.image(recipe['image'])
+        #     st.write(f"Used ingredients: {', '.join([ingredient['name'] for ingredient in recipe['usedIngredients']])}")
+        #     st.write(f"Missing ingredients: {', '.join([ingredient['name'] for ingredient in recipe['missedIngredients']])}")
+        #     st.write(f"Number of missing ingredients: {recipe['missedIngredientCount']}")
+        #     st.write(f"Number of used ingredients: {recipe['usedIngredientCount']}")
   
 
             # #Spoonacular-API für Rezeptinformationen (https://spoonacular.com/food-api/docs#Get-Recipe-Information) / Key ist derselbe
