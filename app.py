@@ -35,7 +35,7 @@ difficulty = st.selectbox("Select Difficulty", ["Any", "Easy", "Medium", "Hard"]
 duration = st.selectbox("Select Cooking Time", ["Any", "0-15 minutes", "15-30 minutes", "30-60 minutes", "60+ minutes"])
 number_ingredients = st.slider("Number of Ingredients", min_value=1, max_value=20, value=5)
 
-# Clickboxen (quelle (etw. abgeändert):https://stackoverflow.com/questions/71242486/how-to-make-n-checkboxes-in-streamlit)
+# Clickboxen, die temp. mit session_gate gespeichert werden (quelle (etw. abgeändert):https://stackoverflow.com/questions/71242486/how-to-make-n-checkboxes-in-streamlit)
 cuisines_api = ['African', 'Asian' 'noch weitere eingeben js']
 
 # # 1. Create a variable to store todos.
@@ -55,21 +55,15 @@ cuisines_api = ['African', 'Asian' 'noch weitere eingeben js']
 # with st.expander(label='List of selected cuisines', expanded=True):
 #     for i, cuisine_text in enumerate(st.session_state.cuisine_list):
 #         st.checkbox(label=f'{cuisine_text}', key=i)
-predefined_cuisines = ['Italienisch', 'Chinesisch', 'Japanisch', 'Mexikanisch', 'Indisch']
+
+cuisines_api = ['African', 'Asian' 'noch weitere eingeben js']
 
 if not 'cuisine_list' in st.session_state:
-    st.session_state.cuisine_list = []
-
-with st.form(key='cuisine_form'):
-    cuisine = st.selectbox('Wählen Sie Ihre Lieblingsküchen aus', predefined_cuisines)
-    is_submit = st.form_submit_button('submit')
-
-if is_submit:
-    st.session_state.cuisine_list.append(cuisine)
+    st.session_state.cuisine_list = [False]*len(cuisines_api)
 
 with st.expander(label='Liste der ausgewählten Küchen', expanded=True):
-    for i, cuisine_text in enumerate(st.session_state.cuisine_list):
-        st.checkbox(label=f'{cuisine_text}', key=i)
+    for i, cuisine_text in enumerate(cuisines_api):
+        st.session_state.cuisine_list[i] = st.checkbox(label=f'{cuisine_text}', key=i, value=st.session_state.cuisine_list[i])
 
 
 if st.button('Show recipes'):
