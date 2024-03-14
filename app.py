@@ -52,7 +52,7 @@ if is_submit:
     
 # 4. Display the contents of todolist
 with st.expander(label='List of selected cuisines', expanded=True):
-    for i, cuisine:text in enumerate(st.session_state.cuisine_list):
+    for i, cuisine_text in enumerate(st.session_state.cuisine_list):
         st.checkbox(label=f'{cuisine_text}', key=i)
 
 if st.button('Show recipes'):
