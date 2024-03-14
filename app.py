@@ -35,25 +35,42 @@ difficulty = st.selectbox("Select Difficulty", ["Any", "Easy", "Medium", "Hard"]
 duration = st.selectbox("Select Cooking Time", ["Any", "0-15 minutes", "15-30 minutes", "30-60 minutes", "60+ minutes"])
 number_ingredients = st.slider("Number of Ingredients", min_value=1, max_value=20, value=5)
 
-# Clickboxen (quelle:https://stackoverflow.com/questions/71242486/how-to-make-n-checkboxes-in-streamlit)
+# Clickboxen (quelle (etw. abgeändert):https://stackoverflow.com/questions/71242486/how-to-make-n-checkboxes-in-streamlit)
+cuisines_api = ['African', 'Asian' 'noch weitere eingeben js']
 
-# 1. Create a variable to store todos.
+# # 1. Create a variable to store todos.
+# if not 'cuisine_list' in st.session_state:
+#     st.session_state.cuisine_list = []
+
+# # 2. Prompt the user in the form
+# with st.form(key='cuisine_form'):
+#     cuisine = st.text_input(label='Select your favorite cuisines')
+#     is_submit = st.form_submit_button('submit')
+
+# # 3. Store todo in todolist when submit button is hit.
+# if is_submit:
+#     st.session_state.cuisine_list.append(cuisine)
+    
+# # 4. Display the contents of todolist
+# with st.expander(label='List of selected cuisines', expanded=True):
+#     for i, cuisine_text in enumerate(st.session_state.cuisine_list):
+#         st.checkbox(label=f'{cuisine_text}', key=i)
+predefined_cuisines = ['Italienisch', 'Chinesisch', 'Japanisch', 'Mexikanisch', 'Indisch']
+
 if not 'cuisine_list' in st.session_state:
     st.session_state.cuisine_list = []
 
-# 2. Prompt the user in the form
 with st.form(key='cuisine_form'):
-    cuisine = st.text_input(label='Select your favorite cuisines')
+    cuisine = st.selectbox('Wählen Sie Ihre Lieblingsküchen aus', predefined_cuisines)
     is_submit = st.form_submit_button('submit')
 
-# 3. Store todo in todolist when submit button is hit.
 if is_submit:
     st.session_state.cuisine_list.append(cuisine)
-    
-# 4. Display the contents of todolist
-with st.expander(label='List of selected cuisines', expanded=True):
+
+with st.expander(label='Liste der ausgewählten Küchen', expanded=True):
     for i, cuisine_text in enumerate(st.session_state.cuisine_list):
         st.checkbox(label=f'{cuisine_text}', key=i)
+
 
 if st.button('Show recipes'):
     if zutaten:
