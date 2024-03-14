@@ -38,22 +38,22 @@ number_ingredients = st.slider("Number of Ingredients", min_value=1, max_value=2
 # Clickboxen (quelle:https://stackoverflow.com/questions/71242486/how-to-make-n-checkboxes-in-streamlit)
 
 # 1. Create a variable to store todos.
-if not 'todolist' in st.session_state:
-    st.session_state.todolist = []
+if not 'cuisine_list' in st.session_state:
+    st.session_state.cuisine_list = []
 
 # 2. Prompt the user in the form
-with st.form(key='form'):
-    todo = st.text_input(label='Enter todo description')
+with st.form(key='cuisine_form'):
+    cuisine = st.text_input(label='Select your favorite cuisines')
     is_submit = st.form_submit_button('submit')
 
 # 3. Store todo in todolist when submit button is hit.
 if is_submit:
-    st.session_state.todolist.append(todo)
+    st.session_state.cuisine_list.append(cuisine)
     
 # 4. Display the contents of todolist
-with st.expander(label='List of todos', expanded=True):
-    for i, todo_text in enumerate(st.session_state.todolist):
-        st.checkbox(label=f'{todo_text}', key=i)
+with st.expander(label='List of selected cuisines', expanded=True):
+    for i, cuisine:text in enumerate(st.session_state.cuisine_list):
+        st.checkbox(label=f'{cuisine_text}', key=i)
 
 if st.button('Show recipes'):
     if zutaten:
