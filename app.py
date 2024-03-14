@@ -49,53 +49,53 @@ mexican = popover.checkbox("Mexican", False)
 thai = popover.checkbox("Thai", False)
 vietnamese = popover.checkbox("Vietnamese", False)
 
-# st.write(":white[You've picked the following cuisines:]")
+st.write(":white[You've picked the following cuisines:]")
 
-# selected_cuisines = [] #Erstellt Liste für die angeklickten Küchen
+selected_cuisines = [] #Erstellt Liste für die angeklickten Küchen
 
-#Prüfen, ob angewhält -> wenn ja, zur Liste hinzufügen
+Prüfen, ob angewhält -> wenn ja, zur Liste hinzufügen
  
-# if african:
-#     selected_cuisines.append("African")
-# if asian:
-#     selected_cuisines.append("Asian")
-# if american:
-#     selected_cuisines.append("American")
-# if british:
-#     selected_cuisines.append("British")
-# if caribbean:
-#     selected_cuisines.append("Caribbean")
-# if chinese:
-#     selected_cuisines.append("Chinese")
-# if eastern_european:
-#     selected_cuisines.append("Eastern European")
-# if european:
-#     selected_cuisines.append("European")
-# if french:
-#     selected_cuisines.append("French")
-# if german:
-#     selected_cuisines.append("German")
-# if greek:
-#     selected_cuisines.append("Greek")
-# if indian:
-#     selected_cuisines.append("Indian")
-# if italian:
-#     selected_cuisines.append("Italian")
-# if japanese:
-#     selected_cuisines.append("Japanese")
-# if mexican:
-#     selected_cuisines.append("Mexican")
-# if thai:
-#     selected_cuisines.append("Thai")
-# if vietnamese:
-#     selected_cuisines.append("Vietnamese")
+if african:
+    selected_cuisines.append("African")
+if asian:
+    selected_cuisines.append("Asian")
+if american:
+    selected_cuisines.append("American")
+if british:
+    selected_cuisines.append("British")
+if caribbean:
+    selected_cuisines.append("Caribbean")
+if chinese:
+    selected_cuisines.append("Chinese")
+if eastern_european:
+    selected_cuisines.append("Eastern European")
+if european:
+    selected_cuisines.append("European")
+if french:
+    selected_cuisines.append("French")
+if german:
+    selected_cuisines.append("German")
+if greek:
+    selected_cuisines.append("Greek")
+if indian:
+    selected_cuisines.append("Indian")
+if italian:
+    selected_cuisines.append("Italian")
+if japanese:
+    selected_cuisines.append("Japanese")
+if mexican:
+    selected_cuisines.append("Mexican")
+if thai:
+    selected_cuisines.append("Thai")
+if vietnamese:
+    selected_cuisines.append("Vietnamese")
 
-# #Die angeklickten Küchen printen
+#Die angeklickten Küchen printen
 
-# for cuisine in selected_cuisines:
-#     st.write(f"- {cuisine}")
+for cuisine in selected_cuisines:
+    st.write(f"- {cuisine}")
 
-# #Filteroptionen (https://docs.streamlit.io/library/api-reference/widgets)
+#Filteroptionen (https://docs.streamlit.io/library/api-reference/widgets)
 
 # difficulty = st.selectbox("Select Difficulty", ["Any", "Easy", "Medium", "Hard"])
 # duration = st.selectbox("Select Cooking Time", ["Any", "0-15 minutes", "15-30 minutes", "30-60 minutes", "60+ minutes"])
