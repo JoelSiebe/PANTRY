@@ -2,7 +2,6 @@ import streamlit as st
 import requests
 import numpy as np
 import pandas as pd
-import streamlit_dynamic_filters
 
 # CSS-Stil (https://discuss.streamlit.io/t/upload-background-image/59732 // https://www.w3schools.com/cssref/pr_background-image.php)
 css_background = """   
