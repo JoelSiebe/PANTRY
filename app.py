@@ -26,32 +26,32 @@ st.markdown(css_background, unsafe_allow_html=True) #css_background wird angewen
 st.title("Pantry Pal - Conquering Leftovers, Mastering Meals",)
 st.header("**Tame your kitchen with Pantry Pal**",)
 
-# Versch. Zutaten des Benutzers als Eingabefeld
-zutaten = st.text_input("Enter what's left in your fridge (separated by comma)")
+# # Versch. Zutaten des Benutzers als Eingabefeld
+# zutaten = st.text_input("Enter what's left in your fridge (separated by comma)")
 
-#popover, um versch. Küchen auszuwählen anhand Liste von Tupeln (https://docs.streamlit.io/library/api-reference/layout/st.popover // GPT_1)
-popover = st.popover("Preffered Cuisine")
-african = popover.checkbox("African", False)
-asian = popover.checkbox("Asian", False)
-american = popover.checkbox("American", False)
-british = popover.checkbox("British", False)
-caribbean = popover.checkbox("Caribbean", False)
-chinese = popover.checkbox("Chinese", False)
-eastern_european = popover.checkbox("Eastern European", False)
-european = popover.checkbox("European", False)
-french = popover.checkbox("French", False)
-german = popover.checkbox("German", False)
-greek = popover.checkbox("Greek", False)
-indian = popover.checkbox("Indian", False)
-italian = popover.checkbox("Italian", False)
-japanese = popover.checkbox("Japanese", False)
-mexican = popover.checkbox("Mexican", False)
-thai = popover.checkbox("Thai", False)
-vietnamese = popover.checkbox("Vietnamese", False)
+# #popover, um versch. Küchen auszuwählen anhand Liste von Tupeln (https://docs.streamlit.io/library/api-reference/layout/st.popover // GPT_1)
+# popover = st.popover("Preffered Cuisine")
+# african = popover.checkbox("African", False)
+# asian = popover.checkbox("Asian", False)
+# american = popover.checkbox("American", False)
+# british = popover.checkbox("British", False)
+# caribbean = popover.checkbox("Caribbean", False)
+# chinese = popover.checkbox("Chinese", False)
+# eastern_european = popover.checkbox("Eastern European", False)
+# european = popover.checkbox("European", False)
+# french = popover.checkbox("French", False)
+# german = popover.checkbox("German", False)
+# greek = popover.checkbox("Greek", False)
+# indian = popover.checkbox("Indian", False)
+# italian = popover.checkbox("Italian", False)
+# japanese = popover.checkbox("Japanese", False)
+# mexican = popover.checkbox("Mexican", False)
+# thai = popover.checkbox("Thai", False)
+# vietnamese = popover.checkbox("Vietnamese", False)
 
-st.write(":white[You've picked the following cuisines:]")
+# st.write(":white[You've picked the following cuisines:]")
 
-selected_cuisines = [] #Erstellt Liste für die angeklickten Küchen
+# selected_cuisines = [] #Erstellt Liste für die angeklickten Küchen
 
 #Prüfen, ob angewhält -> wenn ja, zur Liste hinzufügen
  
