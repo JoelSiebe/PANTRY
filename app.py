@@ -36,7 +36,6 @@ duration = st.selectbox("Select Cooking Time", ["Any", "0-15 minutes", "15-30 mi
 number_ingredients = st.slider("Number of Ingredients", min_value=1, max_value=20, value=5)
 
 # Clickboxen, die temp. mit session_gate gespeichert werden (quelle (etw. abgeändert):https://stackoverflow.com/questions/71242486/how-to-make-n-checkboxes-in-streamlit)
-cuisines_api = ['African', 'Asian' 'noch weitere eingeben js']
 
 # # 1. Create a variable to store todos.
 # if not 'cuisine_list' in st.session_state:
