@@ -29,72 +29,6 @@ st.header("**Tame your kitchen with Pantry Pal**",)
 # Versch. Zutaten des Benutzers als Eingabefeld
 zutaten = st.text_input("Enter what's left in your fridge (separated by comma)")
 
-# #popover, um versch. Küchen auszuwählen anhand Liste von Tupeln (https://docs.streamlit.io/library/api-reference/layout/st.popover // GPT_1)
-# popover = st.popover("Preffered Cuisine")
-# african = popover.checkbox("African", False)
-# asian = popover.checkbox("Asian", False)
-# american = popover.checkbox("American", False)
-# british = popover.checkbox("British", False)
-# caribbean = popover.checkbox("Caribbean", False)
-# chinese = popover.checkbox("Chinese", False)
-# eastern_european = popover.checkbox("Eastern European", False)
-# european = popover.checkbox("European", False)
-# french = popover.checkbox("French", False)
-# german = popover.checkbox("German", False)
-# greek = popover.checkbox("Greek", False)
-# indian = popover.checkbox("Indian", False)
-# italian = popover.checkbox("Italian", False)
-# japanese = popover.checkbox("Japanese", False)
-# mexican = popover.checkbox("Mexican", False)
-# thai = popover.checkbox("Thai", False)
-# vietnamese = popover.checkbox("Vietnamese", False)
-
-# st.write(":white[You've picked the following cuisines:]")
-
-# selected_cuisines = [] #Erstellt Liste für die angeklickten Küchen
-
-# #Prüfen, ob angewhält -> wenn ja, zur Liste hinzufügen
- 
-# if african:
-#     selected_cuisines.append("African")
-# if asian:
-#     selected_cuisines.append("Asian")
-# if american:
-#     selected_cuisines.append("American")
-# if british:
-#     selected_cuisines.append("British")
-# if caribbean:
-#     selected_cuisines.append("Caribbean")
-# if chinese:
-#     selected_cuisines.append("Chinese")
-# if eastern_european:
-#     selected_cuisines.append("Eastern European")
-# if european:
-#     selected_cuisines.append("European")
-# if french:
-#     selected_cuisines.append("French")
-# if german:
-#     selected_cuisines.append("German")
-# if greek:
-#     selected_cuisines.append("Greek")
-# if indian:
-#     selected_cuisines.append("Indian")
-# if italian:
-#     selected_cuisines.append("Italian")
-# if japanese:
-#     selected_cuisines.append("Japanese")
-# if mexican:
-#     selected_cuisines.append("Mexican")
-# if thai:
-#     selected_cuisines.append("Thai")
-# if vietnamese:
-#     selected_cuisines.append("Vietnamese")
-
-# #Die angeklickten Küchen printen
-
-# for cuisine in selected_cuisines:
-#     st.write(f"- {cuisine}")
-
 #Filteroptionen (https://docs.streamlit.io/library/api-reference/widgets)
 
 difficulty = st.selectbox("Select Difficulty", ["Any", "Easy", "Medium", "Hard"])
@@ -159,9 +93,9 @@ if st.button('Show recipes'):
 
                 if 'instructions' in instructions_data:
                     st.subheader("Instructions:")
-                    instructions = instructions_data['instructions'].split('\n')  # Split by newline
+                    instructions = instructions_data['instructions'].split('\n')  
                     for step in instructions:
-                        st.write(f"- {step}")  # Display each step
+                        st.write(f"- {step}")  
                 else:
                     st.write("Recipe steps not available.")
 
