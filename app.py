@@ -53,7 +53,7 @@ st.write(":white[You've picked the following cuisines:]")
 
 selected_cuisines = [] #Erstellt Liste für die angeklickten Küchen
 
-Prüfen, ob angewhält -> wenn ja, zur Liste hinzufügen
+#Prüfen, ob angewhält -> wenn ja, zur Liste hinzufügen
  
 if african:
     selected_cuisines.append("African")
