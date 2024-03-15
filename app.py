@@ -57,7 +57,7 @@ with col2:
    st.image("https://i.postimg.cc/jjdqngdr/pexels-pip-pip-12963392.jpg")
 
 with col3:
-   st.header("Or even arabic?")
+   st.header("Or arabic?")
    st.image("https://i.postimg.cc/HxkmjVzW/pexels-nataliya-vaitkevich-6252727.jpg")
 
 # Versch. Zutaten des Benutzers als Eingabefeld
