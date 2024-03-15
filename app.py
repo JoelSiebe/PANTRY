@@ -43,7 +43,7 @@ with col2:
 
 with col3:
    st.header("Or maybe Korean?")
-   st.image("https://i.postimg.cc/jjdqngdr/pexels-pip-pip-12963392.jpg")
+   st.image("https://i.postimg.cc/RZ0FH4BX/pexels-valeria-boltneva-1199957.jpg")
 
 # Zwei Texteingabefelder nebeneinander anzeigen
 with st.form(key='my_form'):
