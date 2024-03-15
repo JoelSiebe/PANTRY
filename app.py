@@ -24,7 +24,22 @@ import pandas as pd
 
 # Titel und Header
 st.title("Pantry Pal - Conquering Leftovers, Mastering Meals",)
+st.divider()
 st.header("**Tame your kitchen with Pantry Pal**",)
+st.divider()
+# Zwei Texteingabefelder nebeneinander anzeigen
+with st.form(key='my_form'):
+    col1, col2 = st.columns(2)
+    with col1:
+        first_name = st.text_input(label='Vorname')
+    with col2:
+        last_name = st.text_input(label='Nachname')
+
+    submit_button = st.form_submit_button(label='Senden')
+
+# Zeige den vollständigen Satz nach dem Absenden des Formulars
+if submit_button:
+    st.write(f'Hallo, {first_name} {last_name}!')
 
 # Versch. Zutaten des Benutzers als Eingabefeld
 zutaten = st.text_input("Enter what's left in your fridge (separated by comma)")
