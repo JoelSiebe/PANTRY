@@ -24,6 +24,8 @@ import pandas as pd
 # st.markdown(css_background, unsafe_allow_html=True) #css_background wird angewendet, unsafe für Anzeige von HTML-Inhalten
 
 # Titel und Header
+st.markdown("<h1 style='text-align: center; color: grey;'>Pantry Pal</h1>", unsafe_allow_html=True)
+
 st.title("Pantry Pal - Conquering Leftovers, Mastering Meals",)
 st.divider()
 st.header("**Tame your kitchen with Pantry Pal**",)
