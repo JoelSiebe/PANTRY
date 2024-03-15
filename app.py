@@ -29,8 +29,8 @@ st.markdown("<h1 style='text-align: center; color: grey;'>Pantry Pal</h1>", unsa
 st.markdown("<h2 style='text-align: center; color: grey;'>Conquering Leftovers, Mastering Meals </h2>", unsafe_allow_html=True)
 st.title("Tame your kitchen with Pantry Pal",)
 st.divider()
-st.header("Where Leftovers Meets Deliciousness!")
-st.divider()
+# st.header("Where Leftovers Meets Deliciousness!")
+# st.divider()
 
 # Bilder in 3 Kolonnen anzeigen, quelle: https://docs.streamlit.io/library/api-reference/layout/st.columns)
 
