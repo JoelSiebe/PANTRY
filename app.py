@@ -1,7 +1,6 @@
 import streamlit as st
 import requests
-import numpy as np
-import pandas as pd
+import matplotlib.pyplot as plt
 
 
 # Übersicht über die verwendeten Namen:
@@ -109,12 +108,12 @@ with st.form(key='my_form'):
 # Rezepte anzeigen, wenn die Schaltfläche "Show recipes" geklickt wird
 if submit_button:
     if ingredients:
-        recipes = get_recipes(ingredients,cuisine, difficulty, duration, number_ingredients)
+        recipes = get_recipes(ingredients, cuisine, difficulty, duration, number_ingredients)
         st.write("Recipes:")
         for recipe in recipes:
             st.write(recipe['title'])
 
-#Rezeptvorschläge 
+        # Rezeptvorschläge
         st.header("Look what we've found for you")
         for recipe in recipes:
             st.subheader(recipe['title'])
@@ -123,28 +122,46 @@ if submit_button:
             st.write(f"Missing ingredients: {', '.join([ingredient['name'] for ingredient in recipe['missedIngredients']])}")
             st.write(f"Number of missing ingredients: {recipe['missedIngredientCount']}")
             st.write(f"Number of used ingredients: {recipe['usedIngredientCount']}")
-  
 
-    #Spoonacular-API für Rezeptinformationen (https://spoonacular.com/food-api/docs#Get-Recipe-Information) / Key ist derselbe
-    api_informations_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
-    instructions_response = requests.get(api_informations_url, params={'apiKey': api_key})
-    instructions_data = instructions_response.json()
+            # Spoonacular-API für Rezeptinformationen (https://spoonacular.com/food-api/docs#Get-Recipe-Information) / Key ist derselbe
+            api_informations_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
+            instructions_response = requests.get(api_informations_url, params={'apiKey': api_key})
+            instructions_data = instructions_response.json()
 
-    if 'instructions' in instructions_data:
-        instructions = instructions_data['instructions']
-        if instructions:
-            st.subheader("Instructions:")
-            # Prüft, ob Rezeptschritte vorliegen
-            if isinstance(instructions, list):
-                for i, step in enumerate(instructions, start=1):
-                    st.write(f"{i}. {step}")
+            if 'instructions' in instructions_data:
+                instructions = instructions_data['instructions']
+                if instructions:
+                    st.subheader("Instructions:")
+                    # Prüft, ob Rezeptschritte vorliegen
+                    if isinstance(instructions, list):
+                        for i, step in enumerate(instructions, start=1):
+                            st.write(f"{i}. {step}")
+                    else:
+                        st.write(instructions)  # Wenn die Anweisungen nicht als Liste vorliegen, einfach anzeigen
+                else:
+                    st.write("No instructions available.")
             else:
-                st.write(instructions)  # Wenn die Anweisungen nicht als Liste vorliegen, einfach anzeigen
-        else:
-            st.write("No instructions available.")
-    else:
-        st.write("Recipe steps not available.")
+                st.write("Recipe steps not available.")
 
+            # Spoonacular-API für Nutritions-Pie-chart (https://spoonacular.com/food-api/docs#Get-Recipe-Information) / Key ist derselbe
+            api_nutrition_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/nutritionWidget.json"
+            nutrition_response = requests.get(api_nutrition_url, params={'apiKey': api_key})
+            nutrition_data = nutrition_response.json()
+
+            if 'calories' in nutrition_data:
+                nutrition = nutrition_data['calories']
+                st.subheader("Nutrition Information:")
+                st.write(f"Calories: {nutrition['value']} {nutrition['unit']}")
+
+                # Pie-Chart für Nutrition
+                labels = list(nutrition_data['nutrition'].keys())
+                sizes = list(nutrition_data['nutrition'].values())
+
+                fig, ax = plt.subplots()
+                ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
+                ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+                st.write("Nutrition Chart:")
+                st.pyplot(fig)
 
 
 # Fußzeile der Anwendung
