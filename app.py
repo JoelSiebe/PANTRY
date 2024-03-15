@@ -57,9 +57,9 @@ zutaten = st.text_input("Enter what's left in your fridge (separated by comma)")
 
 #Filteroptionen (https://docs.streamlit.io/library/api-reference/widgets)
 
-difficulty = st.selectbox("Select Difficulty", ["Any", "Easy", "Medium", "Hard"])
-duration = st.selectbox("Select Cooking Time", ["Any", "0-15 minutes", "15-30 minutes", "30-60 minutes", "60+ minutes"])
-number_ingredients = st.slider("Number of Ingredients", min_value=1, max_value=20, value=5)
+# difficulty = st.selectbox("Select Difficulty", ["Any", "Easy", "Medium", "Hard"])
+# duration = st.selectbox("Select Cooking Time", ["Any", "0-15 minutes", "15-30 minutes", "30-60 minutes", "60+ minutes"])
+# number_ingredients = st.slider("Number of Ingredients", min_value=1, max_value=20, value=5)
 
 # Clickboxen, die temp. mit session_gate gespeichert werden (quelle (etw. abgeändert):https://stackoverflow.com/questions/71242486/how-to-make-n-checkboxes-in-streamlit)
 
