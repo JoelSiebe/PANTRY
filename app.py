@@ -36,7 +36,7 @@ col1, col2, col3= st.columns(3)
 
 with col1:
    st.header("Is it Italian?")
-   st.image("https://i.postimg.cc/xjGG987N/pexels-sebastian-coman-photography-3590401.jpg")
+   st.image("https://i.postimg.cc/44rnqrp3/pexels-lisa-fotios-1373915.jpgg")
 
 with col2:
    st.header("  ")
