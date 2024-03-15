@@ -21,7 +21,7 @@ import pandas as pd
 # </style>
 # """
 
-st.markdown(css_background, unsafe_allow_html=True) #css_background wird angewendet, unsafe für Anzeige von HTML-Inhalten
+# st.markdown(css_background, unsafe_allow_html=True) #css_background wird angewendet, unsafe für Anzeige von HTML-Inhalten
 
 # Titel und Header
 st.title("Pantry Pal - Conquering Leftovers, Mastering Meals",)
