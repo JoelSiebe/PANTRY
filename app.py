@@ -121,6 +121,7 @@ with st.form(key='my_form'):
     col1, col2 = st.columns(2)
     with col1:
         zutaten = st.text_input(label='Zutaten')
+        cuisine= st.selectbox(cuisines_api)
     with col2:
         difficulty = st.selectbox('Schwierigkeitsgrad', ['Any', 'Easy', 'Medium', 'Hard'])
         duration = st.selectbox('Dauer', ['Any', '0-15 minutes', '15-30 minutes', '30-60 minutes', '60+ minutes'])
