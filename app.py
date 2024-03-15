@@ -8,7 +8,7 @@ css_background = """
 <style>
 [data-testid="stAppViewContainer"] > .main {
     # background-image: url("https://i.postimg.cc/cJtrkLQw/pexels-mike-murray-5701888.jpg");
-    background-image: url("https://i.postimg.cc/3NDwcRdB/pexels-pixabay-207253.jpg");
+    background-image: url("https://i.postimg.cc/prztbnxs/pexels-brett-sayles-6871608.jpg");
     background-size: cover;                 #grösse des hintergrundbilds, cover = ganzer container
     background-position: center center;
     background-repeat: no-repeat;
