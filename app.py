@@ -53,7 +53,7 @@ with col1:
    st.image("https://i.postimg.cc/xjGG987N/pexels-sebastian-coman-photography-3590401.jpg")
 
 with col2:
-   st.header("Or maybe Korean today?")
+   st.header("Or maybe Korean?")
    st.image("https://i.postimg.cc/jjdqngdr/pexels-pip-pip-12963392.jpg")
 
 
