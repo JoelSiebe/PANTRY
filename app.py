@@ -49,8 +49,8 @@ col1, col2, col3 = st.columns(3)
 st.write("Where Leftovers Meets Deliciousness!")
 
 with col1:
-   st.header("A cat")
-   st.image("https://www.pexels.com/photo/a-flatlay-of-tteokbokki-in-a-bowl-12963392/")
+   st.header("Is it Italian?")
+   st.image("https://i.postimg.cc/xjGG987N/pexels-sebastian-coman-photography-3590401.jpg")
 
 with col2:
    st.header("A dog")
