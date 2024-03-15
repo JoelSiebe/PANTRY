@@ -4,22 +4,22 @@ import numpy as np
 import pandas as pd
 
 # #CSS-Stil (https://discuss.streamlit.io/t/upload-background-image/59732 // https://www.w3schools.com/cssref/pr_background-image.php)
-css_background = """   
-<style>
-[data-testid="stAppViewContainer"] > .main {
-    # background-image: url("https://i.postimg.cc/cJtrkLQw/pexels-mike-murray-5701888.jpg");
-    background-image: url("https://i.postimg.cc/prztbnxs/pexels-brett-sayles-6871608.jpg");
-    background-size: cover;                 #grösse des hintergrundbilds, cover = ganzer container
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-attachment: local;        #beim scrollen fix oder bewegend - local = bewegend
-}
+# css_background = """   
+# <style>
+# [data-testid="stAppViewContainer"] > .main {
+#     # background-image: url("https://i.postimg.cc/cJtrkLQw/pexels-mike-murray-5701888.jpg");
+#     background-image: url("https://i.postimg.cc/prztbnxs/pexels-brett-sayles-6871608.jpg");
+#     background-size: cover;                 #grösse des hintergrundbilds, cover = ganzer container
+#     background-position: center center;
+#     background-repeat: no-repeat;
+#     background-attachment: local;        #beim scrollen fix oder bewegend - local = bewegend
+# }
 
-[data-testid="stHeader"] {
-    background: rgba(181, 179, 179);
-}
-</style>
-"""
+# [data-testid="stHeader"] {
+#     background: rgba(181, 179, 179);
+# }
+# </style>
+# """
 
 st.markdown(css_background, unsafe_allow_html=True) #css_background wird angewendet, unsafe für Anzeige von HTML-Inhalten
 
