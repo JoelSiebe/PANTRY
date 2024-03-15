@@ -23,7 +23,8 @@ import pandas as pd
 # st.markdown(css_background, unsafe_allow_html=True) #css_background wird angewendet, unsafe für Anzeige von HTML-Inhalten
 
 # Titel und Header
-st.title("Pantry Pal - Conquering Leftovers, Mastering Meals",)
+st.title("Pantry Pal;",)
+st.title("Conquering Leftovers, Mastering Meals",)
 st.divider()
 st.header("**Tame your kitchen with Pantry Pal**",)
 st.divider()
@@ -42,12 +43,14 @@ with st.form(key='my_form'):
 if submit_button:
     st.write(f'Hallo, {first_name} {last_name}!')
 
-
+# Bilder in 3 Kolonnen anzeigen, quelle: https://docs.streamlit.io/library/api-reference/layout/st.columns)
 col1, col2, col3 = st.columns(3)
+
+st.write("Where Leftovers Meets Deliciousness!")
 
 with col1:
    st.header("A cat")
-   st.image("https://static.streamlit.io/examples/cat.jpg")
+   st.image("https://www.pexels.com/photo/a-flatlay-of-tteokbokki-in-a-bowl-12963392/")
 
 with col2:
    st.header("A dog")
