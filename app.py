@@ -126,10 +126,8 @@ def get_recipes(zutaten, difficulty, duration, number_ingredients):
 
 # Zwei Texteingabefelder nebeneinander anzeigen
 with st.form(key='my_form'):
-    col1, col2 = st.columns(2)
+    col1 = st.columns(1)
     with col1:
-        zutaten = st.text_input(label='Zutaten')
-    with col2:
         difficulty = st.selectbox('Schwierigkeitsgrad', ['Any', 'Easy', 'Medium', 'Hard'])
         duration = st.selectbox('Dauer', ['Any', '0-15 minutes', '15-30 minutes', '30-60 minutes', '60+ minutes'])
         number_ingredients = st.number_input('Anzahl der Zutaten', min_value=1, max_value=20, value=5)
