@@ -51,21 +51,6 @@ st.header("How does it goes?")
 st.header("Firstly, enter what's left in your fride. Selcect any filters if needed.")
 st.title("Then let the magic begin")
 
-# Zwei Texteingabefelder nebeneinander anzeigen
-with st.form(key='my_form'):
-    col1, col2 = st.columns(2)
-    with col1:
-        first_name = st.text_input(label='Vorname')
-    with col2:
-        last_name = st.text_input(label='Nachname')
-
-    submit_button = st.form_submit_button(label='Senden')
-
-
-# Zeige den vollständigen Satz nach dem Absenden des Formulars
-if submit_button:
-    st.write(f'Hallo, {first_name} {last_name}!')
-
 
 # Versch. Zutaten des Benutzers als Eingabefeld
 zutaten = st.text_input("Enter what's left in your fridge (separated by comma)")
@@ -105,38 +90,59 @@ with st.expander(label='Select your favorite cuisines', expanded=True):
     for i, cuisine_text in enumerate(cuisines_api):
         st.session_state.cuisine_list[i] = st.checkbox(label=f'{cuisine_text}', key=i, value=st.session_state.cuisine_list[i])
 
+# Spoonacular API-URL
+api_url = "https://api.spoonacular.com/recipes/findByIngredients"
+#API-Schlüssel (noch schauen, wie man das in einer anderen Datei macht)
+api_key = "06491aabe3d2435b8b21a749de46b765"
 
-if st.button('Show recipes'):
+# Funktion zum Abrufen von Rezepten
+def get_recipes(zutaten, difficulty, duration, number_ingredients):
+    parameter = {
+        'ingredients': zutaten,
+        'number': 5, #Anz. angezeigter Rezepte
+        'apiKey': api_key
+    }
+
+    # Hinzufügen der Filteroptionen
+    if difficulty != "Any":
+        parameter['difficulty'] = difficulty.lower()
+    if duration != "Any":
+        if duration == "0-15 minutes":
+            parameter['maxReadyTime'] = 15
+        elif duration == "15-30 minutes":
+            parameter['maxReadyTime'] = 30
+        elif duration == "30-60 minutes":
+            parameter['maxReadyTime'] = 60
+        else:
+            parameter['maxReadyTime'] = 60 
+
+    if number_ingredients:
+        parameter['number'] = number_ingredients
+
+    #API-Abfrage senden
+    response = requests.get(api_url, params=parameter)
+    data = response.json()
+    return data
+
+# Zwei Texteingabefelder nebeneinander anzeigen
+with st.form(key='my_form'):
+    col1, col2 = st.columns(2)
+    with col1:
+        zutaten = st.text_input(label='Zutaten')
+    with col2:
+        difficulty = st.selectbox('Schwierigkeitsgrad', ['Any', 'Easy', 'Medium', 'Hard'])
+        duration = st.selectbox('Dauer', ['Any', '0-15 minutes', '15-30 minutes', '30-60 minutes', '60+ minutes'])
+        number_ingredients = st.number_input('Anzahl der Zutaten', min_value=1, max_value=20, value=5)
+
+    submit_button = st.form_submit_button(label='Show recipes')
+
+# Rezepte anzeigen, wenn die Schaltfläche "Show recipes" geklickt wird
+if submit_button:
     if zutaten:
-
-        # Spoonacular API-URL
-        api_url = "https://api.spoonacular.com/recipes/findByIngredients"
-
-        #API-Schlüssel (noch schauen, wie man das in einer anderen Datei macht)
-        api_key = "06491aabe3d2435b8b21a749de46b765"
-
-        #Datenbankabfrage (länder hinzufügen -> ?)
-        parameter = {
-            'ingredients': zutaten,
-            'number': 5, #Anz. angezeigter Rezepte
-            'apiKey': api_key
-        }
-
-        # Hinzufügen der Filteroptionen
-        if difficulty != "Any":
-            parameter['difficulty'] = difficulty.lower()
-        if duration != "Any":
-            if duration == "0-15 minutes":
-                parameter['maxReadyTime'] = 15
-            elif duration == "15-30 minutes":
-                parameter['maxReadyTime'] = 30
-            elif duration == "30-60 minutes":
-                parameter['maxReadyTime'] = 60
-            else:
-                parameter['maxReadyTime'] = 60 
-
-        if number_ingredients:
-            parameter['number'] = number_ingredients
+        recipes = get_recipes(zutaten, difficulty, duration, number_ingredients)
+        st.write("Recipes:")
+        for recipe in recipes:
+            st.write(recipe['title'])
 
         #API-Abfrage senden
         response = requests.get(api_url, params=parameter)
