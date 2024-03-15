@@ -120,7 +120,7 @@ def get_recipes(zutaten, difficulty, duration, number_ingredients):
 with st.form(key='my_form'):
     col1, col2 = st.columns(2)
     with col1:
-        zutaten = st.text_input(label='Zutaten')
+        ingredients = st.text_input(label='Ingredients')
         cuisine= st.selectbox('Cuisine', ['Any', 'African', 'Asian', 'American', 'Chinese', 'Eastern European', 'Greek', 'Indian', 'Italian', 'Japanese', 'Mexican', 'Thai', 'Vietnamese'])
     with col2:
         difficulty = st.selectbox('Difficulty Level', ['Any', 'Easy', 'Medium', 'Hard'])
