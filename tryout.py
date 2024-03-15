@@ -1,6 +1,8 @@
 import streamlit as st
 import requests
-import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
 
 # Übersicht über die verwendeten Namen:
 
@@ -29,7 +31,7 @@ import matplotlib.pyplot as plt
 # Quelle für Header: https://stackoverflow.com/questions/70932538/how-to-center-the-title-and-an-image-in-streamlit
 st.markdown("<h1 style='text-align: center; color: grey;'>Pantry Pal</h1>", unsafe_allow_html=True)
 st.markdown("<h2 style='text-align: center; color: grey;'>Conquering Leftovers, Mastering Meals </h2>", unsafe_allow_html=True)
-st.title("Tame your kitchen with Pantry Pal")
+st.title("Tame your kitchen with Pantry Pal",)
 st.divider()
 
 # Bilder in 3 Kolonnen anzeigen, quelle: https://docs.streamlit.io/library/api-reference/layout/st.columns)
@@ -122,7 +124,8 @@ if submit_button:
             st.write(f"Number of missing ingredients: {recipe['missedIngredientCount']}")
             st.write(f"Number of used ingredients: {recipe['usedIngredientCount']}")
   
-     #Spoonacular-API für Rezeptinformationen (https://spoonacular.com/food-api/docs#Get-Recipe-Information) / Key ist derselbe
+
+    #Spoonacular-API für Rezeptinformationen (https://spoonacular.com/food-api/docs#Get-Recipe-Information) / Key ist derselbe
     api_informations_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
     instructions_response = requests.get(api_informations_url, params={'apiKey': api_key})
     instructions_data = instructions_response.json()
@@ -142,25 +145,7 @@ if submit_button:
     else:
         st.write("Recipe steps not available.")
 
- # Spoonacular-API für Nutritions-Pie-chart (https://spoonacular.com/food-api/docs#Get-Recipe-Information) / Key ist derselbe
-            api_nutrition_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/nutritionWidget.json"
-            nutrition_response = requests.get(api_nutrition_url, params={'apiKey': api_key})
-            nutrition_data = nutrition_response.json()
 
-            if 'calories' in nutrition_data:
-                nutrition = nutrition_data['calories']
-                st.subheader("Nutrition Information:")
-                st.write(f"Calories: {nutrition['value']} {nutrition['unit']}")
-
-                # Pie-Chart für Nutrition
-                labels = list(nutrition_data['nutrition'].keys())
-                sizes = list(nutrition_data['nutrition'].values())
-
-                fig, ax = plt.subplots()
-                ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
-                ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-                st.write("Nutrition Chart:")
-                st.pyplot(fig)
 
 # Fußzeile der Anwendung
 st.markdown("---")
