@@ -27,11 +27,9 @@ import pandas as pd
 # Quelle für Header: https://stackoverflow.com/questions/70932538/how-to-center-the-title-and-an-image-in-streamlit
 st.markdown("<h1 style='text-align: center; color: grey;'>Pantry Pal</h1>", unsafe_allow_html=True)
 st.markdown("<h2 style='text-align: center; color: grey;'>Conquering Leftovers, Mastering Meals </h2>", unsafe_allow_html=True)
-st.title("Pantry Pal - Conquering Leftovers, Mastering Meals",)
+st.title("Tame your kitchen with Pantry Pal",)
 st.divider()
-st.header("**Tame your kitchen with Pantry Pal**",)
-
-st.write("Where Leftovers Meets Deliciousness!")
+st.header("Where Leftovers Meets Deliciousness!")
 st.divider()
 
 # Bilder in 3 Kolonnen anzeigen, quelle: https://docs.streamlit.io/library/api-reference/layout/st.columns)
