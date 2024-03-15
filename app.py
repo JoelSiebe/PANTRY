@@ -53,12 +53,12 @@ with col1:
    st.image("https://i.postimg.cc/xjGG987N/pexels-sebastian-coman-photography-3590401.jpg")
 
 with col2:
-   st.header("A dog")
-   st.image("https://static.streamlit.io/examples/dog.jpg")
+   st.header("Korean?")
+   st.image("https://i.postimg.cc/jjdqngdr/pexels-pip-pip-12963392.jpg")
 
 with col3:
-   st.header("An owl")
-   st.image("https://static.streamlit.io/examples/owl.jpg")
+   st.header("Or even arabic?")
+   st.image("https://i.postimg.cc/HxkmjVzW/pexels-nataliya-vaitkevich-6252727.jpg")
 
 # Versch. Zutaten des Benutzers als Eingabefeld
 zutaten = st.text_input("Enter what's left in your fridge (separated by comma)")
