@@ -127,21 +127,6 @@ if submit_button:
     instructions_response = requests.get(api_informations_url, params={'apiKey': api_key})
     instructions_data = instructions_response.json()
 
-     if 'calories' in nutrition_data:
-                nutrition = nutrition_data['calories']
-                st.subheader("Nutrition Information:")
-                st.write(f"Calories: {nutrition['value']} {nutrition['unit']}")
-
-                # Pie-Chart für Nutrition
-                labels = list(nutrition_data['nutrition'].keys())
-                sizes = list(nutrition_data['nutrition'].values())
-
-                fig, ax = plt.subplots()
-                ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
-                ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-                st.write("Nutrition Chart:")
-                st.pyplot(fig)
-                
     if 'instructions' in instructions_data:
         instructions = instructions_data['instructions']
         if instructions:
@@ -157,7 +142,25 @@ if submit_button:
     else:
         st.write("Recipe steps not available.")
 
+ # Spoonacular-API für Nutritions-Pie-chart (https://spoonacular.com/food-api/docs#Get-Recipe-Information) / Key ist derselbe
+            api_nutrition_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/nutritionWidget.json"
+            nutrition_response = requests.get(api_nutrition_url, params={'apiKey': api_key})
+            nutrition_data = nutrition_response.json()
 
+            if 'calories' in nutrition_data:
+                nutrition = nutrition_data['calories']
+                st.subheader("Nutrition Information:")
+                st.write(f"Calories: {nutrition['value']} {nutrition['unit']}")
+
+                # Pie-Chart für Nutrition
+                labels = list(nutrition_data['nutrition'].keys())
+                sizes = list(nutrition_data['nutrition'].values())
+
+                fig, ax = plt.subplots()
+                ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
+                ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+                st.write("Nutrition Chart:")
+                st.pyplot(fig)
 
 # Fußzeile der Anwendung
 st.markdown("---")
