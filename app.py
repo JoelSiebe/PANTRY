@@ -145,8 +145,9 @@ if submit_button:
 
         #Rezeptvorschläge 
         st.header("Look what we've found for you")
-        for recipe in data:
+        for recipe in recipes:
             st.subheader(recipe['title'])
+            st.image(recipe['image'])
             st.image(recipe['image'])
             st.write(f"Used ingredients: {', '.join([ingredient['name'] for ingredient in recipe['usedIngredients']])}")
             st.write(f"Missing ingredients: {', '.join([ingredient['name'] for ingredient in recipe['missedIngredients']])}")
