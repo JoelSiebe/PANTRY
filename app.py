@@ -1,6 +1,6 @@
 import streamlit as st
 import requests
-import matplotlib.pyplot as plt
+import matplotlib as plt
 
 
 # Übersicht über die verwendeten Namen:
