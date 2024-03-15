@@ -47,6 +47,9 @@ with col2:
 #    st.header("Or maybe Korean?")
    st.image("https://i.postimg.cc/RZ0FH4BX/pexels-valeria-boltneva-1199957.jpg")
 
+st.header("How does it goes?") st.header("Firstly, enter what's left in your fride. Selcect any filters if needed.")
+st.title("Then let the magic begin")
+
 # Zwei Texteingabefelder nebeneinander anzeigen
 with st.form(key='my_form'):
     col1, col2 = st.columns(2)
