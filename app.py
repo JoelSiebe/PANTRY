@@ -23,11 +23,23 @@ import pandas as pd
 # st.markdown(css_background, unsafe_allow_html=True) #css_background wird angewendet, unsafe für Anzeige von HTML-Inhalten
 
 # Titel und Header
-st.title("Pantry Pal;",)
-st.title("Conquering Leftovers, Mastering Meals",)
+st.title("Pantry Pal - Conquering Leftovers, Mastering Meals",)
 st.divider()
 st.header("**Tame your kitchen with Pantry Pal**",)
+st.header("****Where Leftovers Meets Deliciousness!****")
 st.divider()
+
+# Bilder in 3 Kolonnen anzeigen, quelle: https://docs.streamlit.io/library/api-reference/layout/st.columns)
+col1, col2= st.columns(2)
+
+with col1:
+   st.header("Is it Italian?")
+   st.image("https://i.postimg.cc/xjGG987N/pexels-sebastian-coman-photography-3590401.jpg")
+
+with col2:
+   st.header("Or maybe Korean?")
+   st.image("https://i.postimg.cc/jjdqngdr/pexels-pip-pip-12963392.jpg")
+
 # Zwei Texteingabefelder nebeneinander anzeigen
 with st.form(key='my_form'):
     col1, col2 = st.columns(2)
@@ -42,19 +54,6 @@ with st.form(key='my_form'):
 # Zeige den vollständigen Satz nach dem Absenden des Formulars
 if submit_button:
     st.write(f'Hallo, {first_name} {last_name}!')
-
-# Bilder in 3 Kolonnen anzeigen, quelle: https://docs.streamlit.io/library/api-reference/layout/st.columns)
-col1, col2= st.columns(2)
-
-st.write("Where Leftovers Meets Deliciousness!")
-
-with col1:
-   st.header("Is it Italian?")
-   st.image("https://i.postimg.cc/xjGG987N/pexels-sebastian-coman-photography-3590401.jpg")
-
-with col2:
-   st.header("Or maybe Korean?")
-   st.image("https://i.postimg.cc/jjdqngdr/pexels-pip-pip-12963392.jpg")
 
 
 # Versch. Zutaten des Benutzers als Eingabefeld
