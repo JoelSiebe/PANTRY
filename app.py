@@ -73,14 +73,14 @@ st.title("Then let the magic begin")
 #     for i, cuisine_text in enumerate(st.session_state.cuisine_list):
 #         st.checkbox(label=f'{cuisine_text}', key=i)
 
-cuisines_api = ['African', 'Asian' 'American', 'British', 'Caribbean', 'Chinese', 'Eastern European', 'European', 'French', 'German', 'Greek', 'Indian', 'Italian', 'Japanese', 'Mexican', 'Thai', 'Vietnamese',]
+# cuisines_api = ['African', 'Asian' 'American', 'British', 'Caribbean', 'Chinese', 'Eastern European', 'European', 'French', 'German', 'Greek', 'Indian', 'Italian', 'Japanese', 'Mexican', 'Thai', 'Vietnamese',]
 
-if not 'cuisine_list' in st.session_state:
-    st.session_state.cuisine_list = [False]*len(cuisines_api)
+# if not 'cuisine_list' in st.session_state:
+#     st.session_state.cuisine_list = [False]*len(cuisines_api)
 
-with st.expander(label='Select your favorite cuisines', expanded=True):
-    for i, cuisine_text in enumerate(cuisines_api):
-        st.session_state.cuisine_list[i] = st.checkbox(label=f'{cuisine_text}', key=i, value=st.session_state.cuisine_list[i])
+# with st.expander(label='Select your favorite cuisines', expanded=True):
+#     for i, cuisine_text in enumerate(cuisines_api):
+#         st.session_state.cuisine_list[i] = st.checkbox(label=f'{cuisine_text}', key=i, value=st.session_state.cuisine_list[i])
 
 # Spoonacular API-URL
 api_url = "https://api.spoonacular.com/recipes/findByIngredients"
