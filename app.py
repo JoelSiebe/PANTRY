@@ -121,11 +121,11 @@ with st.form(key='my_form'):
     col1, col2 = st.columns(2)
     with col1:
         zutaten = st.text_input(label='Zutaten')
-        cuisine= st.selectbox('Küche', ['African', 'Asian', 'American', 'Chinese', 'Eastern European', 'Greek', 'Indian', 'Italian', 'Japanese', 'Mexican', 'Thai', 'Vietnamese'])
+        cuisine= st.selectbox('Cuisine', ['Any', 'African', 'Asian', 'American', 'Chinese', 'Eastern European', 'Greek', 'Indian', 'Italian', 'Japanese', 'Mexican', 'Thai', 'Vietnamese'])
     with col2:
-        difficulty = st.selectbox('Schwierigkeitsgrad', ['Any', 'Easy', 'Medium', 'Hard'])
-        duration = st.selectbox('Dauer', ['Any', '0-15 minutes', '15-30 minutes', '30-60 minutes', '60+ minutes'])
-        number_ingredients = st.number_input('Anzahl der Zutaten', min_value=1, max_value=20, value=5)
+        difficulty = st.selectbox('Difficulty Level', ['Any', 'Easy', 'Medium', 'Hard'])
+        duration = st.selectbox('Duration', ['Any', '0-15 minutes', '15-30 minutes', '30-60 minutes', '60+ minutes'])
+        number_ingredients = st.number_input('Number of ingredients', min_value=1, max_value=20, value=5)
 
     submit_button = st.form_submit_button(label='Show recipes')
 
