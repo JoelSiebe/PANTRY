@@ -44,7 +44,7 @@ if submit_button:
     st.write(f'Hallo, {first_name} {last_name}!')
 
 # Bilder in 3 Kolonnen anzeigen, quelle: https://docs.streamlit.io/library/api-reference/layout/st.columns)
-col1, col2, col3 = st.columns(3)
+col1, col2= st.columns(2)
 
 st.write("Where Leftovers Meets Deliciousness!")
 
@@ -53,12 +53,9 @@ with col1:
    st.image("https://i.postimg.cc/xjGG987N/pexels-sebastian-coman-photography-3590401.jpg")
 
 with col2:
-   st.header("Korean?")
+   st.header("Or maybe Korean today?")
    st.image("https://i.postimg.cc/jjdqngdr/pexels-pip-pip-12963392.jpg")
 
-with col3:
-   st.header("Or arabic?")
-   st.image("https://i.postimg.cc/HnWFBKRp/pexels-dapur-melodi-1109197.jpg")
 
 # Versch. Zutaten des Benutzers als Eingabefeld
 zutaten = st.text_input("Enter what's left in your fridge (separated by comma)")
