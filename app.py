@@ -26,7 +26,21 @@ import pandas as pd
 st.title("Pantry Pal - Conquering Leftovers, Mastering Meals",)
 st.divider()
 st.header("**Tame your kitchen with Pantry Pal**",)
-st.write("****Where Leftovers Meets Deliciousness!****")
+
+#Markdown, um Schriftart anpzupassen. Quelle: https://discuss.streamlit.io/t/change-font-size-in-st-write/7606
+
+st.set_page_config(layout="wide")
+
+st.markdown("""
+<style>
+.big-font {
+    font-size:300px !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown('<p class="big-font">Hello World !!</p>', unsafe_allow_html=True)
+st.write("Where Leftovers Meets Deliciousness!")
 st.divider()
 
 # Bilder in 3 Kolonnen anzeigen, quelle: https://docs.streamlit.io/library/api-reference/layout/st.columns)
