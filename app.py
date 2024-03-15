@@ -131,15 +131,15 @@ with st.form(key='my_form'):
 
 # Rezepte anzeigen, wenn die Schaltfläche "Show recipes" geklickt wird
 if submit_button:
-    if zutaten:
-        recipes = get_recipes(zutaten, difficulty, duration, number_ingredients)
+    if ingredients:
+        recipes = get_recipes(ingredients,cuisine, difficulty, duration, number_ingredients)
         st.write("Recipes:")
         for recipe in recipes:
             st.write(recipe['title'])
 
-        #API-Abfrage senden
-        response = requests.get(api_url, params=parameter)
-        data = response.json()
+        # #API-Abfrage senden
+        # response = requests.get(api_url, params=parameter)
+        # data = response.json()
 
         #Rezeptvorschläge 
         st.header("Look what we've found for you")
