@@ -7,8 +7,8 @@ import pandas as pd
 css_background = """   
 <style>
 [data-testid="stAppViewContainer"] > .main {
-    background-image: url("https://i.postimg.cc/cJtrkLQw/pexels-mike-murray-5701888.jpg");
-    background-image: url("https://i.postimg.cc/8cZWBsfz/pexels-david-underland-3312276.jpg");
+    # background-image: url("https://i.postimg.cc/cJtrkLQw/pexels-mike-murray-5701888.jpg");
+    background-image: url("https://i.postimg.cc/J7SKF2s7/pexels-bruno-cervera-3062948.jpg");
     background-size: cover;                 #grösse des hintergrundbilds, cover = ganzer container
     background-position: center center;
     background-repeat: no-repeat;
