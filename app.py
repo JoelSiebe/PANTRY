@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 import numpy as np
 import pandas as pd
-import matplotlib as plt
+import matplotlib.pyplot as plt
 
 # Übersicht über die verwendeten Namen:
 
@@ -145,15 +145,7 @@ if submit_button:
     else:
         st.write("Recipe steps not available.")
 
-#Pie-Chart für Visualisierung des Used / Missed Ingredients-Ratio
-labels = 'Used Ingredients', 'Missed Ingredients'
-sizes = [14, 30, 45, 10]
 
-fig1, ax1 = pltsubplots()
-ax1.pie(sizes, labels=labels, autopct='%1.1f%%',
-        shadow=True, startangle=90)
-ax1.axis('equal')
-st.pyplot(fig1)
 
 # Fußzeile der Anwendung
 st.markdown("---")
