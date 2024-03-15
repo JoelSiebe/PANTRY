@@ -132,10 +132,17 @@ if submit_button:
     instructions_data = instructions_response.json()
 
     if 'instructions' in instructions_data:
-        st.subheader("Instructions:")
-        instructions = instructions_data['instructions'].split('\n')  
-        for i, step in enumerate(instructions, start=1):
-            st.write(f"{i}. {step}")  # Schritte in nummerierten Liste anzeigen
+        instructions = instructions_data['instructions']
+        if instructions:
+            st.subheader("Instructions:")
+            # Prüft, ob Rezeptschritte vorliegen
+            if isinstance(instructions, list):
+                for i, step in enumerate(instructions, start=1):
+                    st.write(f"{i}. {step}")
+            else:
+                st.write(instructions)  # Wenn die Anweisungen nicht als Liste vorliegen, einfach anzeigen
+        else:
+            st.write("No instructions available.")
     else:
         st.write("Recipe steps not available.")
 
