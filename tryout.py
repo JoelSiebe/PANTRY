@@ -1,138 +1,161 @@
 import streamlit as st
 import requests
-import numpy as np
-import pandas as pd
+import matplotlib.pyplot as plt
 
-# CSS-Stil (inspiriert von https://www.w3schools.com/cssref/pr_background-image.php)
-css_background = """   
-<style>
-[data-testid="stAppViewContainer"] > .main {
-    background-image: url("https://i.postimg.cc/cJtrkLQw/pexels-mike-murray-5701888.jpg");
-    background-size: cover;                 #grösse des hintergrundbilds, cover = ganzer container
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-attachment: local;        #beim scrollen fix oder bewegend - local = bewegend
-}
+# Übersicht über die verwendeten Namen:
 
-[data-testid="stHeader"] {
-    background: rgba(0,0,0,0);
-}
+##Mit nachfolgendem Abschnitt kann ein Hintergrundbild eingefügt werden; 
+##CSS-Stil (https://discuss.streamlit.io/t/upload-background-image/59732 // https://www.w3schools.com/cssref/pr_background-image.php)
+# css_background = """   
+# <style>
+# [data-testid="stAppViewContainer"] > .main {
+#     # background-image: url("https://i.postimg.cc/cJtrkLQw/pexels-mike-murray-5701888.jpg");
+#     background-image: url("https://i.postimg.cc/prztbnxs/pexels-brett-sayles-6871608.jpg");
+#     background-size: cover;                 #grösse des hintergrundbilds, cover = ganzer container
+#     background-position: center center;
+#     background-repeat: no-repeat;
+#     background-attachment: local;        #beim scrollen fix oder bewegend - local = bewegend
+# }
 
-div[data-baseweb="input"] input {
-    color: black !important; /* Ändere die Schriftfarbe auf Schwarz */
-    font-size: 20px !important; /* Ändere die Schriftgröße auf 20px */
-</style>
-"""
+# [data-testid="stHeader"] {
+#     background: rgba(181, 179, 179);
+# }
+# </style>
+# """
 
-st.markdown(css_background, unsafe_allow_html=True) #css_background wird angewendet, unsafe für Anzeige von HTML-Inhalten
+# st.markdown(css_background, unsafe_allow_html=True) #css_background wird angewendet, unsafe für Anzeige von HTML-Inhalten
 
-# Titel und Untertitel
-st.title("Pantry Pal - Conquering Leftovers, Mastering Meals")
-st.header("**Tame your kitchen with Pantry Pal**")
+# *Titel und Header*
+# Quelle für Header: https://stackoverflow.com/questions/70932538/how-to-center-the-title-and-an-image-in-streamlit
+st.markdown("<h1 style='text-align: center; color: grey;'>Pantry Pal</h1>", unsafe_allow_html=True)
+st.markdown("<h2 style='text-align: center; color: grey;'>Conquering Leftovers, Mastering Meals </h2>", unsafe_allow_html=True)
+st.title("Tame your kitchen with Pantry Pal")
+st.divider()
 
-# Versch. Zutaten des Benutzers als Eingabefeld
-zutaten = st.text_input("Enter what's left in your fridge (separated by comma)", key="ingredients", max_chars=1000)
+# Bilder in 3 Kolonnen anzeigen, quelle: https://docs.streamlit.io/library/api-reference/layout/st.columns)
 
-# Filteroptionen
-difficulty = st.selectbox("Select Difficulty", ["Any", "Easy", "Medium", "Hard"])
-duration = st.selectbox("Select Cooking Time", ["Any", "0-15 minutes", "15-30 minutes", "30-60 minutes", "60+ minutes"])
-number_ingredients = st.slider("Number of Ingredients", min_value=1, max_value=20, value=5)
+st.header("So, what's the plan for today?")
+st.header("Is it Italian? Or maybe a tasty burger?")
+st.title("You decide.")
+col1, col2= st.columns(2)
 
+with col1:
+#    st.header("Is it Italian?")
+   st.image("https://i.postimg.cc/44rnqrp3/pexels-lisa-fotios-1373915.jpgg")
 
+with col2:
+#    st.header("Or maybe Korean?")
+   st.image("https://i.postimg.cc/RZ0FH4BX/pexels-valeria-boltneva-1199957.jpg")
 
+# weitere Untertitel -> noch schauen, ob mit CSS schöner gemacht werden kann.
 
-# Button, um Rezepte anzuzeigen und an Einkaufsliste zu senden
-if st.button('Show recipes'):
-    if zutaten:
-        # Spoonacular API-URL
-        api_url = "https://api.spoonacular.com/recipes/findByIngredients"
+st.header("How does it work?") 
+st.header("First, enter what's left in your fridge. Selcect any filters if needed.")
+st.title("Then let us do the magic")
 
-        # API-Schlüssel
-        api_key = "06491aabe3d2435b8b21a749de46b765"
+#Filteroptionen (https://docs.streamlit.io/library/api-reference/widgets)
 
-        # Datenbankabfrage
-        params = {
-            'ingredients': zutaten,
-            'number': 5,  # Anz. angezeiter Rezepte
-            'apiKey': api_key
-        }
+# Spoonacular API-URL
+api_url = "https://api.spoonacular.com/recipes/findByIngredients"
+#API-Schlüssel (noch schauen, wie man das in einer anderen Datei macht)
+api_key = "06491aabe3d2435b8b21a749de46b765"
 
-        # Hinzufügen der Filteroptionen
-        if difficulty != "Any":
-            params['difficulty'] = difficulty.lower()
-        if duration != "Any":
-            if duration == "0-15 minutes":
-                params['maxReadyTime'] = 15
-            elif duration == "15-30 minutes":
-                params['maxReadyTime'] = 30
-            elif duration == "30-60 minutes":
-                params['maxReadyTime'] = 60
-            else:
-                params['maxReadyTime'] = 60  # 60+ minutes
+# Funktion zum Abrufen von Rezepten
+def get_recipes(ingredients, cuisine, difficulty, duration, number_ingredients):
+    parameter = {
+        'ingredients': ingredients,
+        'number': 5, #Anz. angezeigter Rezepte
+        'apiKey': api_key
+    }
 
-        if number_ingredients:
-            params['number'] = number_ingredients
+    # Hinzufügen der Filteroptionen
+    if cuisine != "Any":
+        parameter['cuisine']=cuisine
+    if difficulty != "Any":
+        parameter['difficulty'] = difficulty.lower()
+    if duration != "Any":
+        if duration == "0-15 minutes":
+            parameter['maxReadyTime'] = 15
+        elif duration == "15-30 minutes":
+            parameter['maxReadyTime'] = 30
+        elif duration == "30-60 minutes":
+            parameter['maxReadyTime'] = 60
+        else:
+            parameter['maxReadyTime'] = 60 
 
-        # API-Abfrage senden
-        response = requests.get(api_url, params=params)
-        data = response.json()
+    if number_ingredients:
+        parameter['number'] = number_ingredients
 
-        # Einkaufsliste vorbereiten
-        shopping_list = [ingredient['name'] for recipe in data for ingredient in recipe['missedIngredients']]
-        shopping_list_text = '\n'.join(shopping_list)
+    #API-Abfrage senden
+    response = requests.get(api_url, params=parameter)
+    data = response.json()
+    return data
 
-        # Einkaufsliste per E-Mail senden
-        if st.button("Send shopping list via email"):
-            import smtplib
-            from email.mime.multipart import MIMEMultipart
-            from email.mime.text import MIMEText
+# Zwei Texteingabefelder nebeneinander anzeigen
+with st.form(key='my_form'):
+    col1, col2 = st.columns(2)
+    with col1:
+        ingredients = st.text_input(label='Ingredients')
+        cuisine= st.selectbox('Cuisine', ['Any', 'African', 'Asian', 'American', 'Chinese', 'Eastern European', 'Greek', 'Indian', 'Italian', 'Japanese', 'Mexican', 'Thai', 'Vietnamese'])
+    with col2:
+        difficulty = st.selectbox('Difficulty Level', ['Any', 'Easy', 'Medium', 'Hard'])
+        duration = st.selectbox('Duration', ['Any', '0-15 minutes', '15-30 minutes', '30-60 minutes', '60+ minutes'])
+        number_ingredients = st.number_input('Number of ingredients', min_value=1, max_value=20, value=5)
 
-            # E-Mail-Konfiguration
-            sender_email = "your_email@example.com"
-            receiver_email = "recipient_email@example.com"
-            password = "your_password"
+    submit_button = st.form_submit_button(label='Show recipes')
 
-            # Nachricht erstellen
-            msg = MIMEMultipart()
-            msg['From'] = sender_email
-            msg['To'] = receiver_email
-            msg['Subject'] = "Shopping List from Pantry Pal"
+# Rezepte anzeigen, wenn die Schaltfläche "Show recipes" geklickt wird
+if submit_button:
+    if ingredients:
+        recipes = get_recipes(ingredients,cuisine, difficulty, duration, number_ingredients)
+        st.write("Recipes:")
+        for recipe in recipes:
+            st.write(recipe['title'])
 
-            # Nachrichtentext hinzufügen
-            msg.attach(MIMEText(shopping_list_text, 'plain'))
-
-            # Verbindung zum Server herstellen und E-Mail senden
-            with smtplib.SMTP('smtp.example.com', 587) as server:
-                server.starttls()
-                server.login(sender_email, password)
-                server.send_message(msg)
-
-            st.success("Shopping list sent successfully!")
-
-        # Anzeigen der Einkaufsliste mit Checkboxen
-        for ingredient in shopping_list:
-            if st.checkbox(ingredient):
-                shopping_list.remove(ingredient)
-
-# Rezepte anzeigen
-if zutaten and st.button('Show recipes'):
-    if zutaten:
-        st.markdown('<a name="recipes"></a>', unsafe_allow_html=True)
+#Rezeptvorschläge 
         st.header("Look what we've found for you")
-        for recipe in data:
+        for recipe in recipes:
             st.subheader(recipe['title'])
             st.image(recipe['image'])
             st.write(f"Used ingredients: {', '.join([ingredient['name'] for ingredient in recipe['usedIngredients']])}")
-            st.write(f"Missed ingredients: {', '.join([ingredient['name'] for ingredient in recipe['missedIngredients']])}")
-            st.write(f"Number of missed ingredients: {recipe['missedIngredientCount']}")
+            st.write(f"Missing ingredients: {', '.join([ingredient['name'] for ingredient in recipe['missedIngredients']])}")
+            st.write(f"Number of missing ingredients: {recipe['missedIngredientCount']}")
             st.write(f"Number of used ingredients: {recipe['usedIngredientCount']}")
-            
-            # Nutrition information
-            nutrition_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/nutritionWidget.json?apiKey={api_key}"
-            nutrition_info = requests.get(nutrition_url).json()
-            st.subheader("Nutrition Information")
-            st.write(nutrition_info)
+  
+  if submit_button and ingredients:
+    used_ingredients_count = sum(recipe['usedIngredientCount'] for recipe in recipes)
+    missed_ingredients_count = sum(recipe['missedIngredientCount'] for recipe in recipes)
+    labels = 'Used Ingredients', 'Missed Ingredients'
+    sizes = [used_ingredients_count, missed_ingredients_count]
 
-# Fußzeile
+    fig1, ax1 = plt.subplots()
+    ax1.pie(sizes, labels=labels, autopct='%1.1f%%', shadow=True, startangle=90)
+    ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+    st.write("Used vs Missed Ingredients Ratio:")
+    st.pyplot(fig1)
+
+    #Spoonacular-API für Rezeptinformationen (https://spoonacular.com/food-api/docs#Get-Recipe-Information) / Key ist derselbe
+    api_informations_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
+    instructions_response = requests.get(api_informations_url, params={'apiKey': api_key})
+    instructions_data = instructions_response.json()
+
+    if 'instructions' in instructions_data:
+        instructions = instructions_data['instructions']
+        if instructions:
+            st.subheader("Instructions:")
+            # Prüft, ob Rezeptschritte vorliegen
+            if isinstance(instructions, list):
+                for i, step in enumerate(instructions, start=1):
+                    st.write(f"{i}. {step}")
+            else:
+                st.write(instructions)  # Wenn die Anweisungen nicht als Liste vorliegen, einfach anzeigen
+        else:
+            st.write("No instructions available.")
+    else:
+        st.write("Recipe steps not available.")
+
+
+
+# Fußzeile der Anwendung
 st.markdown("---")
-st.write("© 2024 Pantry Pal. All rights reserved.")
+st.write("© 2024 Pantry Pal - Where Leftovers Meets Deliciousness. All rights reserved.")
