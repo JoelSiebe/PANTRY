@@ -37,11 +37,11 @@ st.header("So, what's the plan for today? Is it Italian? Or maybe a tasty burger
 col1, col2= st.columns(2)
 
 with col1:
-   st.header("Is it Italian?")
+#    st.header("Is it Italian?")
    st.image("https://i.postimg.cc/44rnqrp3/pexels-lisa-fotios-1373915.jpgg")
 
 with col2:
-   st.header("Or maybe Korean?")
+#    st.header("Or maybe Korean?")
    st.image("https://i.postimg.cc/RZ0FH4BX/pexels-valeria-boltneva-1199957.jpg")
 
 # Zwei Texteingabefelder nebeneinander anzeigen
