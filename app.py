@@ -51,15 +51,7 @@ st.header("How does it goes?")
 st.header("Firstly, enter what's left in your fride. Selcect any filters if needed.")
 st.title("Then let the magic begin")
 
-
-# Versch. Zutaten des Benutzers als Eingabefeld
-zutaten = st.text_input("Enter what's left in your fridge (separated by comma)")
-
 #Filteroptionen (https://docs.streamlit.io/library/api-reference/widgets)
-
-# difficulty = st.selectbox("Select Difficulty", ["Any", "Easy", "Medium", "Hard"])
-# duration = st.selectbox("Select Cooking Time", ["Any", "0-15 minutes", "15-30 minutes", "30-60 minutes", "60+ minutes"])
-# number_ingredients = st.slider("Number of Ingredients", min_value=1, max_value=20, value=5)
 
 # Clickboxen, die temp. mit session_gate gespeichert werden (quelle (etw. abgeändert):https://stackoverflow.com/questions/71242486/how-to-make-n-checkboxes-in-streamlit)
 
@@ -126,8 +118,10 @@ def get_recipes(zutaten, difficulty, duration, number_ingredients):
 
 # Zwei Texteingabefelder nebeneinander anzeigen
 with st.form(key='my_form'):
-    col1 = st.columns(1)
+    col1, col2 = st.columns(2)
     with col1:
+        zutaten = st.text_input(label='Zutaten')
+    with col2:
         difficulty = st.selectbox('Schwierigkeitsgrad', ['Any', 'Easy', 'Medium', 'Hard'])
         duration = st.selectbox('Dauer', ['Any', '0-15 minutes', '15-30 minutes', '30-60 minutes', '60+ minutes'])
         number_ingredients = st.number_input('Anzahl der Zutaten', min_value=1, max_value=20, value=5)
