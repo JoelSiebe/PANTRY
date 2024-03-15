@@ -126,22 +126,18 @@ if submit_button:
             st.write(f"Number of used ingredients: {recipe['usedIngredientCount']}")
   
 
-            #Spoonacular-API für Rezeptinformationen (https://spoonacular.com/food-api/docs#Get-Recipe-Information) / Key ist derselbe
-            api_informations_url = "https://api.spoonacular.com/recipes/{id}/information"
-            
-            if 'id' in recipe:  #API prüfen, ob Zubereitungschritte verfügubar 
-                recipe_id = recipe['id']
-                instructions_url = f"https://api.spoonacular.com/recipes/{recipe_id}/information"
-                instructions_response = requests.get(instructions_url, params={'apiKey': api_key})
-                instructions_data = instructions_response.json()
+    #Spoonacular-API für Rezeptinformationen (https://spoonacular.com/food-api/docs#Get-Recipe-Information) / Key ist derselbe
+    api_informations_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
+    instructions_response = requests.get(api_informations_url, params={'apiKey': api_key})
+    instructions_data = instructions_response.json()
 
-                if 'instructions' in instructions_data:
-                    st.subheader("Instructions:")
-                    instructions = instructions_data['instructions'].split('\n')  
-                    for step in instructions:
-                        st.write(f"- {step}")  
-                else:
-                    st.write("Recipe steps not available.")
+    if 'instructions' in instructions_data:
+        st.subheader("Instructions:")
+        instructions = instructions_data['instructions'].split('\n')  
+        for i, step in enumerate(instructions, start=1):
+            st.write(f"{i}. {step}")  # Schritte in nummerierten Liste anzeigen
+    else:
+        st.write("Recipe steps not available.")
 
 # Fußzeile der Anwendung
 st.markdown("---")
