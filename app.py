@@ -88,14 +88,16 @@ api_url = "https://api.spoonacular.com/recipes/findByIngredients"
 api_key = "06491aabe3d2435b8b21a749de46b765"
 
 # Funktion zum Abrufen von Rezepten
-def get_recipes(zutaten, difficulty, duration, number_ingredients):
+def get_recipes(ingredients, cuisine, difficulty, duration, number_ingredients):
     parameter = {
-        'ingredients': zutaten,
+        'ingredients': ingredients,
         'number': 5, #Anz. angezeigter Rezepte
         'apiKey': api_key
     }
 
     # Hinzufügen der Filteroptionen
+    if cuisine != "Any":
+        parameter['cuisine']=cuisine
     if difficulty != "Any":
         parameter['difficulty'] = difficulty.lower()
     if duration != "Any":
