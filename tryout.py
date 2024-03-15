@@ -122,23 +122,26 @@ if submit_button:
             st.write(f"Number of missing ingredients: {recipe['missedIngredientCount']}")
             st.write(f"Number of used ingredients: {recipe['usedIngredientCount']}")
   
-  if submit_button and ingredients:
-    used_ingredients_count = sum(recipe['usedIngredientCount'] for recipe in recipes)
-    missed_ingredients_count = sum(recipe['missedIngredientCount'] for recipe in recipes)
-    labels = 'Used Ingredients', 'Missed Ingredients'
-    sizes = [used_ingredients_count, missed_ingredients_count]
-
-    fig1, ax1 = plt.subplots()
-    ax1.pie(sizes, labels=labels, autopct='%1.1f%%', shadow=True, startangle=90)
-    ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-    st.write("Used vs Missed Ingredients Ratio:")
-    st.pyplot(fig1)
-
-    #Spoonacular-API für Rezeptinformationen (https://spoonacular.com/food-api/docs#Get-Recipe-Information) / Key ist derselbe
+     #Spoonacular-API für Rezeptinformationen (https://spoonacular.com/food-api/docs#Get-Recipe-Information) / Key ist derselbe
     api_informations_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
     instructions_response = requests.get(api_informations_url, params={'apiKey': api_key})
     instructions_data = instructions_response.json()
 
+     if 'calories' in nutrition_data:
+                nutrition = nutrition_data['calories']
+                st.subheader("Nutrition Information:")
+                st.write(f"Calories: {nutrition['value']} {nutrition['unit']}")
+
+                # Pie-Chart für Nutrition
+                labels = list(nutrition_data['nutrition'].keys())
+                sizes = list(nutrition_data['nutrition'].values())
+
+                fig, ax = plt.subplots()
+                ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
+                ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+                st.write("Nutrition Chart:")
+                st.pyplot(fig)
+                
     if 'instructions' in instructions_data:
         instructions = instructions_data['instructions']
         if instructions:
