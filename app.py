@@ -26,7 +26,7 @@ import pandas as pd
 st.title("Pantry Pal - Conquering Leftovers, Mastering Meals",)
 st.divider()
 st.header("**Tame your kitchen with Pantry Pal**",)
-st.header("****Where Leftovers Meets Deliciousness!****")
+st.write("****Where Leftovers Meets Deliciousness!****")
 st.divider()
 
 # Bilder in 3 Kolonnen anzeigen, quelle: https://docs.streamlit.io/library/api-reference/layout/st.columns)
