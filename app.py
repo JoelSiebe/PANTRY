@@ -116,31 +116,32 @@ if submit_button:
             st.write(recipe['title'])
 
 #Rezeptvorschläge 
-st.header("Look what we've found for you")
-for recipe in recipes:
-    st.subheader(recipe['title'])
-    st.image(recipe['image'])
-    st.write(f"Used ingredients: {', '.join([ingredient['name'] for ingredient in recipe['usedIngredients']])}")
-    st.write(f"Missing ingredients: {', '.join([ingredient['name'] for ingredient in recipe['missedIngredients']])}")
-    st.write(f"Number of missing ingredients: {recipe['missedIngredientCount']}")
-    st.write(f"Number of used ingredients: {recipe['usedIngredientCount']}")
+        st.header("Look what we've found for you")
+        for recipe in recipes:
+            st.subheader(recipe['title'])
+            st.image(recipe['image'])
+            st.write(f"Used ingredients: {', '.join([ingredient['name'] for ingredient in recipe['usedIngredients']])}")
+            st.write(f"Missing ingredients: {', '.join([ingredient['name'] for ingredient in recipe['missedIngredients']])}")
+            st.write(f"Number of missing ingredients: {recipe['missedIngredientCount']}")
+            st.write(f"Number of used ingredients: {recipe['usedIngredientCount']}")
   
-#Spoonacular-API für Rezeptinformationen (https://spoonacular.com/food-api/docs#Get-Recipe-Information) / Key ist derselbe
-api_informations_url = "https://api.spoonacular.com/recipes/{id}/information"
-            
-if 'id' in recipe:  #API prüfen, ob Zubereitungschritte verfügubar 
-    recipe_id = recipe['id']
-    instructions_url = f"https://api.spoonacular.com/recipes/{recipe_id}/information"
-    instructions_response = requests.get(instructions_url, params={'apiKey': api_key})
-    instructions_data = instructions_response.json()
 
-if 'instructions' in instructions_data:
-    st.subheader("Instructions:")
-    instructions = instructions_data['instructions'].split('\n')  
-    for step in instructions:
-        st.write(f"- {step}")  
-else:
-    st.write("Recipe steps not available.")
+            #Spoonacular-API für Rezeptinformationen (https://spoonacular.com/food-api/docs#Get-Recipe-Information) / Key ist derselbe
+            api_informations_url = "https://api.spoonacular.com/recipes/{id}/information"
+            
+            if 'id' in recipe:  #API prüfen, ob Zubereitungschritte verfügubar 
+                recipe_id = recipe['id']
+                instructions_url = f"https://api.spoonacular.com/recipes/{recipe_id}/information"
+                instructions_response = requests.get(instructions_url, params={'apiKey': api_key})
+                instructions_data = instructions_response.json()
+
+                if 'instructions' in instructions_data:
+                    st.subheader("Instructions:")
+                    instructions = instructions_data['instructions'].split('\n')  
+                    for step in instructions:
+                        st.write(f"- {step}")  
+                else:
+                    st.write("Recipe steps not available.")
 
 # Fußzeile der Anwendung
 st.markdown("---")
