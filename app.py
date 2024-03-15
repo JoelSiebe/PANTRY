@@ -1,5 +1,6 @@
 import streamlit as st
 import requests
+pip install matplotlib
 import matplotlib.pyplot as plt
 
 
