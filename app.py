@@ -58,7 +58,7 @@ with col2:
 
 with col3:
    st.header("Or arabic?")
-   st.image("https://i.postimg.cc/HxkmjVzW/pexels-nataliya-vaitkevich-6252727.jpg")
+   st.image("https://i.postimg.cc/yd4fr5JM/pexels-larissa-deruzzi-6546181.jpg")
 
 # Versch. Zutaten des Benutzers als Eingabefeld
 zutaten = st.text_input("Enter what's left in your fridge (separated by comma)")
