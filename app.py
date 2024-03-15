@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 import numpy as np
 import pandas as pd
+import matplotlib as plt
 
 # Übersicht über die verwendeten Namen:
 
@@ -32,8 +33,6 @@ st.markdown("<h1 style='text-align: center; color: grey;'>Pantry Pal</h1>", unsa
 st.markdown("<h2 style='text-align: center; color: grey;'>Conquering Leftovers, Mastering Meals </h2>", unsafe_allow_html=True)
 st.title("Tame your kitchen with Pantry Pal",)
 st.divider()
-# st.header("Where Leftovers Meets Deliciousness!")
-# st.divider()
 
 # Bilder in 3 Kolonnen anzeigen, quelle: https://docs.streamlit.io/library/api-reference/layout/st.columns)
 
@@ -52,9 +51,9 @@ with col2:
 
 # weitere Untertitel -> noch schauen, ob mit CSS schöner gemacht werden kann.
 
-st.header("How does it goes?") 
-st.header("Firstly, enter what's left in your fride. Selcect any filters if needed.")
-st.title("Then let the magic begin")
+st.header("How does it work?") 
+st.header("First, enter what's left in your fridge. Selcect any filters if needed.")
+st.title("Then let us do the magic")
 
 #Filteroptionen (https://docs.streamlit.io/library/api-reference/widgets)
 
@@ -146,6 +145,16 @@ if submit_button:
     else:
         st.write("Recipe steps not available.")
 
+#Pie-Chart für Visualisierung des Used / Missed Ingredients-Ratio
+labels = 'Used Ingredients', 'Missed Ingredients'
+sizes = [14, 30, 45, 10]
+
+fig1, ax1 = pltsubplots()
+ax1.pie(sizes, labels=labels, autopct='%1.1f%%',
+        shadow=True, startangle=90)
+ax1.axis('equal')
+st.pyplot(fig1)
+
 # Fußzeile der Anwendung
 st.markdown("---")
-st.write("© 2024 Pantry Pal. All rights reserved.")
+st.write("© 2024 Pantry Pal - Where Leftovers Meets Deliciousness. All rights reserved.")
