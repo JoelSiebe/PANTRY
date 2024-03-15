@@ -32,13 +32,16 @@ st.write("Where Leftovers Meets Deliciousness!")
 st.divider()
 
 # Bilder in 3 Kolonnen anzeigen, quelle: https://docs.streamlit.io/library/api-reference/layout/st.columns)
-col1, col2= st.columns(2)
+col1, col2, col3= st.columns(3)
 
 with col1:
    st.header("Is it Italian?")
    st.image("https://i.postimg.cc/xjGG987N/pexels-sebastian-coman-photography-3590401.jpg")
 
 with col2:
+   st.header("  ")
+
+with col3:
    st.header("Or maybe Korean?")
    st.image("https://i.postimg.cc/jjdqngdr/pexels-pip-pip-12963392.jpg")
 
