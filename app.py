@@ -32,6 +32,8 @@ st.write("Where Leftovers Meets Deliciousness!")
 st.divider()
 
 # Bilder in 3 Kolonnen anzeigen, quelle: https://docs.streamlit.io/library/api-reference/layout/st.columns)
+
+st.header("So, what's the plan for today? Is it Italian? Or maybe a tasty burger? You decide.")
 col1, col2= st.columns(2)
 
 with col1:
