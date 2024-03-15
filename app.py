@@ -37,9 +37,25 @@ with st.form(key='my_form'):
 
     submit_button = st.form_submit_button(label='Senden')
 
+
 # Zeige den vollständigen Satz nach dem Absenden des Formulars
 if submit_button:
     st.write(f'Hallo, {first_name} {last_name}!')
+
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+   st.header("A cat")
+   st.image("https://static.streamlit.io/examples/cat.jpg")
+
+with col2:
+   st.header("A dog")
+   st.image("https://static.streamlit.io/examples/dog.jpg")
+
+with col3:
+   st.header("An owl")
+   st.image("https://static.streamlit.io/examples/owl.jpg")
 
 # Versch. Zutaten des Benutzers als Eingabefeld
 zutaten = st.text_input("Enter what's left in your fridge (separated by comma)")
