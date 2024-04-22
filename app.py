@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 #import plotly.express as px
 import pandas as pd
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 
 # Übersicht über die verwendeten Namen:
@@ -147,25 +147,25 @@ if submit_button:
                 #else:
                 #    st.write("Unfortunately, there are no informations regarding the nutrition-score available.").
 
-                if 'carbs' in nutrition_data and 'fat' in nutrition_data and 'protein' in nutrition_data:
-                    nutrient_data = {
-                        'Nutrient': ['Carbohydrates', 'Fats', 'Proteins'],
-                        'Amount': [
-                            float(nutrition_data['carbs']), 
-                            float(nutrition_data['fat']), 
-                            float(nutrition_data['protein'])
-                        ]
-                    }
+                # if 'carbs' in nutrition_data and 'fat' in nutrition_data and 'protein' in nutrition_data:
+                #     nutrient_data = {
+                #         'Nutrient': ['Carbohydrates', 'Fats', 'Proteins'],
+                #         'Amount': [
+                #             float(nutrition_data['carbs']), 
+                #             float(nutrition_data['fat']), 
+                #             float(nutrition_data['protein'])
+                #         ]
+                #     }
 
-                    # Chart via Matplotlib erstellen
-                    fig, ax = plt.subplots()
-                    ax.pie(nutrient_data['Amount'], labels=nutrient_data['Nutrient'], autopct='%1.1f%%', startangle=90)
-                    ax.axis('equal')  # https://www.w3schools.com/python/matplotlib_pie_charts.asp
+                #     # Chart via Matplotlib erstellen
+                #     fig, ax = plt.subplots()
+                #     ax.pie(nutrient_data['Amount'], labels=nutrient_data['Nutrient'], autopct='%1.1f%%', startangle=90)
+                #     ax.axis('equal')  # https://www.w3schools.com/python/matplotlib_pie_charts.asp
 
                    
-                    st.pyplot(fig)
-                else: 
-                    st.write("Unfortunately, there are no informations regarding the nutrition-score available.")
+                #     st.pyplot(fig)
+                # else: 
+                #     st.write("Unfortunately, there are no informations regarding the nutrition-score available.")
         
                 # Überprüfen, ob Instruktionen vorhanden ist
                 if 'analyzedInstructions' in instructions_data:
