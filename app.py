@@ -183,6 +183,6 @@ if submit_button:
             #     st.pyplot(fig)
 
 
-# Fußzeile der Anwendung
+# Fusszeile der Anwendung
 st.markdown("---")
 st.write("© 2024 Pantry Pal - Where Leftovers Meets Deliciousness. All rights reserved.")
