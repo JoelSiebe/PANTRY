@@ -128,7 +128,7 @@ if submit_button:
                 # Nährwertinformationen für das ausgewählte Rezept abrufen
                 nutrition_data = get_nutrition_info(recipe['id'])
                                 
-                # Chart für die Nährwertverteilung erstellen
+                # Chart für die Nährwertverteilung erstellen (https://plotly.streamlit.app/Pie_Charts)
                 if 'carbs' in nutrition_data and 'fat' in nutrition_data and 'protein' in nutrition_data:
                     nutrient_data = {
                         'Nutrient': ['Carbohydrates', 'Fats', 'Proteins'],
