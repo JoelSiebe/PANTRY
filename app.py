@@ -1,5 +1,7 @@
 import streamlit as st
 import requests
+import plotly.express as px
+import pandas as pd
 # import matplotlib.pyplot as plt
 
 
@@ -69,7 +71,7 @@ def get_recipes(ingredients, cuisine, difficulty, duration, number_ingredients):
         'apiKey': api_key
     }
 
-    # Hinzufügen der Filteroptionen
+    # Filteroptionen
     if cuisine != "Any":
         parameter['cuisine']=cuisine
     if difficulty != "Any":
@@ -93,10 +95,11 @@ def get_recipes(ingredients, cuisine, difficulty, duration, number_ingredients):
 
 # Daten-Visualisierung in Form eines Kuchendiagrams (auf Basis der Nährwerten) -> Funktion um Infos abzurufen
 def get_nutrition_info(recipe_id):
-    response = requests.get(api_nutrition_url.format(recipe_id=recipe_id), params={'apiKey': api_key})
+    api_nutrition_url = f"https://api.spoonacular.com/recipes/{recipe_id}/nutritionWidget.json"
+    response = requests.get(api_nutrition_url, params={'apiKey': api_key})
     return response.json()
    
-# Zwei Texteingabefelder nebeneinander anzeigen
+# Zwei Texteingabefelder (Filteroptionen) nebeneinander anzeigen
 with st.form(key='my_form'):
     col1, col2 = st.columns(2)
     with col1:
@@ -117,129 +120,47 @@ if submit_button:
             for recipe in recipes:
                 st.subheader(recipe['title'])  # Rezepttitel anzeigen
                 st.image(recipe['image'])  # Bild des Rezepts anzeigen
+                used_ingredients = ', '.join([ing['name'] for ing in recipe['usedIngredients']])
+                missed_ingredients = ', '.join([ing['name'] for ing in recipe['missedIngredients']])
+                st.write("Used Ingredients:", used_ingredients)
+                st.write("Missing Ingredients:", missed_ingredients)
                 
-                st.write("Used Ingredients:", ', '.join([ing['name'] for ing in recipe['usedIngredients']]))  # A
-                Um das Kuchendiagramm für die Nährwertverteilung mit der Spoonacular-API in Streamlit anzuzeigen, musst du die entsprechenden Nährwertdaten von der API abrufen und sie dann zur Visualisierung im Diagramm verwenden. Zuerst benötigst du den API-Endpunkt, der die Nährwertinformationen für ein bestimmtes Rezept bereitstellt. Sobald du diese Daten hast, kannst du ein Diagramm erstellen, das den Anteil von Proteinen, Kohlenhydraten, und Fetten zeigt.
-                
-                Hier ist eine Möglichkeit, wie du das bestehende Skript ändern kannst, um ein Kuchendiagramm zu erstellen, sobald ein Rezept ausgewählt wurde:
-                
-                python
-                Copy code
-                import streamlit as st
-                import requests
-                import plotly.express as px  # Verwenden wir für das Kuchendiagramm
-                import pandas as pd
-                
-                # Spoonacular API-URL für das Abrufen von Rezepten
-                api_url = "https://api.spoonacular.com/recipes/findByIngredients"
-                # Spoonacular API-URL für Nährwertinformationen
-                api_nutrition_url = "https://api.spoonacular.com/recipes/{recipe_id}/nutritionWidget.json"
-                api_key = "06491aabe3d2435b8b21a749de46b765"  # Dein API-Schlüssel
-                
-                # Funktion zum Abrufen von Rezepten basierend auf den eingegebenen Zutaten und Filtern
-                def get_recipes(ingredients, cuisine, difficulty, duration, number_ingredients):
-                    parameter = {
-                        'ingredients': ingredients,
-                        'number': 5,  # Anzahl der angezeigten Rezepte
-                        'apiKey': api_key
+                # Nährwertinformationen für das ausgewählte Rezept abrufen
+                nutrition_data = get_nutrition_info(recipe['id'])
+                                
+                # Chart für die Nährwertverteilung erstellen
+                if 'carbs' in nutrition_data and 'fat' in nutrition_data and 'protein' in nutrition_data:
+                    nutrient_data = {
+                        'Nutrient': ['Carbohydrates', 'Fats', 'Proteins'],
+                        'Amount': [
+                            float(nutrition_data['carbs']), 
+                            float(nutrition_data['fat']), 
+                            float(nutrition_data['protein'])
+                        ]
                     }
                     
-                    # Filteroptionen hinzufügen
-                    if cuisine != "Any":
-                        parameter['cuisine'] = cuisine
-                    if difficulty != "Any":
-                        parameter['difficulty'] = difficulty.lower()
-                    if duration != "Any":
-                        if duration == "0-15 minutes":
-                            parameter['maxReadyTime'] = 15
-                        elif duration == "15-30 minutes":
-                            parameter['maxReadyTime'] = 30
-                        elif duration == "30-60 minutes":
-                            parameter['maxReadyTime'] = 60
-                        else:
-                            parameter['maxReadyTime'] = 60 
+                    df = pd.DataFrame(nutrient_data)
+                    fig = px.pie(df, values='Amount', names='Nutrient', title='Nährwertverteilung')
                 
-                    if number_ingredients:
-                        parameter['number'] = number_ingredients
-                
-                    # API-Anfrage für Rezepte senden
-                    response = requests.get(api_url, params=parameter)
-                    return response.json()
-                
-                # Funktion zum Abrufen von Nährwertinformationen für ein bestimmtes Rezept
-                def get_nutrition_info(recipe_id):
-                    response = requests.get(api_nutrition_url.format(recipe_id=recipe_id), params={'apiKey': api_key})
-                    return response.json()
-                
-                # Wenn das Formular abgesendet wird, Rezepte anzeigen
-                with st.form(key='my_form'):
-                    col1, col2 = st.columns(2)
-                    with col1:
-                        ingredients = st.text_input('Ingredients')
-                        cuisine = st.selectbox('Cuisine', ['Any', 'African', 'Asian', 'American', 'Chinese', 'Eastern European', 'Greek', 'Indian', 'Italian', 'Japanese', 'Mexican', 'Thai', 'Vietnamese'])
-                    with col2:
-                        difficulty = st.selectbox('Difficulty Level', ['Any', 'Easy', 'Medium', 'Hard'])
-                        duration = st.selectbox('Duration', ['Any', '0-15 minutes', '15-30 minutes', '30-60 minutes', '60+ minutes'])
-                        number_ingredients = st.number_input('Number of ingredients', min_value=1, max_value=20, value=5)
-                
-                    submit_button = st.form_submit_button('Show recipes')
-                
-                
-                # Rezepte anzeigen, wenn die Schaltfläche "Show recipes" geklickt wird
-                if submit_button:
-                    if ingredients:
-                        recipes = get_recipes(ingredients, cuisine, difficulty, duration, number_ingredients)
-                        if recipes:
-                            for recipe in recipes:
-                                st.subheader(recipe['title'])  # Rezepttitel anzeigen
-                                st.image(recipe['image'])  # Bild des Rezepts anzeigen
-                
-                                # Benutze und fehlende Zutaten anzeigen
-                                used_ingredients = ', '.join([ing['name'] for ing in recipe['usedIngredients']])
-                                missed_ingredients = ', '.join([ing['name'] for ing in recipe['missedIngredients']])
-                                st.write("Used Ingredients:", used_ingredients)
-                                st.write("Missing Ingredients:", missed_ingredients)
-                
-                                # Nährwertinformationen für das ausgewählte Rezept abrufen
-                                nutrition_data = get_nutrition_info(recipe['id'])
-                                
-                                # Chart für die Nährwertverteilung erstellen
-                                if 'carbs' in nutrition_data and 'fat' in nutrition_data and 'protein' in nutrition_data:
-                                    nutrient_data = {
-                                        'Nutrient': ['Carbohydrates', 'Fats', 'Proteins'],
-                                        'Amount': [
-                                            float(nutrition_data['carbs']), 
-                                            float(nutrition_data['fat']), 
-                                            float(nutrition_data['protein'])
-                                        ]
-                                    }
-                                    df = pd.DataFrame(nutrient_data)
-                                    fig = px.pie(df, values='Amount', names='Nutrient', title='Nährwertverteilung')
-                
-                                    # Anzeigen des Charts
-                                    st.plotly_chart(fig)
-                                else:
-                                    st.write("Keine ausreichenden Nährwertinformationen verfügbar.")
-                
-         #  Spoonacular-API für Rezeptinformationen (https://spoonacular.com/food-api/docs#Get-Recipe-Information) / Key ist derselbe
-                                api_info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
-                                instructions_response = requests.get(api_info_url, params={'apiKey': api_key})
-                                instructions_data = instructions_response.json()
-
-                                # Überprüfen, ob Instruktionen vorhanden ist
-                                if 'analyzedInstructions' in instructions_data:
-                                    steps = instructions_data['analyzedInstructions']
-                                    if steps: 
-                                        st.subheader("Instructions:")
-                                        for section in steps:
-                                            for step in section['steps']:
-                                                st.write(f"Step {step['number']}: {step['step']}")  # Detaillierte Schritte anzeigen
-                                    else:
-                                        st.write("No detailed instructions found.")
-                                else:
-                                    st.write("No instructions available.")  # Wenn keine Anweisungen gefunden werden
-                        else:
-                            st.write("No recipes found for the given ingredients.")  # Falls keine Rezepte gefunden werden
+                    # Anzeigen des Charts
+                    st.plotly_chart(fig)
+                else:
+                    st.write("Keine ausreichenden Nährwertinformationen verfügbar.")
+        
+                # Überprüfen, ob Instruktionen vorhanden ist
+                if 'analyzedInstructions' in instructions_data:
+                    steps = instructions_data['analyzedInstructions']
+                    if steps: 
+                        st.subheader("Instructions:")
+                        for section in steps:
+                            for step in section['steps']:
+                                st.write(f"Step {step['number']}: {step['step']}")  # Detaillierte Schritte anzeigen
+                    else:
+                        st.write("No detailed instructions found.")
+                else:
+                    st.write("No instructions available.")  # Wenn keine Anweisungen gefunden werden
+            else:
+                st.write("No recipes found for the given ingredients.")  # Falls keine Rezepte gefunden werden
 
             # # Spoonacular-API für Nutritions-Pie-chart (https://spoonacular.com/food-api/docs#Get-Recipe-Information) / Key ist derselbe
             # api_nutrition_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/nutritionWidget.json"
