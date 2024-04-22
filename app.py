@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 import plotly.express as px
 import pandas as pd
-#import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plts
 
 
 # Übersicht über die verwendeten Namen:
