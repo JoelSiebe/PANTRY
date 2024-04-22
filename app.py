@@ -106,36 +106,40 @@ with st.form(key='my_form'):
 
 # Rezepte anzeigen, wenn die Schaltfläche "Show recipes" geklickt wird
 if submit_button:
-    if ingredients:
-        recipes = get_recipes(ingredients, cuisine, difficulty, duration, number_ingredients)
-        if recipes:  # Wenn es Rezepte gibt
-            for recipe in recipes:
-                st.subheader(recipe['title'])  # Rezepttitel anzeigen
-                st.image(recipe['image'])  # Bild des Rezepts anzeigen
+    recipes = get_recipes(ingredients, cuisine, difficulty, duration, number_ingredients)
 
-                st.write("Used Ingredients:", ', '.join([ing['name'] for ing in recipe['usedIngredients']]))  # Angezeigte Zutaten
-                st.write("Missing Ingredients:", ', '.join([ing['name'] for ing in recipe['missedIngredients']]))  # Fehlende Zutaten
+    # Wenn Rezept ausgewählt ist, dieses auf neuer Seite anzeigen
+    if st.session_state.selected_recipe_id:
+        st.write("Rezeptdetails anzeigen")
+        api_info_url = f"https://api.spoonacular.com/recipes/{st.session_state.selected_recipe_id}/information"
+        instructions_response = requests.get(api_info_url, params={'apiKey': api_key})
+        instructions_data = instructions_response.json()
 
-                #  Spoonacular-API für Rezeptinformationen (https://spoonacular.com/food-api/docs#Get-Recipe-Information) / Key ist derselbe
-                api_info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
-                instructions_response = requests.get(api_info_url, params={'apiKey': api_key})
-                instructions_data = instructions_response.json()
+        st.subheader(instructions_data['title'])
+        st.image(instructions_data['image'])
 
-                # Überprüfen, ob Instruktionen vorhanden ist
-                if 'analyzedInstructions' in instructions_data:
-                    steps = instructions_data['analyzedInstructions']
-                    if steps: 
-                        st.subheader("Instructions:")
-                        for section in steps:
-                            for step in section['steps']:
-                                st.write(f"Step {step['number']}: {step['step']}")  # Detaillierte Schritte anzeigen
-                    else:
-                        st.write("No detailed instructions found.")
-                else:
-                    st.write("No instructions available.")  # Wenn keine Anweisungen gefunden werden
+        if 'analyzedInstructions' in instructions_data:
+            steps = instructions_data['analyzedInstructions']
+            if steps:
+                st.subheader("Instructions:")
+                for section in steps:
+                    for step in section['steps']:
+                        st.write(f"Step {step['number']}: {step['step']}")
         else:
-            st.write("No recipes found for the given ingredients.")  # Falls keine Rezepte gefunden werden
+            st.write("No detailed instructions found.")
+    else:
+        # Rezept-ID ausgewählt? Ansonsten Liste mit Rezepten erstellen
+        for recipe in recipes:
+            if st.button(f"Show Recipe: {recipe['title']}"):
+                st.session_state.selected_recipe_id = recipe['id']  # Rezept-ID in session state selected speichern
+                st.experimental_rerun()  # Neu laden, um änderungen anzuzeigen.
 
+            # Rezepte anzeigen
+            st.subheader(recipe['title'])
+            st.image(recipe['image'])
+            st.write("Used Ingredients:", ', '.join([ing['name'] für ing in recipe['usedIngredients']]))
+            st.write("Missing Ingredients:", ', '.join([ing['name'] für ing in recipe['missedIngredients']]))
+            
             # # Spoonacular-API für Nutritions-Pie-chart (https://spoonacular.com/food-api/docs#Get-Recipe-Information) / Key ist derselbe
             # api_nutrition_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/nutritionWidget.json"
             # nutrition_response = requests.get(api_nutrition_url, params={'apiKey': api_key})
