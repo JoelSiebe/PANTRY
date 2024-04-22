@@ -168,6 +168,11 @@ if submit_button:
                 #     st.write("Unfortunately, there are no informations regarding the nutrition-score available.")
         
                 # Überprüfen, ob Instruktionen vorhanden ist
+                #  Spoonacular-API für Rezeptinformationen (https://spoonacular.com/food-api/docs#Get-Recipe-Information) / Key ist derselbe
+                api_info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
+                instructions_response = requests.get(api_info_url, params={'apiKey': api_key})
+                instructions_data = instructions_response.json()
+
                 if 'analyzedInstructions' in instructions_data:
                     steps = instructions_data['analyzedInstructions']
                     if steps: 
