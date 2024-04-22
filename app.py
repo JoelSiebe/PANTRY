@@ -137,8 +137,8 @@ if submit_button:
             # Rezepte anzeigen
             st.subheader(recipe['title'])
             st.image(recipe['image'])
-            st.write("Used Ingredients:", ', '.join([ing['name'] für ing in recipe['usedIngredients']]))
-            st.write("Missing Ingredients:", ', '.join([ing['name'] für ing in recipe['missedIngredients']]))
+            st.write("Used Ingredients:", ', '.join([ing['name'] for ing in recipe['usedIngredients']]))
+            st.write("Missing Ingredients:", ', '.join([ing['name'] for ing in recipe['missedIngredients']]))
             
             # # Spoonacular-API für Nutritions-Pie-chart (https://spoonacular.com/food-api/docs#Get-Recipe-Information) / Key ist derselbe
             # api_nutrition_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/nutritionWidget.json"
