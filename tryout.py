@@ -1,6 +1,8 @@
 import streamlit as st
 import requests
-# import matplotlib.pyplot as plt
+#import plotly.express as px
+import pandas as pd
+#import matplotlib.pyplot as plt
 
 
 # Übersicht über die verwendeten Namen:
@@ -26,7 +28,7 @@ import requests
 
 # st.markdown(css_background, unsafe_allow_html=True) #css_background wird angewendet, unsafe für Anzeige von HTML-Inhalten
 
-# *Titel und Header.*
+# Titel und Header
 # Quelle für Header: https://stackoverflow.com/questions/70932538/how-to-center-the-title-and-an-image-in-streamlit
 st.markdown("<h1 style='text-align: center; color: grey;'>Pantry Pal</h1>", unsafe_allow_html=True)
 st.markdown("<h2 style='text-align: center; color: grey;'>Conquering Leftovers, Mastering Meals </h2>", unsafe_allow_html=True)
@@ -69,7 +71,7 @@ def get_recipes(ingredients, cuisine, difficulty, duration, number_ingredients):
         'apiKey': api_key
     }
 
-    # Hinzufügen der Filteroptionen
+    # Filteroptionen
     if cuisine != "Any":
         parameter['cuisine']=cuisine
     if difficulty != "Any":
@@ -90,8 +92,14 @@ def get_recipes(ingredients, cuisine, difficulty, duration, number_ingredients):
     #API-Abfrage senden
     response = requests.get(api_url, params=parameter)
     return response.json()
+
+# Daten-Visualisierung in Form eines Kuchendiagrams (auf Basis der Nährwerten) -> Funktion um Infos abzurufen
+def get_nutrition_info(recipe_id):
+    api_nutrition_url = f"https://api.spoonacular.com/recipes/{recipe_id}/nutritionWidget.json"
+    response = requests.get(api_nutrition_url, params={'apiKey': api_key})
+    return response.json()
    
-# Zwei Texteingabefelder nebeneinander anzeigen
+# Zwei Texteingabefelder (Filteroptionen) nebeneinander anzeigen
 with st.form(key='my_form'):
     col1, col2 = st.columns(2)
     with col1:
@@ -112,16 +120,59 @@ if submit_button:
             for recipe in recipes:
                 st.subheader(recipe['title'])  # Rezepttitel anzeigen
                 st.image(recipe['image'])  # Bild des Rezepts anzeigen
+                used_ingredients = ', '.join([ing['name'] for ing in recipe['usedIngredients']])
+                missed_ingredients = ', '.join([ing['name'] for ing in recipe['missedIngredients']])
+                st.write("Used Ingredients:", used_ingredients)
+                st.write("Missing Ingredients:", missed_ingredients)
+                
+                # Nährwertinformationen für das ausgewählte Rezept abrufen
+                nutrition_data = get_nutrition_info(recipe['id'])
+                                
+                # Chart für die Nährwertverteilung erstellen (https://plotly.streamlit.app/Pie_Charts)
+                #if 'carbs' in nutrition_data and 'fat' in nutrition_data and 'protein' in nutrition_data:
+                #    nutrient_data = {
+                #        'Nutrient': ['Carbohydrates', 'Fats', 'Proteins'],
+                #        'Amount': [
+                #            float(nutrition_data['carbs']), 
+                #            float(nutrition_data['fat']), 
+                #            float(nutrition_data['protein'])
+                #        ]
+                #    }
+                    
+                #    df = pd.DataFrame(nutrient_data)
+                #    fig = px.pie(df, values='Amount', names='Nutrient', title='Nährwertverteilung')
+                
+                    # Anzeigen des Charts
+                #    st.plotly_chart(fig)
+                #else:
+                #    st.write("Unfortunately, there are no informations regarding the nutrition-score available.").
 
-                st.write("Used Ingredients:", ', '.join([ing['name'] for ing in recipe['usedIngredients']]))  # Angezeigte Zutaten
-                st.write("Missing Ingredients:", ', '.join([ing['name'] for ing in recipe['missedIngredients']]))  # Fehlende Zutaten
+                # if 'carbs' in nutrition_data and 'fat' in nutrition_data and 'protein' in nutrition_data:
+                #     nutrient_data = {
+                #         'Nutrient': ['Carbohydrates', 'Fats', 'Proteins'],
+                #         'Amount': [
+                #             float(nutrition_data['carbs']), 
+                #             float(nutrition_data['fat']), 
+                #             float(nutrition_data['protein'])
+                #         ]
+                #     }
 
+                #     # Chart via Matplotlib erstellen
+                #     fig, ax = plt.subplots()
+                #     ax.pie(nutrient_data['Amount'], labels=nutrient_data['Nutrient'], autopct='%1.1f%%', startangle=90)
+                #     ax.axis('equal')  # https://www.w3schools.com/python/matplotlib_pie_charts.asp
+
+                   
+                #     st.pyplot(fig)
+                # else: 
+                #     st.write("Unfortunately, there are no informations regarding the nutrition-score available.")
+        
+                # Überprüfen, ob Instruktionen vorhanden ist
                 #  Spoonacular-API für Rezeptinformationen (https://spoonacular.com/food-api/docs#Get-Recipe-Information) / Key ist derselbe
                 api_info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
                 instructions_response = requests.get(api_info_url, params={'apiKey': api_key})
                 instructions_data = instructions_response.json()
 
-                # Überprüfen, ob Instruktionen vorhanden ist
                 if 'analyzedInstructions' in instructions_data:
                     steps = instructions_data['analyzedInstructions']
                     if steps: 
@@ -133,8 +184,8 @@ if submit_button:
                         st.write("No detailed instructions found.")
                 else:
                     st.write("No instructions available.")  # Wenn keine Anweisungen gefunden werden
-        else:
-            st.write("No recipes found for the given ingredients.")  # Falls keine Rezepte gefunden werden
+            else:
+                st.write("No recipes found for the given ingredients.")  # Falls keine Rezepte gefunden werden
 
             # # Spoonacular-API für Nutritions-Pie-chart (https://spoonacular.com/food-api/docs#Get-Recipe-Information) / Key ist derselbe
             # api_nutrition_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/nutritionWidget.json"
@@ -157,6 +208,6 @@ if submit_button:
             #     st.pyplot(fig)
 
 
-# Fußzeile der Anwendung
+# Fusszeile der Anwendung
 st.markdown("---")
 st.write("© 2024 Pantry Pal - Where Leftovers Meets Deliciousness. All rights reserved.")
