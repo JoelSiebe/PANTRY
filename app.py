@@ -67,7 +67,7 @@ api_key = "06491aabe3d2435b8b21a749de46b765"
 def get_recipes(ingredients, cuisine, difficulty, duration, allergies):
     parameter = {
         'ingredients': ingredients,
-        'number': 5, #Anz. angezeigter Rezepte
+        'number': 10, #Anz. angezeigter Rezepte -> zuerst 10, um dann nochmals auf Allergien / Länder zu filtern
         'apiKey': api_key
     }
 
@@ -86,12 +86,22 @@ def get_recipes(ingredients, cuisine, difficulty, duration, allergies):
         else:
             parameter['maxReadyTime'] = 60 
 
-    if allergies:
-        parameter['intolerances'] = allergies.lower()
+    # if allergies:
+    #     parameter['intolerances'] = allergies.lower()
 
     #API-Abfrage senden
     response = requests.get(api_url, params=parameter)
     return response.json()
+
+    if allergies and allergies != 'None':
+        filtered_recipes = [] 
+        for recipe in recipes:
+             ingredient_names = [ing['name'].lower() for ing in recipe['usedIngredients']]
+            if all(allergy not in ingredient_names for allergy in allergies.lower().split(',')):
+                filtered_recipes.append(recipe)
+        return filtered_recipes
+    else:
+        return recipes
 
 # Daten-Visualisierung in Form eines Kuchendiagrams (auf Basis der Nährwerten) -> Funktion um Infos abzurufen
 def get_nutrition_info(recipe_id):
