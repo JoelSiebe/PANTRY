@@ -97,19 +97,17 @@ def get_recipes(ingredients, cuisine, difficulty, duration, allergies):
     if allergies and allergies != 'None':
         allergy_list = [allergy.strip().lower() for allergy in allergies.split(",")]
         for recipe in recipes:
-            ingredient_names = [ing['name'].lower() for ing in recipe['usedIngredients']]
-            has_allergy = False
-            for allergy in allergy_list:
-                if allergy in ingredient_names:
-                    has_allergy = True
-                    break
+            all_ingredients = [ing['name'].lower() for ing in recipe['usedIngredients']]
+            all_ingredients += [ing['name'].lower() for ing in recipe['missedIngredients']]
+
+            has_allergy = any(allergy in all_ingredients for allergy in allergy_list)
+
             if not has_allergy:
                 filtered_recipes.append(recipe)
     else:
         filtered_recipes = recipes  
 
     return filtered_recipes
- 
 
 # Daten-Visualisierung in Form eines Kuchendiagrams (auf Basis der Nährwerten) -> Funktion um Infos abzurufen
 def get_nutrition_info(recipe_id):
