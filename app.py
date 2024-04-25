@@ -93,9 +93,8 @@ def get_recipes(ingredients, cuisine, difficulty, duration, allergies):
     response = requests.get(api_url, params=parameter)
     return response.json()
 
+    filtered_recipes = []
     if allergies and allergies != 'None':
-        filtered_recipes = [] 
-        if allergies and allergies != 'None':
         allergy_list = [allergy.strip().lower() for allergy in allergies.split(",")]
         for recipe in recipes:
             ingredient_names = [ing['name'].lower() for ing in recipe['usedIngredients']]
@@ -110,6 +109,7 @@ def get_recipes(ingredients, cuisine, difficulty, duration, allergies):
         filtered_recipes = recipes  
 
     return filtered_recipes
+ 
 
 # Daten-Visualisierung in Form eines Kuchendiagrams (auf Basis der Nährwerten) -> Funktion um Infos abzurufen
 def get_nutrition_info(recipe_id):
