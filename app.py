@@ -104,12 +104,13 @@ for recipe in recipes:
   for allergy in allergy_list:
     if allergy in all_ingredients:
       has_allergy = True
-      break  
+      break 
 
   if not has_allergy:
     filtered_recipes.append(recipe)
 
-    return filtered_recipes
+return filtered_recipes
+
 
 
 # Daten-Visualisierung in Form eines Kuchendiagrams (auf Basis der Nährwerten) -> Funktion um Infos abzurufen
