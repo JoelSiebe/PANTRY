@@ -91,7 +91,7 @@ def get_recipes(ingredients, cuisine, difficulty, duration, allergies):
 
     #API-Abfrage senden
     response = requests.get(api_url, params=parameter)
-    recipes = response.json()
+    all_recipes = response.json()
     filtered_recipes = []
 
     if allergies and allergies != 'None':
@@ -110,7 +110,7 @@ def get_recipes(ingredients, cuisine, difficulty, duration, allergies):
                 filtered_recipes.append(recipe)
 
     else:
-        filtered_recipes = recipes  
+        filtered_recipes = all_recipes  
 
     return filtered_recipes
 
