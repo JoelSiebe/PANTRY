@@ -64,10 +64,10 @@ api_url = "https://api.spoonacular.com/recipes/findByIngredients"
 api_key = "06491aabe3d2435b8b21a749de46b765"
 
 # Funktion zum Abrufen von Rezepten
-def get_recipes(ingredients, cuisine, difficulty, duration, allergies):
+def get_recipes(ingredients, cuisine, difficulty, duration, number_ingredients):
     parameter = {
         'ingredients': ingredients,
-        'number': 10, #Anz. angezeigter Rezepte -> zuerst 10, um dann nochmals auf Allergien / Länder zu filtern
+        'number': 5, #Anz. angezeigter Rezepte
         'apiKey': api_key
     }
 
@@ -86,39 +86,12 @@ def get_recipes(ingredients, cuisine, difficulty, duration, allergies):
         else:
             parameter['maxReadyTime'] = 60 
 
-    # if allergies:
-    #     parameter['intolerances'] = allergies.lower()
+    if number_ingredients:
+        parameter['number'] = number_ingredients
 
     #API-Abfrage senden
     response = requests.get(api_url, params=parameter)
     return response.json()
-
-    # response = requests.get(api_url, params=parameter)
-    # all_recipes = response.json()
-    # filtered_recipes = []
-
-    # if allergies and allergies != 'None':
-    #     allergy_list = [allergy.strip().lower() for allergy in allergies.split(",")]
-
-    #     for recipe in all_recipes:
-    #         all_ingredients = [ing['name'].lower() for ing in recipe['usedIngredients'] + recipe['missedIngredients']]
-
-    #         has_allergy = False
-    #         for allergy in allergy_list:
-    #             if allergy in all_ingredients:
-    #                 has_allergy = True
-    #                 break
-
-    #         if not has_allergy:
-    #             filtered_recipes.append(recipe)
-
-    # else:
-    #     filtered_recipes = all_recipes  
-
-    # return filtered_recipes
-
-
-
 
 # Daten-Visualisierung in Form eines Kuchendiagrams (auf Basis der Nährwerten) -> Funktion um Infos abzurufen
 def get_nutrition_info(recipe_id):
@@ -135,14 +108,14 @@ with st.form(key='my_form'):
     with col2:
         difficulty = st.selectbox('Difficulty Level', ['Any', 'Easy', 'Medium', 'Hard'])
         duration = st.selectbox('Duration', ['Any', '0-15 minutes', '15-30 minutes', '30-60 minutes', '60+ minutes'])
-        allergies = st.selectbox('Allergies', ['None', 'Dairy', 'Egg', 'Gluten', 'Peanut', 'Seafood', 'Sesame', 'Shellfish', 'Soy', 'Tree Nut', 'Wheat'])
+        number_ingredients = st.number_input('Number of ingredients', min_value=1, max_value=20, value=5)
 
     submit_button = st.form_submit_button('Show recipes')
 
 # Rezepte anzeigen, wenn die Schaltfläche "Show recipes" geklickt wird
 if submit_button:
     if ingredients:
-        recipes = get_recipes(ingredients, cuisine, difficulty, duration, allergies)
+        recipes = get_recipes(ingredients, cuisine, difficulty, duration, number_ingredients)
         if recipes:  # Wenn es Rezepte gibt
             for recipe in recipes:
                 st.subheader(recipe['title'])  # Rezepttitel anzeigen
