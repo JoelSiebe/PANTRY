@@ -95,19 +95,19 @@ def get_recipes(ingredients, cuisine, difficulty, duration, allergies):
 
     allergy_list = []
     if allergies and allergies != 'None':
-    allergy_list = [allergy.strip().lower() for allergy in allergies.split(",")]
+        allergy_list = [allergy.strip().lower() for allergy in allergies.split(",")]
 
     filtered_recipes = []
     for recipe in recipes:
-    all_ingredients = [ing['name'].lower() for ing in recipe['usedIngredients'] + recipe['missedIngredients']]
-    has_allergy = False
-    for allergy in allergy_list:
-        if allergy in all_ingredients:
-        has_allergy = True
-        break 
+        all_ingredients = [ing['name'].lower() for ing in recipe['usedIngredients'] + recipe['missedIngredients']]
+        has_allergy = False
+        for allergy in allergy_list:
+            if allergy in all_ingredients:
+                has_allergy = True
+                break 
 
-    if not has_allergy:
-        filtered_recipes.append(recipe)
+        if not has_allergy:
+            filtered_recipes.append(recipe)
 
     return filtered_recipes
 
