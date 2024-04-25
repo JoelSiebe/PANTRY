@@ -64,7 +64,7 @@ api_url = "https://api.spoonacular.com/recipes/findByIngredients"
 api_key = "06491aabe3d2435b8b21a749de46b765"
 
 # Funktion zum Abrufen von Rezepten
-def get_recipes(ingredients, cuisine, difficulty, duration, number_ingredients):
+def get_recipes(ingredients, cuisine, difficulty, duration, allergies):
     parameter = {
         'ingredients': ingredients,
         'number': 5, #Anz. angezeigter Rezepte
@@ -86,8 +86,8 @@ def get_recipes(ingredients, cuisine, difficulty, duration, number_ingredients):
         else:
             parameter['maxReadyTime'] = 60 
 
-    if number_ingredients:
-        parameter['number'] = number_ingredients
+    if allergies:
+        parameter['intolerances'] = allergies.lower()
 
     #API-Abfrage senden
     response = requests.get(api_url, params=parameter)
@@ -108,14 +108,14 @@ with st.form(key='my_form'):
     with col2:
         difficulty = st.selectbox('Difficulty Level', ['Any', 'Easy', 'Medium', 'Hard'])
         duration = st.selectbox('Duration', ['Any', '0-15 minutes', '15-30 minutes', '30-60 minutes', '60+ minutes'])
-        number_ingredients = st.number_input('Number of ingredients', min_value=1, max_value=20, value=5)
+        allergies = st.selectbox('Allergies', ['None', 'Dairy', 'Egg', 'Gluten', 'Peanut', 'Seafood', 'Sesame', 'Shellfish', 'Soy', 'Tree Nut', 'Wheat'])
 
     submit_button = st.form_submit_button('Show recipes')
 
 # Rezepte anzeigen, wenn die Schaltfläche "Show recipes" geklickt wird
 if submit_button:
     if ingredients:
-        recipes = get_recipes(ingredients, cuisine, difficulty, duration, number_ingredients)
+        recipes = get_recipes(ingredients, cuisine, difficulty, duration, allergies)
         if recipes:  # Wenn es Rezepte gibt
             for recipe in recipes:
                 st.subheader(recipe['title'])  # Rezepttitel anzeigen
