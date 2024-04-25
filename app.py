@@ -93,23 +93,26 @@ def get_recipes(ingredients, cuisine, difficulty, duration, allergies):
     response = requests.get(api_url, params=parameter)
     return response.json()
 
-    allergy_list = []
-    if allergies and allergies != 'None':
-        allergy_list = [allergy.strip().lower() for allergy in allergies.split(",")]
+allergy_list = []
 
-    filtered_recipes = []
-    for recipe in recipes:
-        all_ingredients = [ing['name'].lower() for ing in recipe['usedIngredients'] + recipe['missedIngredients']]
-        has_allergy = False
-        for allergy in allergy_list:
-            if allergy in all_ingredients:
-                has_allergy = True
-                break 
+def get_recipes(ingredients, cuisine, difficulty, duration, allergies):
+  
+  if allergies and allergies != 'None':
+    allergy_list = [allergy.strip().lower() for allergy in allergies.split(",")]
 
-        if not has_allergy:
-            filtered_recipes.append(recipe)
+  filtered_recipes = []
+  for recipe in recipes:
+    all_ingredients = [ing['name'].lower() for ing in recipe['usedIngredients'] + recipe['missedIngredients']]
+    has_allergy = False
+    for allergy in allergy_list:
+      if allergy in all_ingredients:
+        has_allergy = True
+        break  
+    if not has_allergy:
+      filtered_recipes.append(recipe)
 
-    return filtered_recipes
+  return filtered_recipes
+
 
 
 
