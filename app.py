@@ -109,7 +109,7 @@ for recipe in recipes:
   if not has_allergy:
     filtered_recipes.append(recipe)
 
-return filtered_recipes
+    return filtered_recipes
 
 
 # Daten-Visualisierung in Form eines Kuchendiagrams (auf Basis der Nährwerten) -> Funktion um Infos abzurufen
