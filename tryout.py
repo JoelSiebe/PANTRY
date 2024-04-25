@@ -63,7 +63,7 @@ api_url = "https://api.spoonacular.com/recipes/findByIngredients"
 #API-Schlüssel (noch schauen, wie man das in einer anderen Datei macht)
 api_key = "06491aabe3d2435b8b21a749de46b765"
 
-# Funktion zum Abrufen von Rezepten
+# Funktion zum Abrufen von Rezepten d
 def get_recipes(ingredients, cuisine, difficulty, duration, number_ingredients):
     parameter = {
         'ingredients': ingredients,
