@@ -172,7 +172,7 @@ if submit_button:
                     #Anzeigen des Charts
                    st.plotly_chart(fig)
                 else:
-                   st.write("Unfortunately, there are no informations regarding the nutrition-score available.").
+                   st.write("Unfortunately, there are no informations regarding the nutrition-score available.")
 
                 if 'carbs' in nutrition_data and 'fat' in nutrition_data and 'protein' in nutrition_data:
                     nutrient_data = {
