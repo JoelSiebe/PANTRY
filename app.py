@@ -160,7 +160,9 @@ if submit_button:
                           
                         
                 fig, ax = plt.subplots()
-                ax.pie(sizes, labels=labels)  
+                ax.pie(sizes, labels=labels)
+
+                st.pyplot(fig)  
                       
                 # # Chart für die Nährwertverteilung erstellen (https://plotly.streamlit.app/Pie_Charts)
                 # if 'carbs' in nutrition_data and 'fat' in nutrition_data and 'protein' in nutrition_data:
