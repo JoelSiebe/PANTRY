@@ -1,8 +1,8 @@
 import streamlit as st
 import requests
-#import plotly.express as px
+import plotly.express as px
 import pandas as pd
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 
 # Übersicht über die verwendeten Namen:
@@ -67,7 +67,7 @@ api_key = "06491aabe3d2435b8b21a749de46b765"
 def get_recipes(ingredients, cuisine, difficulty, duration, allergies):
     parameter = {
         'ingredients': ingredients,
-        'number': 10, #Anz. angezeigter Rezepte -> zuerst 10, um dann nochmals auf Allergien / Länder zu filtern
+        'number': 2, #Anz. angezeigter Rezepte -> zuerst 10, um dann nochmals auf Allergien / Länder zu filtern
         'apiKey': api_key
     }
 
@@ -156,43 +156,43 @@ if submit_button:
                 nutrition_data = get_nutrition_info(recipe['id'])
                                 
                 # Chart für die Nährwertverteilung erstellen (https://plotly.streamlit.app/Pie_Charts)
-                #if 'carbs' in nutrition_data and 'fat' in nutrition_data and 'protein' in nutrition_data:
-                #    nutrient_data = {
-                #        'Nutrient': ['Carbohydrates', 'Fats', 'Proteins'],
-                #        'Amount': [
-                #            float(nutrition_data['carbs']), 
-                #            float(nutrition_data['fat']), 
-                #            float(nutrition_data['protein'])
-                #        ]
-                #    }
+                if 'carbs' in nutrition_data and 'fat' in nutrition_data and 'protein' in nutrition_data:
+                   nutrient_data = {
+                       'Nutrient': ['Carbohydrates', 'Fats', 'Proteins'],
+                       'Amount': [
+                           float(nutrition_data['carbs']), 
+                           float(nutrition_data['fat']), 
+                           float(nutrition_data['protein'])
+                       ]
+                   }
                     
-                #    df = pd.DataFrame(nutrient_data)
-                #    fig = px.pie(df, values='Amount', names='Nutrient', title='Nährwertverteilung')
+                   df = pd.DataFrame(nutrient_data)
+                   fig = px.pie(df, values='Amount', names='Nutrient', title='Nährwertverteilung')
                 
-                    # Anzeigen des Charts
-                #    st.plotly_chart(fig)
-                #else:
-                #    st.write("Unfortunately, there are no informations regarding the nutrition-score available.").
+                    #Anzeigen des Charts
+                   st.plotly_chart(fig)
+                else:
+                   st.write("Unfortunately, there are no informations regarding the nutrition-score available.").
 
-                # if 'carbs' in nutrition_data and 'fat' in nutrition_data and 'protein' in nutrition_data:
-                #     nutrient_data = {
-                #         'Nutrient': ['Carbohydrates', 'Fats', 'Proteins'],
-                #         'Amount': [
-                #             float(nutrition_data['carbs']), 
-                #             float(nutrition_data['fat']), 
-                #             float(nutrition_data['protein'])
-                #         ]
-                #     }
+                if 'carbs' in nutrition_data and 'fat' in nutrition_data and 'protein' in nutrition_data:
+                    nutrient_data = {
+                        'Nutrient': ['Carbohydrates', 'Fats', 'Proteins'],
+                        'Amount': [
+                            float(nutrition_data['carbs']), 
+                            float(nutrition_data['fat']), 
+                            float(nutrition_data['protein'])
+                        ]
+                    }
 
-                #     # Chart via Matplotlib erstellen
-                #     fig, ax = plt.subplots()
-                #     ax.pie(nutrient_data['Amount'], labels=nutrient_data['Nutrient'], autopct='%1.1f%%', startangle=90)
-                #     ax.axis('equal')  # https://www.w3schools.com/python/matplotlib_pie_charts.asp
+                    # Chart via Matplotlib erstellen
+                    fig, ax = plt.subplots()
+                    ax.pie(nutrient_data['Amount'], labels=nutrient_data['Nutrient'], autopct='%1.1f%%', startangle=90)
+                    ax.axis('equal')  # https://www.w3schools.com/python/matplotlib_pie_charts.asp
 
                    
-                #     st.pyplot(fig)
-                # else: 
-                #     st.write("Unfortunately, there are no informations regarding the nutrition-score available.")
+                    st.pyplot(fig)
+                else: 
+                    st.write("Unfortunately, there are no informations regarding the nutrition-score available.")
         
                 # Überprüfen, ob Instruktionen vorhanden ist
                 #  Spoonacular-API für Rezeptinformationen (https://spoonacular.com/food-api/docs#Get-Recipe-Information) / Key ist derselbe
