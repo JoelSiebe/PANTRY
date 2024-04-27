@@ -155,34 +155,34 @@ if submit_button:
                 # Nährwertinformationen für das ausgewählte Rezept abrufen
                 nutrition_data = get_nutrition_info(recipe['id'])
                                 
-                # Chart für die Nährwertverteilung erstellen (https://plotly.streamlit.app/Pie_Charts)
-                if 'carbs' in nutrition_data and 'fat' in nutrition_data and 'protein' in nutrition_data:
-                   nutrient_data = {
-                       'Nutrient': ['Carbohydrates', 'Fats', 'Proteins'],
-                       'Amount': [
-                           float(nutrition_data['carbs']), 
-                           float(nutrition_data['fat']), 
-                           float(nutrition_data['protein'])
-                       ]
-                   }
+                # # Chart für die Nährwertverteilung erstellen (https://plotly.streamlit.app/Pie_Charts)
+                # if 'carbs' in nutrition_data and 'fat' in nutrition_data and 'protein' in nutrition_data:
+                #    nutrient_data = {
+                #        'Nutrient': ['Carbohydrates', 'Fats', 'Proteins'],
+                #        'Amount': [
+                #            float(nutrition_data['carbs']), 
+                #            float(nutrition_data['fat']), 
+                #            float(nutrition_data['protein'])
+                #        ]
+                #    }
                     
-                   df = pd.DataFrame(nutrient_data)
-                   fig = px.pie(df, values='Amount', names='Nutrient', title='Nährwertverteilung')
+                #    df = pd.DataFrame(nutrient_data)
+                #    fig = px.pie(df, values='Amount', names='Nutrient', title='Nährwertverteilung')
                 
-                    #Anzeigen des Charts
-                   st.plotly_chart(fig)
-                else:
-                   st.write("Unfortunately, there are no informations regarding the nutrition-score available.")
+                #     #Anzeigen des Charts
+                #    st.plotly_chart(fig)
+                # else:
+                #    st.write("Unfortunately, there are no informations regarding the nutrition-score available.")
 
-                if 'carbs' in nutrition_data and 'fat' in nutrition_data and 'protein' in nutrition_data:
-                    nutrient_data = {
-                        'Nutrient': ['Carbohydrates', 'Fats', 'Proteins'],
-                        'Amount': [
-                            float(nutrition_data['carbs']), 
-                            float(nutrition_data['fat']), 
-                            float(nutrition_data['protein'])
-                        ]
-                    }
+                # if 'carbs' in nutrition_data and 'fat' in nutrition_data and 'protein' in nutrition_data:
+                #     nutrient_data = {
+                #         'Nutrient': ['Carbohydrates', 'Fats', 'Proteins'],
+                #         'Amount': [
+                #             float(nutrition_data['carbs']), 
+                #             float(nutrition_data['fat']), 
+                #             float(nutrition_data['protein'])
+                #         ]
+                #     }
 
                     # Chart via Matplotlib erstellen
                     fig, ax = plt.subplots()
