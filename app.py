@@ -156,11 +156,9 @@ if submit_button:
                 nutrition_data = get_nutrition_info(recipe['id'])
 
                 labels = 'Carbs', 'Fat', 'Protein' 
-                sizes = [
-                           float(nutrition_data['carbs']), 
-                           float(nutrition_data['fat']), 
-                           float(nutrition_data['protein'])
-                       ] 
+                sizes = [15, 12, 20]
+                          
+                        
                 fig, ax = plt.subplots()
                 ax.pie(sizes, labels=labels)  
                       
