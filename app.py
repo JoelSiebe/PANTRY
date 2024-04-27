@@ -154,7 +154,16 @@ if submit_button:
                 
                 # Nährwertinformationen für das ausgewählte Rezept abrufen
                 nutrition_data = get_nutrition_info(recipe['id'])
-                                
+
+                labels = 'Carbs', 'Fat', 'Protein' 
+                sizes = [
+                           float(nutrition_data['carbs']), 
+                           float(nutrition_data['fat']), 
+                           float(nutrition_data['protein'])
+                       ] 
+                fig, ax = plt.subplots()
+                ax.pie(sizes, labels=labels)  
+                      
                 # # Chart für die Nährwertverteilung erstellen (https://plotly.streamlit.app/Pie_Charts)
                 # if 'carbs' in nutrition_data and 'fat' in nutrition_data and 'protein' in nutrition_data:
                 #    nutrient_data = {
@@ -185,14 +194,14 @@ if submit_button:
                 #     }
 
                     # Chart via Matplotlib erstellen
-                    fig, ax = plt.subplots()
-                    ax.pie(nutrient_data['Amount'], labels=nutrient_data['Nutrient'], autopct='%1.1f%%', startangle=90)
-                    ax.axis('equal')  # https://www.w3schools.com/python/matplotlib_pie_charts.asp
+                # fig, ax = plt.subplots()
+                # ax.pie(nutrient_data['Amount'], labels=nutrient_data['Nutrient'], autopct='%1.1f%%', startangle=90)
+                # ax.axis('equal')  # https://www.w3schools.com/python/matplotlib_pie_charts.asp
 
                    
-                    st.pyplot(fig)
-                else: 
-                    st.write("Unfortunately, there are no informations regarding the nutrition-score available.")
+                # st.pyplot(fig)
+                # else: 
+                #     st.write("Unfortunately, there are no informations regarding the nutrition-score available.")
         
                 # Überprüfen, ob Instruktionen vorhanden ist
                 #  Spoonacular-API für Rezeptinformationen (https://spoonacular.com/food-api/docs#Get-Recipe-Information) / Key ist derselbe
