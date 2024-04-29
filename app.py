@@ -25,7 +25,7 @@ with col2:
 
 # Einführung in App mit entsprechenden Untertiteln
 st.header("How does it work?") 
-st.header("First, enter what's left in your fridge. Selcect any filters if needed.")
+st.header("First, enter what's left in your fridge. Select any filters if needed.")
 st.title("Then let us do the magic")
 
 # Konfiguration für Spoonacular-API
@@ -59,6 +59,33 @@ def get_recipes(ingredients, cuisine, difficulty, duration, allergies):
 #API-Abfrage senden
     response = requests.get(api_url, params=parameter)
     return response.json() # Rückgabe des Ergebnisses
+
+# Funktion zur Visualisierung des Rezepts
+def visualize_recipe(recipe):
+    # POST-Anfrage an visualizeRecipe senden, um ein visuelles Rezept zu erhalten
+    api_visualize_url = "https://api.spoonacular.com/recipes/visualizeRecipe"
+
+    payload = {
+        'apiKey': api_key,
+        'title': recipe['title'],  # Titel des Rezepts
+        'ingredientsString': ', '.join([ing['name'] for ing in recipe['usedIngredients']]),  # Zutaten
+        'instructionsString': '; '.join(
+            [f"Step {step['number']}: {step['step']}" for section in recipe['analyzedInstructions'] for step in section['steps']]
+        ),  # Zubereitungsschritte
+        'servings': recipe['servings'],  # Anzahl der Portionen
+        'readyInMinutes': recipe['readyInMinutes'],  # Zubereitungszeit in Minuten
+    }
+
+    response = requests.post(api_visualize_url, data=payload)  # POST-Anfrage senden
+    if response.status_code == 200:
+        # Visualisierte Darstellung erhalten und in Streamlit anzeigen
+        visualization = response.json().get('recipeVisual')
+        if visualization:
+            st.image(visualization, caption=f"Visualized Recipe: {recipe['title']}")
+        else:
+            st.warning("Visualization not found.")
+    else:
+        st.error("Error in visualizing recipe.")
 
 # Daten-Visualisierung in Form eines Piecharts (auf Basis der Nährwerten):
 # Funktion, um Infos aus API abzurufen und in data zu speichern
@@ -107,6 +134,7 @@ if submit_button:
             for recipe in recipes:
                 st.subheader(recipe['title'])  # Rezepttitel anzeigen
                 st.image(recipe['image'])  # Bild des Rezepts anzeigen
+                visualize_recipe(recipe)
                 used_ingredients = ', '.join([ing['name'] for ing in recipe['usedIngredients']])
                 missed_ingredients = ', '.join([ing['name'] for ing in recipe['missedIngredients']])
                 st.write("Used Ingredients:", used_ingredients) # Gebrauchte und noch erforderliche Zutaten anzeigen
