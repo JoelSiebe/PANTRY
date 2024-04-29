@@ -1,32 +1,6 @@
 import streamlit as st
 import requests
-#import plotly.express as px
-import pandas as pd
-#import matplotlib.pyplot as plt
-
-
-# Übersicht über die verwendeten Namen:
-
-##Mit nachfolgendem Abschnitt kann ein Hintergrundbild eingefügt werden; 
-##CSS-Stil (https://discuss.streamlit.io/t/upload-background-image/59732 // https://www.w3schools.com/cssref/pr_background-image.php)
-# css_background = """   
-# <style>
-# [data-testid="stAppViewContainer"] > .main {
-#     # background-image: url("https://i.postimg.cc/cJtrkLQw/pexels-mike-murray-5701888.jpg");
-#     background-image: url("https://i.postimg.cc/prztbnxs/pexels-brett-sayles-6871608.jpg");
-#     background-size: cover;                 #grösse des hintergrundbilds, cover = ganzer container
-#     background-position: center center;
-#     background-repeat: no-repeat;
-#     background-attachment: local;        #beim scrollen fix oder bewegend - local = bewegend
-# }
-
-# [data-testid="stHeader"] {
-#     background: rgba(181, 179, 179);
-# }
-# </style>
-# """
-
-# st.markdown(css_background, unsafe_allow_html=True) #css_background wird angewendet, unsafe für Anzeige von HTML-Inhalten
+import matplotlib.pyplot as plt
 
 # Titel und Header
 # Quelle für Header: https://stackoverflow.com/questions/70932538/how-to-center-the-title-and-an-image-in-streamlit
@@ -43,18 +17,17 @@ st.title("You decide.")
 col1, col2= st.columns(2)
 
 with col1:
-#    st.header("Is it Italian?")
    st.image("https://i.postimg.cc/44rnqrp3/pexels-lisa-fotios-1373915.jpgg")
 
 with col2:
-#    st.header("Or maybe Korean?")
    st.image("https://i.postimg.cc/RZ0FH4BX/pexels-valeria-boltneva-1199957.jpg")
 
-# weitere Untertitel -> noch schauen, ob mit CSS schöner gemacht werden kann.
+# weitere Untertitel
 
 st.header("How does it work?") 
 st.header("First, enter what's left in your fridge. Selcect any filters if needed.")
 st.title("Then let us do the magic")
+
 
 #Filteroptionen (https://docs.streamlit.io/library/api-reference/widgets)
 
@@ -63,11 +36,11 @@ api_url = "https://api.spoonacular.com/recipes/findByIngredients"
 #API-Schlüssel (noch schauen, wie man das in einer anderen Datei macht)
 api_key = "06491aabe3d2435b8b21a749de46b765"
 
-# Funktion zum Abrufen von Rezepten d
-def get_recipes(ingredients, cuisine, difficulty, duration, number_ingredients):
+# Funktion zum Abrufen von Rezepten
+def get_recipes(ingredients, cuisine, difficulty, duration, allergies):
     parameter = {
         'ingredients': ingredients,
-        'number': 5, #Anz. angezeigter Rezepte
+        'number': 1, #Anz. angezeigter Rezepte -> zuerst 10, um dann nochmals auf Allergien / Länder zu filtern
         'apiKey': api_key
     }
 
@@ -86,18 +59,56 @@ def get_recipes(ingredients, cuisine, difficulty, duration, number_ingredients):
         else:
             parameter['maxReadyTime'] = 60 
 
-    if number_ingredients:
-        parameter['number'] = number_ingredients
+    # if allergies:
+    #     parameter['intolerances'] = allergies.lower()
 
     #API-Abfrage senden
     response = requests.get(api_url, params=parameter)
     return response.json()
 
+    # response = requests.get(api_url, params=parameter)
+    # all_recipes = response.json()
+    # filtered_recipes = []
+
+    # if allergies and allergies != 'None':
+    #     allergy_list = [allergy.strip().lower() for allergy in allergies.split(",")]
+
+    #     for recipe in all_recipes:
+    #         all_ingredients = [ing['name'].lower() for ing in recipe['usedIngredients'] + recipe['missedIngredients']]
+
+    #         has_allergy = False
+    #         for allergy in allergy_list:
+    #             if allergy in all_ingredients:
+    #                 has_allergy = True
+    #                 break
+
+    #         if not has_allergy:
+    #             filtered_recipes.append(recipe)
+
+    # else:
+    #     filtered_recipes = all_recipes  
+
+    # return filtered_recipes
+
+
+
+
 # Daten-Visualisierung in Form eines Kuchendiagrams (auf Basis der Nährwerten) -> Funktion um Infos abzurufen
 def get_nutrition_info(recipe_id):
     api_nutrition_url = f"https://api.spoonacular.com/recipes/{recipe_id}/nutritionWidget.json"
     response = requests.get(api_nutrition_url, params={'apiKey': api_key})
-    return response.json()
+    data = response.json()
+
+    def parse_nutrition_value(value):
+        clean_value = ''.join([ch for ch in value if ch.isdigit() or ch == '.'])
+        return float(clean_value)
+
+    # Die relevanten Nährwerte (Kohlenhydrate, Protein, Fett) extrahieren und umwandeln
+    carbs = parse_nutrition_value(data['carbs'])
+    protein = parse_nutrition_value(data['protein'])
+    fat = parse_nutrition_value(data['fat'])
+
+    return {'carbs': carbs, 'protein': protein, 'fat': fat}
    
 # Zwei Texteingabefelder (Filteroptionen) nebeneinander anzeigen
 with st.form(key='my_form'):
@@ -108,14 +119,14 @@ with st.form(key='my_form'):
     with col2:
         difficulty = st.selectbox('Difficulty Level', ['Any', 'Easy', 'Medium', 'Hard'])
         duration = st.selectbox('Duration', ['Any', '0-15 minutes', '15-30 minutes', '30-60 minutes', '60+ minutes'])
-        number_ingredients = st.number_input('Number of ingredients', min_value=1, max_value=20, value=5)
+        allergies = st.selectbox('Allergies', ['None', 'Dairy', 'Egg', 'Gluten', 'Peanut', 'Seafood', 'Sesame', 'Shellfish', 'Soy', 'Tree Nut', 'Wheat'])
 
     submit_button = st.form_submit_button('Show recipes')
 
 # Rezepte anzeigen, wenn die Schaltfläche "Show recipes" geklickt wird
 if submit_button:
     if ingredients:
-        recipes = get_recipes(ingredients, cuisine, difficulty, duration, number_ingredients)
+        recipes = get_recipes(ingredients, cuisine, difficulty, duration, allergies)
         if recipes:  # Wenn es Rezepte gibt
             for recipe in recipes:
                 st.subheader(recipe['title'])  # Rezepttitel anzeigen
@@ -127,47 +138,18 @@ if submit_button:
                 
                 # Nährwertinformationen für das ausgewählte Rezept abrufen
                 nutrition_data = get_nutrition_info(recipe['id'])
-                                
-                # Chart für die Nährwertverteilung erstellen (https://plotly.streamlit.app/Pie_Charts)
-                #if 'carbs' in nutrition_data and 'fat' in nutrition_data and 'protein' in nutrition_data:
-                #    nutrient_data = {
-                #        'Nutrient': ['Carbohydrates', 'Fats', 'Proteins'],
-                #        'Amount': [
-                #            float(nutrition_data['carbs']), 
-                #            float(nutrition_data['fat']), 
-                #            float(nutrition_data['protein'])
-                #        ]
-                #    }
-                    
-                #    df = pd.DataFrame(nutrient_data)
-                #    fig = px.pie(df, values='Amount', names='Nutrient', title='Nährwertverteilung')
-                
-                    # Anzeigen des Charts
-                #    st.plotly_chart(fig)
-                #else:
-                #    st.write("Unfortunately, there are no informations regarding the nutrition-score available.").
 
-                # if 'carbs' in nutrition_data and 'fat' in nutrition_data and 'protein' in nutrition_data:
-                #     nutrient_data = {
-                #         'Nutrient': ['Carbohydrates', 'Fats', 'Proteins'],
-                #         'Amount': [
-                #             float(nutrition_data['carbs']), 
-                #             float(nutrition_data['fat']), 
-                #             float(nutrition_data['protein'])
-                #         ]
-                #     }
+                # Quelle für Workaround, um den Piechart kleiner zu machen: https://discuss.streamlit.io/t/cannot-change-matplotlib-figure-size/10295/10 
+                col1, col2, col3, col4, col5=st.columns([1,1, 2, 1, 1])
+                with col3:
+                    labels = ['Carbohydrates', 'Protein', 'Fat']
+                    sizes = [nutrition_data['carbs'], nutrition_data['protein'], nutrition_data['fat']]
+                    colors = ['#133337', '#cccccc', '#6897bb']
+                    fig, ax = plt.subplots(figsize=(4, 4))
+                    ax.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90)
+                    ax.axis('equal')  
+                    st.pyplot(fig)
 
-                #     # Chart via Matplotlib erstellen
-                #     fig, ax = plt.subplots()
-                #     ax.pie(nutrient_data['Amount'], labels=nutrient_data['Nutrient'], autopct='%1.1f%%', startangle=90)
-                #     ax.axis('equal')  # https://www.w3schools.com/python/matplotlib_pie_charts.asp
-
-                   
-                #     st.pyplot(fig)
-                # else: 
-                #     st.write("Unfortunately, there are no informations regarding the nutrition-score available.")
-        
-                # Überprüfen, ob Instruktionen vorhanden ist
                 #  Spoonacular-API für Rezeptinformationen (https://spoonacular.com/food-api/docs#Get-Recipe-Information) / Key ist derselbe
                 api_info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
                 instructions_response = requests.get(api_info_url, params={'apiKey': api_key})
