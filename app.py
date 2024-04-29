@@ -33,10 +33,14 @@ api_url = "https://api.spoonacular.com/recipes/findByIngredients" # Spoonacular 
 api_key = "06491aabe3d2435b8b21a749de46b765" # API-Schlüssel
 
 # Funktion zum Abrufen von Rezepten basierend auf Input (Zutaten) und den ausgewählten Filteroptionen
-def get_recipes(ingredients, cuisine, difficulty, duration, allergies):
+def get_recipes(ingredients, cuisine, difficulty, duration, allergies, diet):
     # Parameter, die an API gesendet werden
     parameter = {
         'ingredients': ingredients,
+        'cuisine': cuisine,
+        'difficutly': difficulty,
+        'maxReadyTime': duration,
+        'diet': diet,
         'number': 1, # Anz. angezeigter Rezepte
         'apiKey': api_key
     }
@@ -59,32 +63,6 @@ def get_recipes(ingredients, cuisine, difficulty, duration, allergies):
 #API-Abfrage senden
     response = requests.get(api_url, params=parameter)
     return response.json() # Rückgabe des Ergebnisses
-
-# Funktion zur Visualisierung des Rezepts
-def visualize_recipe(recipe):
-    # POST-Anfrage an visualizeRecipe senden, um ein visuelles Rezept zu erhalten
-    api_visualize_url = "https://api.spoonacular.com/recipes/visualizeRecipe"
-
-    payload = {
-        'apiKey': api_key,
-        'title': recipe['title'],  # Titel des Rezepts
-        'ingredientsString': ', '.join([ing['name'] for ing in recipe['usedIngredients']]),  # Zutaten
-        'instructionsString': '; '.join(
-            [f"Step {step['number']}: {step['step']}" for section in recipe['analyzedInstructions'] for step in section['steps']]),
-        'servings': recipe['servings'],  # Anzahl der Portionen
-        'readyInMinutes': recipe['readyInMinutes'],  # Zubereitungszeit in Minuten
-    }
-
-    response = requests.post(api_visualize_url, data=payload)  # POST-Anfrage senden
-    if response.status_code == 200:
-        # Visualisierte Darstellung erhalten und in Streamlit anzeigen
-        visualization = response.json().get('recipeVisual')
-        if visualization:
-            st.image(visualization, caption=f"Visualized Recipe: {recipe['title']}")
-        else:
-            st.warning("Visualization not found.")
-    else:
-        st.error("Error in visualizing recipe.")
 
 # Daten-Visualisierung in Form eines Piecharts (auf Basis der Nährwerten):
 # Funktion, um Infos aus API abzurufen und in data zu speichern
@@ -114,7 +92,8 @@ with st.form(key='my_form'):
     with col1:
         ingredients = st.text_input('Ingredients') # Texteingabe der Zutaten
         # Auswahlfeld für eine mögliche Küche
-        cuisine= st.selectbox('Cuisine', ['Any', 'African', 'Asian', 'American', 'Chinese', 'Eastern European', 'Greek', 'Indian', 'Italian', 'Japanese', 'Mexican', 'Thai', 'Vietnamese'])
+        cuisin = st.selectbox('Cuisine', ['Any', 'African', 'Asian', 'American', 'Chinese', 'Eastern European', 'Greek', 'Indian', 'Italian', 'Japanese', 'Mexican', 'Thai', 'Vietnamese'])
+        diet = st.selectbox("Dietary restrictions", ["None", "Vegetarian", "Vegan", "Gluten-Free", "Ketogenic"]) # Quelle: https://github.com/deepankarvarma/Recipe-Finder-Using-Python/blob/master/app.py
     with col2:
         # Auswahlfeld für mögliches Schwierigkeitsleven
         difficulty = st.selectbox('Difficulty Level', ['Any', 'Easy', 'Medium', 'Hard'])
@@ -128,12 +107,11 @@ with st.form(key='my_form'):
 # Rezepte anzeigen, wenn die Schaltfläche "Show recipes" geklickt wird
 if submit_button:
     if ingredients: # Es müssen Zutaten eingegeben worden sein
-        recipes = get_recipes(ingredients, cuisine, difficulty, duration, allergies)
+        recipes = get_recipes(ingredients, cuisine, difficulty, duration, allergies, diet)
         if recipes:  # Wenn es Rezepte ausgibt
             for recipe in recipes:
                 st.subheader(recipe['title'])  # Rezepttitel anzeigen
                 st.image(recipe['image'])  # Bild des Rezepts anzeigen
-                visualize_recipe(recipe)
                 used_ingredients = ', '.join([ing['name'] for ing in recipe['usedIngredients']])
                 missed_ingredients = ', '.join([ing['name'] for ing in recipe['missedIngredients']])
                 st.write("Used Ingredients:", used_ingredients) # Gebrauchte und noch erforderliche Zutaten anzeigen
@@ -171,8 +149,6 @@ if submit_button:
                         st.write("No detailed instructions found.")
                 else:
                     st.write("No instructions available.")  
-            else:
-                st.write("No recipes found for the given ingredients.") 
 
 # Fusszeile der Anwendung
 st.markdown("---")
