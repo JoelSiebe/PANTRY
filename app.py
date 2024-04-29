@@ -141,7 +141,7 @@ if submit_button:
                
                 labels = ['Carbohydrates', 'Protein', 'Fat']
                 sizes = [nutrition_data['carbs'], nutrition_data['protein'], nutrition_data['fat']]
-                colors = ['#ff9999', '#66b3ff', '#99ff99']
+                colors = ['#133337', '#cccccc', '#6897bb']
                 fig, ax = plt.subplots(figsize=(4, 4))
                 ax.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90)
                 ax.axis('equal')  
