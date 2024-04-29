@@ -1,32 +1,6 @@
 import streamlit as st
 import requests
-#import plotly.express as px
-import pandas as pd
 import matplotlib.pyplot as plt
-
-
-# Übersicht über die verwendeten Namen:
-
-##Mit nachfolgendem Abschnitt kann ein Hintergrundbild eingefügt werden; 
-##CSS-Stil (https://discuss.streamlit.io/t/upload-background-image/59732 // https://www.w3schools.com/cssref/pr_background-image.php)
-# css_background = """   
-# <style>
-# [data-testid="stAppViewContainer"] > .main {
-#     # background-image: url("https://i.postimg.cc/cJtrkLQw/pexels-mike-murray-5701888.jpg");
-#     background-image: url("https://i.postimg.cc/prztbnxs/pexels-brett-sayles-6871608.jpg");
-#     background-size: cover;                 #grösse des hintergrundbilds, cover = ganzer container
-#     background-position: center center;
-#     background-repeat: no-repeat;
-#     background-attachment: local;        #beim scrollen fix oder bewegend - local = bewegend
-# }
-
-# [data-testid="stHeader"] {
-#     background: rgba(181, 179, 179);
-# }
-# </style>
-# """
-
-# st.markdown(css_background, unsafe_allow_html=True) #css_background wird angewendet, unsafe für Anzeige von HTML-Inhalten
 
 # Titel und Header
 # Quelle für Header: https://stackoverflow.com/questions/70932538/how-to-center-the-title-and-an-image-in-streamlit
@@ -43,14 +17,12 @@ st.title("You decide.")
 col1, col2= st.columns(2)
 
 with col1:
-#    st.header("Is it Italian?")
    st.image("https://i.postimg.cc/44rnqrp3/pexels-lisa-fotios-1373915.jpgg")
 
 with col2:
-#    st.header("Or maybe Korean?")
    st.image("https://i.postimg.cc/RZ0FH4BX/pexels-valeria-boltneva-1199957.jpg")
 
-# weitere Untertitel -> noch schauen, ob mit CSS schöner gemacht werden kann.
+# weitere Untertitel
 
 st.header("How does it work?") 
 st.header("First, enter what's left in your fridge. Selcect any filters if needed.")
@@ -67,7 +39,7 @@ api_key = "06491aabe3d2435b8b21a749de46b765"
 def get_recipes(ingredients, cuisine, difficulty, duration, allergies):
     parameter = {
         'ingredients': ingredients,
-        'number': 2, #Anz. angezeigter Rezepte -> zuerst 10, um dann nochmals auf Allergien / Länder zu filtern
+        'number': 1, #Anz. angezeigter Rezepte -> zuerst 10, um dann nochmals auf Allergien / Länder zu filtern
         'apiKey': api_key
     }
 
@@ -155,55 +127,25 @@ if submit_button:
                 # Nährwertinformationen für das ausgewählte Rezept abrufen
                 nutrition_data = get_nutrition_info(recipe['id'])
 
-                labels = 'Carbs', 'Fat', 'Protein' 
-                sizes = [15, 12, 20]
+                 # Werte für das Tortendiagramm
+                labels = ['Carbohydrates', 'Protein', 'Fat']
+                sizes = [nutrition_data['carbs'], nutrition_data['protein'], nutrition_data['fat']]
+
+                fig, ax = plt.subplots()
+                ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
+                ax.axis('equal')  # Tortendiagramm rund machen
+                st.pyplot(fig)
+
+                
+                # labels = 'Carbs', 'Fat', 'Protein' 
+                # sizes = [15, 12, 20]
                           
                         
-                fig, ax = plt.subplots()
-                ax.pie(sizes, labels=labels)
-
-                st.pyplot(fig)  
-                      
-                # # Chart für die Nährwertverteilung erstellen (https://plotly.streamlit.app/Pie_Charts)
-                # if 'carbs' in nutrition_data and 'fat' in nutrition_data and 'protein' in nutrition_data:
-                #    nutrient_data = {
-                #        'Nutrient': ['Carbohydrates', 'Fats', 'Proteins'],
-                #        'Amount': [
-                #            float(nutrition_data['carbs']), 
-                #            float(nutrition_data['fat']), 
-                #            float(nutrition_data['protein'])
-                #        ]
-                #    }
-                    
-                #    df = pd.DataFrame(nutrient_data)
-                #    fig = px.pie(df, values='Amount', names='Nutrient', title='Nährwertverteilung')
-                
-                #     #Anzeigen des Charts
-                #    st.plotly_chart(fig)
-                # else:
-                #    st.write("Unfortunately, there are no informations regarding the nutrition-score available.")
-
-                # if 'carbs' in nutrition_data and 'fat' in nutrition_data and 'protein' in nutrition_data:
-                #     nutrient_data = {
-                #         'Nutrient': ['Carbohydrates', 'Fats', 'Proteins'],
-                #         'Amount': [
-                #             float(nutrition_data['carbs']), 
-                #             float(nutrition_data['fat']), 
-                #             float(nutrition_data['protein'])
-                #         ]
-                #     }
-
-                    # Chart via Matplotlib erstellen
                 # fig, ax = plt.subplots()
-                # ax.pie(nutrient_data['Amount'], labels=nutrient_data['Nutrient'], autopct='%1.1f%%', startangle=90)
-                # ax.axis('equal')  # https://www.w3schools.com/python/matplotlib_pie_charts.asp
+                # ax.pie(sizes, labels=labels)
 
-                   
-                # st.pyplot(fig)
-                # else: 
-                #     st.write("Unfortunately, there are no informations regarding the nutrition-score available.")
-        
-                # Überprüfen, ob Instruktionen vorhanden ist
+                # st.pyplot(fig)  
+
                 #  Spoonacular-API für Rezeptinformationen (https://spoonacular.com/food-api/docs#Get-Recipe-Information) / Key ist derselbe
                 api_info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
                 instructions_response = requests.get(api_info_url, params={'apiKey': api_key})
