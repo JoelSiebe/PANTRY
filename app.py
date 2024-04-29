@@ -28,6 +28,7 @@ st.header("How does it work?")
 st.header("First, enter what's left in your fridge. Selcect any filters if needed.")
 st.title("Then let us do the magic")
 
+
 #Filteroptionen (https://docs.streamlit.io/library/api-reference/widgets)
 
 # Spoonacular API-URL
@@ -138,6 +139,7 @@ if submit_button:
                 # Nährwertinformationen für das ausgewählte Rezept abrufen
                 nutrition_data = get_nutrition_info(recipe['id'])
 
+                # Quelle für Workaround, um den Piechart kleiner zu machen: https://discuss.streamlit.io/t/cannot-change-matplotlib-figure-size/10295/10 
                 col1, col2, col3, col4, col5=st.columns([1,1, 2, 1, 1])
                 with col3:
                     labels = ['Carbohydrates', 'Protein', 'Fat']
@@ -147,16 +149,6 @@ if submit_button:
                     ax.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90)
                     ax.axis('equal')  
                     st.pyplot(fig)
-
-                
-                # labels = 'Carbs', 'Fat', 'Protein' 
-                # sizes = [15, 12, 20]
-                          
-                        
-                # fig, ax = plt.subplots()
-                # ax.pie(sizes, labels=labels)
-
-                # st.pyplot(fig)  
 
                 #  Spoonacular-API für Rezeptinformationen (https://spoonacular.com/food-api/docs#Get-Recipe-Information) / Key ist derselbe
                 api_info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
