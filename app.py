@@ -41,7 +41,7 @@ def get_recipes(ingredients, cuisine, difficulty, duration, allergies, diet):
         'difficutly': difficulty,
         'maxReadyTime': duration,
         'diet': diet,
-        'number': 1, # Anz. angezeigter Rezepte
+        'number': 5, # Anz. angezeigter Rezepte
         'apiKey': api_key
     }
 # Filteroptionen (https://docs.streamlit.io/library/api-reference/widgets)
