@@ -139,14 +139,14 @@ if submit_button:
                 nutrition_data = get_nutrition_info(recipe['id'])
 
                 col1, col2, col3, col4, col5=st.columns([1,1, 2, 1, 1])
-                    with col3:
-                        labels = ['Carbohydrates', 'Protein', 'Fat']
-                        sizes = [nutrition_data['carbs'], nutrition_data['protein'], nutrition_data['fat']]
-                        colors = ['#133337', '#cccccc', '#6897bb']
-                        fig, ax = plt.subplots(figsize=(4, 4))
-                        ax.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90)
-                        ax.axis('equal')  
-                        st.pyplot(fig)
+                with col3:
+                    labels = ['Carbohydrates', 'Protein', 'Fat']
+                    sizes = [nutrition_data['carbs'], nutrition_data['protein'], nutrition_data['fat']]
+                    colors = ['#133337', '#cccccc', '#6897bb']
+                    fig, ax = plt.subplots(figsize=(4, 4))
+                    ax.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90)
+                    ax.axis('equal')  
+                    st.pyplot(fig)
 
                 
                 # labels = 'Carbs', 'Fat', 'Protein' 
