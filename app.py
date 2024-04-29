@@ -1,7 +1,7 @@
 # Importieren der verschiedenen Bibliotheken
 import streamlit as st # Streamlit
 import requests # HTTP-Anfragen
-import matplotlib.pyplot as plt # Datenvisualisierunb
+import matplotlib.pyplot as plt # Datenvisualisierung
 
 # Titel und Header
 # Quelle für Header:https://stackoverflow.com/questions/70932538/how-to-center-the-title-and-an-image-in-streamlit
@@ -35,34 +35,53 @@ api_key = "06491aabe3d2435b8b21a749de46b765" # API-Schlüssel
 # Funktion zum Abrufen von Rezepten basierend auf Input (Zutaten) und den ausgewählten Filteroptionen
 def get_recipes(ingredients, cuisine, difficulty, duration, allergies, diet):
     # Parameter, die an API gesendet werden
-    parameter = {
-        'ingredients': ingredients,
-        'cuisine': cuisine,
-        'difficutly': difficulty,
-        'maxReadyTime': duration,
-        'diet': diet,
-        'number': 5, # Anz. angezeigter Rezepte
-        'apiKey': api_key
-    }
-# Filteroptionen (https://docs.streamlit.io/library/api-reference/widgets)
-    if cuisine != "Any":
-        parameter['cuisine']=cuisine # Auswählen der versch. Küchen
-    if difficulty != "Any":
-        parameter['difficulty'] = difficulty.lower() # In Kleinbuchstaben umwandeln, um von der API gelesen zu werden
-    if duration != "Any":
-        # Festlegen der max. Zubereitungsdauer
-        if duration == "0-15 minutes":
-            parameter['maxReadyTime'] = 15
-        elif duration == "15-30 minutes":
-            parameter['maxReadyTime'] = 30
-        elif duration == "30-60 minutes":
-            parameter['maxReadyTime'] = 60
-        else:
-            parameter['maxReadyTime'] = 60 
+    valid_cuisines = ["Any", "African", "Asian", "American", "Chinese", "Eastern European", "Greek", "Indian", "Italian", "Japanese", "Mexican", "Thai", "Vietnamese"]
+    valid_difficulties = ["Any", "Easy", "Medium", "Hard"]
+    valid_durations = ["Any", "0-15 minutes", "15-30 minutes", "30-60 minutes", "60+ minutes"]
+    valid_allergies = ["None", "Dairy", "Egg", "Gluten", "Peanut", "Seafood", "Sesame", "Shellfish", "Soy", "Tree Nut", "Wheat"]
+    valid_diets = ["None", "Vegetarian", "Vegan", "Gluten-Free", "Ketogenic"]
 
-#API-Abfrage senden
-    response = requests.get(api_url, params=parameter)
-    return response.json() # Rückgabe des Ergebnisses
+    if cuisine not in valid_cuisines:
+        raise ValueError("Invalid cuisine value")
+    if difficulty not in valid_difficulties:
+        raise ValueError("Invalid difficulty value")
+    if duration not in valid_durations:
+        raise ValueError("Invalid duration value")
+    if allergies not in valid_allergies:
+        raise ValueError("Invalid allergies value")
+    if diet not in valid_diets:
+        raise ValueError("Invalid diet value")
+
+    
+    parameter_mapping = {
+        "Any": None,
+        "Easy": "easy",
+        "Medium": "medium",
+        "Hard": "hard",
+        "0-15 minutes": 15,
+        "15-30 minutes": 30,
+        "30-60 minutes": 60,
+        "60+ minutes": 600,
+        "None": None,
+        "Vegetarian": "vegetarian",
+        "Vegan": "vegan",
+        "Gluten-Free": "gluten free",
+        "Ketogenic": "ketogenic"
+    }
+
+    api_parameters = {
+        "ingredients": ingredients,
+        "cuisine": parameter_mapping.get(cuisine),
+        "difficulty": parameter_mapping.get(difficulty),
+        "maxReadyTime": parameter_mapping.get(duration),
+        "diet": parameter_mapping.get(diet),
+        "number": 5,  
+        "apiKey": api_key
+    }
+
+
+    response = requests.get(api_url, params=api_parameters)
+    return response.json()
 
 # Daten-Visualisierung in Form eines Piecharts (auf Basis der Nährwerten):
 # Funktion, um Infos aus API abzurufen und in data zu speichern
