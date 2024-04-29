@@ -96,7 +96,18 @@ def get_recipes(ingredients, cuisine, difficulty, duration, allergies):
 def get_nutrition_info(recipe_id):
     api_nutrition_url = f"https://api.spoonacular.com/recipes/{recipe_id}/nutritionWidget.json"
     response = requests.get(api_nutrition_url, params={'apiKey': api_key})
-    return response.json()
+    data = response.json()
+
+    def parse_nutrition_value(value):
+        clean_value = ''.join([ch for ch in value if ch.isdigit() or ch == '.'])
+        return float(clean_value)
+
+    # Die relevanten Nährwerte (Kohlenhydrate, Protein, Fett) extrahieren und umwandeln
+    carbs = parse_nutrition_value(data['carbs'])
+    protein = parse_nutrition_value(data['protein'])
+    fat = parse_nutrition_value(data['fat'])
+
+    return {'carbs': carbs, 'protein': protein, 'fat': fat}
    
 # Zwei Texteingabefelder (Filteroptionen) nebeneinander anzeigen
 with st.form(key='my_form'):
@@ -127,13 +138,13 @@ if submit_button:
                 # Nährwertinformationen für das ausgewählte Rezept abrufen
                 nutrition_data = get_nutrition_info(recipe['id'])
 
-                 # Werte für das Tortendiagramm
+               
                 labels = ['Carbohydrates', 'Protein', 'Fat']
                 sizes = [nutrition_data['carbs'], nutrition_data['protein'], nutrition_data['fat']]
 
                 fig, ax = plt.subplots()
                 ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
-                ax.axis('equal')  # Tortendiagramm rund machen
+                ax.axis('equal')  
                 st.pyplot(fig)
 
                 
