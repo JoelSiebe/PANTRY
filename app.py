@@ -70,8 +70,7 @@ def visualize_recipe(recipe):
         'title': recipe['title'],  # Titel des Rezepts
         'ingredientsString': ', '.join([ing['name'] for ing in recipe['usedIngredients']]),  # Zutaten
         'instructionsString': '; '.join(
-            [f"Step {step['number']}: {step['step']}" for section in recipe['analyzedInstructions'] for step in section['steps']]
-        ),  # Zubereitungsschritte
+            [f"Step {step['number']}: {step['step']}" for section in recipe['analyzedInstructions'] for step in section['steps']]),
         'servings': recipe['servings'],  # Anzahl der Portionen
         'readyInMinutes': recipe['readyInMinutes'],  # Zubereitungszeit in Minuten
     }
