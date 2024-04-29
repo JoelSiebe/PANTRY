@@ -92,7 +92,7 @@ with st.form(key='my_form'):
     with col1:
         ingredients = st.text_input('Ingredients') # Texteingabe der Zutaten
         # Auswahlfeld für eine mögliche Küche
-        cuisin = st.selectbox('Cuisine', ['Any', 'African', 'Asian', 'American', 'Chinese', 'Eastern European', 'Greek', 'Indian', 'Italian', 'Japanese', 'Mexican', 'Thai', 'Vietnamese'])
+        cuisine = st.selectbox('Cuisine', ['Any', 'African', 'Asian', 'American', 'Chinese', 'Eastern European', 'Greek', 'Indian', 'Italian', 'Japanese', 'Mexican', 'Thai', 'Vietnamese'])
         diet = st.selectbox("Dietary restrictions", ["None", "Vegetarian", "Vegan", "Gluten-Free", "Ketogenic"]) # Quelle: https://github.com/deepankarvarma/Recipe-Finder-Using-Python/blob/master/app.py
     with col2:
         # Auswahlfeld für mögliches Schwierigkeitsleven
