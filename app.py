@@ -86,8 +86,11 @@ def main():
                     st.subheader(recipe['title'])
                     st.write(f"Name: {recipe['title']}")
                     st.image(recipe['image'])
-                    used_ingredients = ', '.join([ing['name'] for ing in recipe['usedIngredients']])
-                    missed_ingredients = ', '.join([ing['name'] for ing in recipe['missedIngredients']])
+                    recipe_info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
+                    recipe_info_response = requests.get(recipe_info_url, params={'apiKey': api_key})
+                    recipe_info = recipe_info_response.json()
+                    used_ingredients = ', '.join([ing['name'] for ing in recipe_info['usedIngredients']])
+                    missed_ingredients = ', '.join([ing['name'] for ing in recipe_info['missedIngredients']])
                     st.write("Used Ingredients:", used_ingredients) # Gebrauchte und noch erforderliche Zutaten anzeigen
                     st.write("Missing Ingredients:", missed_ingredients)
                     st.write("---")
