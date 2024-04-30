@@ -40,7 +40,7 @@ def get_recipes(query, cuisine, diet, intolerances, difficulty, duration):
 def main():
     # Zwei Kolonnen als Platzhalter für Eingabefelder (Filteroptionen) erstellen
     with st.form(key='recipe_form'):
-        col1, col2 = st.collums(2)
+        col1, col2 = st.columns(2)
         with col1:
             query = st.text_input("Ingredients") # Texteingabe der Zutaten
             # Auswahlfeld für mögliche Küchen
