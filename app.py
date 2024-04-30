@@ -39,30 +39,31 @@ def get_recipes(query, cuisine, diet, intolerances, difficulty, duration):
 
 def main():
     # Zwei Kolonnen als Platzhalter für Eingabefelder (Filteroptionen) erstellen
-    col1, col2 = st.collums(2)
-    with col1:
-        query = st.text_input("Ingredients") # Texteingabe der Zutaten
-        # Auswahlfeld für mögliche Küchen
-        cuisine = st.selectboxx('Select Cuisine', ['Any', 'African', 'Asian', 'American', 'Chinese', 'Eastern European', 'Greek', 'Indian', 'Italian', 'Japanese', 'Mexican', 'Thai', 'Vietnamese'])
-        # Auswahlfeld für möglichen Schwierigkeitsgrad - Achtung; funktioniert nur bei wenigen Rezepten (Info nicht überall enthalten)       
-        difficulty = st.selectbox("Select difficulty level (This option is available for only a few recipes)", ["Any", "Easy", "Medium", "Hard"])
-    with col2:
-        # Auswahlfeld für Diät
-        diet = st.selectbox("Dietary restriction", ["None", "Vegan", "Vegetarian" "Gluten Free", "Ketogenic"])
-        # Auswahlfeld für Zubereitungsdauer - Achtung; funktionert ebenfalls nur bei wenigen Rezepten (Info nicht überall enthalten)
-        duration = st.selectbox("Select duration (This option is available for only a few recipes)", ["Any", "0-15 minutes", "15-30 minutes", "30-60 minutes", "60+ minutes"])
-        # Auswahlfeld für mögliche Allergien
-        intolerances = st.selectbox('Allergies', ['None', 'Dairy', 'Egg', 'Gluten', 'Peanut', 'Seafood', 'Sesame', 'Shellfish', 'Soy', 'Tree Nut', 'Wheat'])
+    with st.form(key='recipe_form'):
+        col1, col2 = st.collums(2)
+        with col1:
+            query = st.text_input("Ingredients") # Texteingabe der Zutaten
+            # Auswahlfeld für mögliche Küchen
+            cuisine = st.selectboxx('Select Cuisine', ['Any', 'African', 'Asian', 'American', 'Chinese', 'Eastern European', 'Greek', 'Indian', 'Italian', 'Japanese', 'Mexican', 'Thai', 'Vietnamese'])
+            # Auswahlfeld für möglichen Schwierigkeitsgrad - Achtung; funktioniert nur bei wenigen Rezepten (Info nicht überall enthalten)       
+            difficulty = st.selectbox("Select difficulty level (This option is available for only a few recipes)", ["Any", "Easy", "Medium", "Hard"])
+        with col2:
+            # Auswahlfeld für Diät
+            diet = st.selectbox("Dietary restriction", ["None", "Vegan", "Vegetarian" "Gluten Free", "Ketogenic"])
+            # Auswahlfeld für Zubereitungsdauer - Achtung; funktionert ebenfalls nur bei wenigen Rezepten (Info nicht überall enthalten)
+            duration = st.selectbox("Select duration (This option is available for only a few recipes)", ["Any", "0-15 minutes", "15-30 minutes", "30-60 minutes", "60+ minutes"])
+            # Auswahlfeld für mögliche Allergien
+            intolerances = st.selectbox('Allergies', ['None', 'Dairy', 'Egg', 'Gluten', 'Peanut', 'Seafood', 'Sesame', 'Shellfish', 'Soy', 'Tree Nut', 'Wheat'])
 
 
-    if st.button("Show recipes"): # Schaltfläche zum Absenden der Eingaben, resp. Anzeigen der entspr. Rezepten
-        recipes = get_recipes(query, cuisine, diet, intolerances, duration, difficulty)
-        if 'results' in recipes:
-            for recipe in recipes["results"]:
-                st.write(f"Name: {recipe['title']}")
-                st.write("---")
-        else:
-            st.write("Keine Ergebnisse gefunden.")
+        if st.button("Show recipes"): # Schaltfläche zum Absenden der Eingaben, resp. Anzeigen der entspr. Rezepten
+            recipes = get_recipes(query, cuisine, diet, intolerances, duration, difficulty)
+            if 'results' in recipes:
+                for recipe in recipes["results"]:
+                    st.write(f"Name: {recipe['title']}")
+                    st.write("---")
+            else:
+                st.write("Keine Ergebnisse gefunden.")
 
 if __name__ == "__main__":
     main()
