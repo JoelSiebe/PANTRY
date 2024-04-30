@@ -28,24 +28,44 @@ st.header("How does it work?")
 st.header("First, enter what's left in your fridge. Select any filters if needed.")
 st.title("Then let us do the magic")
 
-API_KEY = "06491aabe3d2435b8b21a749de46b765"
+api_key = "06491aabe3d2435b8b21a749de46b765"
 
-@st.cache
-def get_recipes(query, cuisine, diet, intolerances):
-    url = f"https://api.spoonacular.com/recipes/complexSearch?apiKey={API_KEY}&query={query}&cuisine={cuisine}&diet={diet}&intolerances={intolerances}"
+@st.cache # Dektrator von Streamlit, um ein erneutes Senden der Anfrage an die API zu limitieren
+def get_recipes(query, cuisine, diet, intolerances, difficulty, duration):
+    url = f"https://api.spoonacular.com/recipes/complexSearch?apiKey={api_key}&query={query}&cuisine={cuisine}&diet={diet}&intolerances={intolerances}&difficulty={difficulty}&duration={duration}"
     response = requests.get(url)
     return response.json()
 
 def main():
-    st.title("Spoonacular Rezeptsuche")
+    query = st.text_input("Ingredients")
+    cuisine = st.selectbox("Select cuisine", ["Any", "Italian", "Mexican", "Chinese"])
+    difficulty = st.selectbox("Select difficulty level", ["Any", "Easy", "Medium", "Hard"])
+    diet = st.selectbox("Select your diet", ["None", "Vegan", "Gluten Free", "Ketogenic"])
+    duration = st.selectbox("Select duration", ["Any", "0-15 minutes", "15-30 minutes", "30-60 minutes", "60+ minutes"])
+    intolerances = st.selectbox('Allergies', ['None', 'Dairy', 'Egg', 'Gluten', 'Peanut', 'Seafood', 'Sesame', 'Shellfish', 'Soy', 'Tree Nut', 'Wheat'])
 
-    query = st.text_input("Suchbegriff eingeben")
-    cuisine = st.text_input("Küche eingeben")
-    diet = st.text_input("Diät eingeben")
-    intolerances = st.text_input("Unverträglichkeiten eingeben")
+    parameter = {"query": query}
+
+    if cuisine != "Any":
+        parameter['cuisine'] = cuisine.lower()
+    if difficulty != "Any":
+        parameter['difficulty'] = difficulty.lower()
+    if diet != "None":
+        parameter["diet"] = diet.lower()
+    if duration != "Any":
+        if duration == "0-15 minutes":
+            parameter['maxReadyTime'] = 15
+        elif duration == "15-30 minutes":
+            parameter['maxReadyTime'] = 30
+        elif duration == "30-60 minutes":
+            parameter['maxReadyTime'] = 60
+        elif duration == "60+ minutes":
+            parameter['maxReadyTime'] = 120
+    if intolerances != "None":
+        parameter["intolerances"] = intolerances.lower()
 
     if st.button("Rezepte suchen"):
-        recipes = get_recipes(query, cuisine, diet, intolerances)
+        recipes = get_recipes(parameter)
         if 'results' in recipes:
             for recipe in recipes["results"]:
                 st.write(f"Name: {recipe['title']}")
@@ -55,3 +75,25 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+
+
+
+#     cuisine = st.text_input("Cuisine")
+#     diet = st.text_input("Diät eingeben")
+#     intolerances = st.text_input("Unverträglichkeiten eingeben")
+#     difficulty = st.text_
+
+#     if st.button("Rezepte suchen"):
+#         recipes = get_recipes(query, cuisine, diet, intolerances)
+#         if 'results' in recipes:
+#             for recipe in recipes["results"]:
+#                 st.write(f"Name: {recipe['title']}")
+#                 st.write("---")
+#         else:
+#             st.write("Keine Ergebnisse gefunden.")
+
+# if __name__ == "__main__":
+#     main()
