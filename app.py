@@ -62,11 +62,7 @@ def get_recipes(ingredients, cuisine, difficulty, duration, allergies, diet):
 
 #API-Abfrage senden
     response = requests.get(api_url, params=parameter)
-    recipes = response.json() # Rückgabe des Ergebnisses
-
-    st.write(recipes)
-
-
+    return response.json() # Rückgabe des Ergebnisses
 
 # Daten-Visualisierung in Form eines Piecharts (auf Basis der Nährwerten):
 # Funktion, um Infos aus API abzurufen und in data zu speichern
@@ -114,7 +110,10 @@ if submit_button:
         recipes = get_recipes(ingredients, cuisine, difficulty, duration, allergies, diet)
         if recipes:  # Wenn es Rezepte ausgibt
             for recipe in recipes:
-                st.subheader(recipe['title'])  # Rezepttitel anzeigen
+                if 'title' in recipe:
+                    st.subheader(recipe['title'])  # Rezepttitel anzeigen
+                else:
+                    st.write("No title found for this recipe")
                 st.image(recipe['image'])  # Bild des Rezepts anzeigen
                 used_ingredients = ', '.join([ing['name'] for ing in recipe['usedIngredients']])
                 missed_ingredients = ', '.join([ing['name'] for ing in recipe['missedIngredients']])
