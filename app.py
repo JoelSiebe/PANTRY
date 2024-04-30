@@ -71,7 +71,7 @@ def main():
             difficulty = st.selectbox("Select difficulty level (This option is available for only a few recipes)", ["Any", "Easy", "Medium", "Hard"])
         with col2:
             # Auswahlfeld für Diät
-            diet = st.selectbox("Dietary restriction", ["None", "Vegan", "Vegetarian" "Gluten Free", "Ketogenic"])
+            diet = st.selectbox("Dietary restriction", ["None", "Vegan", "Vegetarian", "Gluten Free", "Ketogenic"])
             # Auswahlfeld für Zubereitungsdauer - Achtung; funktionert ebenfalls nur bei wenigen Rezepten (Info nicht überall enthalten)
             duration = st.selectbox("Select duration (This option is available for only a few recipes)", ["Any", "0-15 minutes", "15-30 minutes", "30-60 minutes", "60+ minutes"])
             # Auswahlfeld für mögliche Allergien
