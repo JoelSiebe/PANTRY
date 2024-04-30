@@ -32,8 +32,8 @@ st.title("Then let us do the magic")
 api_key = "06491aabe3d2435b8b21a749de46b765"
 
 @st.cache # Dektrator von Streamlit, um ein erneutes Senden der Anfrage an die API zu limitieren
-def get_recipes(query, cuisine, diet, intolerances, difficulty, maxReadyTime, number):
-    url = f"https://api.spoonacular.com/recipes/complexSearch?apiKey={api_key}&query={query}&cuisine={cuisine}&diet={diet}&intolerances={intolerances}&difficulty={difficulty}&maxReadyTime={maxReadyTime}&number={number}"
+def get_recipes(query, cuisine, diet, intolerances, difficulty, maxReadyTime):
+    url = f"https://api.spoonacular.com/recipes/complexSearch?apiKey={api_key}&query={query}&cuisine={cuisine}&diet={diet}&intolerances={intolerances}&difficulty={difficulty}&maxReadyTime={maxReadyTime}"
     response = requests.get(url)
     return response.json()
 
@@ -58,7 +58,7 @@ def main():
         submit_button = st.form_submit_button("Show recipes") 
 
         if submit_button: # Schaltfläche zum Absenden der Eingaben, resp. Anzeigen der entspr. Rezepten
-            recipes = get_recipes(query, cuisine, diet, intolerances, maxReadyTime, difficulty, 2)
+            recipes = get_recipes(query, cuisine, diet, intolerances, maxReadyTime, difficulty)
             if 'results' in recipes:
                 for recipe in recipes["results"]:
                     st.write(f"Name: {recipe['title']}")
