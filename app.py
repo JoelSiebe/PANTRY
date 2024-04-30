@@ -69,6 +69,29 @@ def main():
 if __name__ == "__main__":
     main()
 
+#  Spoonacular-API für Zubereitungsschritte der jeweiligen Rezepe (https://spoonacular.com/food-api/docs#Get-Recipe-Information)
+                api_info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
+                instructions_response = requests.get(api_info_url, params={'apiKey': api_key})
+                instructions_data = instructions_response.json() # Umwandeln in json
+
+# Überprüfen, ob detailierte Zubereitungsschrite in API verfügbar sind
+                if 'analyzedInstructions' in instructions_data:
+                    steps = instructions_data['analyzedInstructions'] # Liste der Zubereitungsschritte
+                    if steps: # Wenn Zubereitungsschritte vorhanden sind:
+                        st.subheader("Instructions:") # Titel der Schritte
+                        for section in steps:
+                            for step in section['steps']:
+                                st.write(f"Step {step['number']}: {step['step']}")  # Detaillierte Schritte anzeigen
+                    else:
+                        st.write("No detailed instructions found.")
+                else:
+                    st.write("No instructions available.")  
+
+
+# Fusszeile der Anwendung
+st.markdown("---")
+st.write("© 2024 Pantry Pal - Where Leftovers Meets Deliciousness. All rights reserved.")
+
 ###################################################################
 
 # # Funktion zum Abrufen von Rezepten basierend auf Input (Zutaten) und den ausgewählten Filteroptionen
@@ -181,27 +204,7 @@ if __name__ == "__main__":
 #                     ax.axis('equal')  # "Rund" machen
 #                     st.pyplot(fig) # Anzeigen des Diagramms
 
-# #  Spoonacular-API für Zubereitungsschritte der jeweiligen Rezepe (https://spoonacular.com/food-api/docs#Get-Recipe-Information)
-#                 api_info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
-#                 instructions_response = requests.get(api_info_url, params={'apiKey': api_key})
-#                 instructions_data = instructions_response.json() # Umwandeln in json
 
-# # Überprüfen, ob detailierte Zubereitungsschrite in API verfügbar sind
-#                 if 'analyzedInstructions' in instructions_data:
-#                     steps = instructions_data['analyzedInstructions'] # Liste der Zubereitungsschritte
-#                     if steps: # Wenn Zubereitungsschritte vorhanden sind:
-#                         st.subheader("Instructions:") # Titel der Schritte
-#                         for section in steps:
-#                             for step in section['steps']:
-#                                 st.write(f"Step {step['number']}: {step['step']}")  # Detaillierte Schritte anzeigen
-#                     else:
-#                         st.write("No detailed instructions found.")
-#                 else:
-#                     st.write("No instructions available.")  
-
-# # Fusszeile der Anwendung
-# st.markdown("---")
-# st.write("© 2024 Pantry Pal - Where Leftovers Meets Deliciousness. All rights reserved.")
 
 
 
