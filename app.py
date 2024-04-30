@@ -44,7 +44,7 @@ def main():
         with col1:
             query = st.text_input("Ingredients") # Texteingabe der Zutaten
             # Auswahlfeld für mögliche Küchen
-            cuisine = st.selectboxx('Select Cuisine', ['Any', 'African', 'Asian', 'American', 'Chinese', 'Eastern European', 'Greek', 'Indian', 'Italian', 'Japanese', 'Mexican', 'Thai', 'Vietnamese'])
+            cuisine = st.selectbox('Select Cuisine', ['Any', 'African', 'Asian', 'American', 'Chinese', 'Eastern European', 'Greek', 'Indian', 'Italian', 'Japanese', 'Mexican', 'Thai', 'Vietnamese'])
             # Auswahlfeld für möglichen Schwierigkeitsgrad - Achtung; funktioniert nur bei wenigen Rezepten (Info nicht überall enthalten)       
             difficulty = st.selectbox("Select difficulty level (This option is available for only a few recipes)", ["Any", "Easy", "Medium", "Hard"])
         with col2:
@@ -55,8 +55,9 @@ def main():
             # Auswahlfeld für mögliche Allergien
             intolerances = st.selectbox('Allergies', ['None', 'Dairy', 'Egg', 'Gluten', 'Peanut', 'Seafood', 'Sesame', 'Shellfish', 'Soy', 'Tree Nut', 'Wheat'])
 
+        submit_button = st.form_submit_button("Show recipes") 
 
-        if st.button("Show recipes"): # Schaltfläche zum Absenden der Eingaben, resp. Anzeigen der entspr. Rezepten
+        if submit_button: # Schaltfläche zum Absenden der Eingaben, resp. Anzeigen der entspr. Rezepten
             recipes = get_recipes(query, cuisine, diet, intolerances, duration, difficulty)
             if 'results' in recipes:
                 for recipe in recipes["results"]:
