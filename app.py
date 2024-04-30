@@ -1,8 +1,8 @@
 import streamlit as st
 import requests
 
-# Setzen Sie hier Ihren Spoonacular API-Schlüssel ein
-API_KEY = "Ihr_API_Schlüssel"
+
+API_KEY = "06491aabe3d2435b8b21a749de46b765"
 
 @st.cache
 def get_recipes(query, cuisine, diet, intolerances):
@@ -20,9 +20,12 @@ def main():
 
     if st.button("Rezepte suchen"):
         recipes = get_recipes(query, cuisine, diet, intolerances)
-        for recipe in recipes["results"]:
-            st.write(f"Name: {recipe['title']}")
-            st.write("---")
+        if 'results' in recipes:
+            for recipe in recipes["results"]:
+                st.write(f"Name: {recipe['title']}")
+                st.write("---")
+        else:
+            st.write("Keine Ergebnisse gefunden.")
 
 if __name__ == "__main__":
     main()
