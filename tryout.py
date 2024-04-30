@@ -30,7 +30,7 @@ st.title("Then let us do the magic")
 
 # Konfiguration für Spoonacular-API
 api_url = "https://api.spoonacular.com/recipes/findByIngredients" # Spoonacular API-URL
-api_key = "06491aabe3d2435b8b21a749de46b765" # API-Schlüssel
+api_key = "4ea121e2c8424f89944d031e2dc68634" # API-Schlüssel
 
 # Funktion zum Abrufen von Rezepten basierend auf Input (Zutaten) und den ausgewählten Filteroptionen
 def get_recipes(ingredients, cuisine, difficulty, duration, allergies, diet):
@@ -110,8 +110,14 @@ if submit_button:
         recipes = get_recipes(ingredients, cuisine, difficulty, duration, allergies, diet)
         if recipes:  # Wenn es Rezepte ausgibt
             for recipe in recipes:
-                st.subheader(recipe['title'])  # Rezepttitel anzeigen
-                st.image(recipe['image'])  # Bild des Rezepts anzeigen
+                if 'title' in recipe:
+                    st.subheader(recipe['title'])  # Rezepttitel anzeigen
+                else:
+                    st.write("No title found for this recipe")
+                if 'image' in recipe:
+                    st.image(recipe['image'])  # Bild des Rezepts anzeigen
+                else:
+                    st.write("No image found for this recipe")
                 used_ingredients = ', '.join([ing['name'] for ing in recipe['usedIngredients']])
                 missed_ingredients = ', '.join([ing['name'] for ing in recipe['missedIngredients']])
                 st.write("Used Ingredients:", used_ingredients) # Gebrauchte und noch erforderliche Zutaten anzeigen
