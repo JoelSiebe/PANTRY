@@ -79,7 +79,3 @@ if submit_button:
                     st.image(recipe['image'])  # Bild des Rezepts anzeigen
                 else:
                     st.write("No image found for this recipe")
-                used_ingredients = ', '.join([ing['name'] for ing in recipe['usedIngredients']])
-                missed_ingredients = ', '.join([ing['name'] for ing in recipe['missedIngredients']])
-                st.write("Used Ingredients:", used_ingredients) # Gebrauchte und noch erforderliche Zutaten anzeigen
-                st.write("Missing Ingredients:", missed_ingredients)
