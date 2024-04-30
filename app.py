@@ -29,7 +29,7 @@ st.header("First, enter what's left in your fridge. Select any filters if needed
 st.title("Then let us do the magic")
 
 # Konfiguration für Spoonacular-API
-api_url = "https://api.spoonacular.com/recipes/findByIngredients" # Spoonacular API-URL
+api_url = "https://api.spoonacular.com/recipes/complexSearch" # Spoonacular API-URL
 api_key = "4ea121e2c8424f89944d031e2dc68634" # API-Schlüssel
 
 # Funktion zum Abrufen von Rezepten basierend auf Input (Zutaten) und den ausgewählten Filteroptionen
