@@ -107,14 +107,14 @@ with st.form(key='recipe_form'):
         # Auswahlfeld für mögliche Zubereitungsdauer
         duration = st.selectbox('Duration', ['Any', '0-15 minutes', '15-30 minutes', '30-60 minutes', '60+ minutes'])
         # Auswahlfeld für mögliche Allergien
-        allergies = st.selectbox('Allergies', ['None', 'Dairy', 'Egg', 'Gluten', 'Peanut', 'Seafood', 'Sesame', 'Shellfish', 'Soy', 'Tree Nut', 'Wheat'])
+        intolerances = st.selectbox('Allergies', ['None', 'Dairy', 'Egg', 'Gluten', 'Peanut', 'Seafood', 'Sesame', 'Shellfish', 'Soy', 'Tree Nut', 'Wheat'])
 
     submit_button = st.form_submit_button('Show recipes') # Schaltfläche zum Absenden des Formulars
 
 # Rezepte anzeigen, wenn die Schaltfläche "Show recipes" geklickt wird
 if submit_button:
     if ingredients: # Es müssen Zutaten eingegeben worden sein
-        recipes = get_recipes(ingredients, cuisine, difficulty, duration, allergies, diet)
+        recipes = get_recipes(ingredients, cuisine, difficulty, duration, intolerances, diet)
         if recipes:  # Wenn es Rezepte ausgibt
             for recipe in recipes:
                 if 'title' in recipe:
