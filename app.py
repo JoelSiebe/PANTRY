@@ -10,8 +10,7 @@ st.markdown("<h2 style='text-align: center; color: grey;'>Conquering Leftovers, 
 st.title("Tame your kitchen with Pantry Pal",)
 st.divider() # Trennstrich, um die verschiedenen Abschnitte zu markieren
 
-st.button("Reset", type="primary")
-if st.button("Click here to start cooking"):
+if st.button("Click here to start cooking", type="primary"):
 
     # Bilder in 2 Kolonnen anzeigen
     # Quelle: https://docs.streamlit.io/library/api-reference/layout/st.columns)
