@@ -69,7 +69,17 @@ def get_recipes(ingredients, cuisine, difficulty, duration, intolerances, diet):
 
 #API-Abfrage senden
     response = requests.get(api_url, params=parameter)
-    return response.json() # Rückgabe des Ergebnisses
+    if response.status_code == 200 and response.text:
+        try:
+            recipes = response.json()  # In JSON umwandeln
+        except requests.exceptions.JSONDecodeError:
+            st.write("Error decoding JSON response. Please check the API.")
+            recipes = None
+    else:
+        st.write("Failed to fetch recipes. Please check the API and try again.")
+        recipes = None
+
+   # return response.json() # Rückgabe des Ergebnisses
 
 # Daten-Visualisierung in Form eines Piecharts (auf Basis der Nährwerten):
 # Funktion, um Infos aus API abzurufen und in data zu speichern
