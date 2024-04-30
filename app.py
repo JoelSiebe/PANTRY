@@ -106,39 +106,41 @@ def main():
 
                     # Aufrufen der Nährwerte-Funktion
                     nutrition_info = get_nutrition_info(recipe['id'])
-                    st.subheader("Nutrition")
+                    with st.expander("Nutrition"):
+                        st.subheader("Nutrition")
 
 # Anzeigen des Piecharts (Konfiguration von Grösse und Darstellung)
 # Quelle für Workaround, um den Piechart kleiner zu machen: https://discuss.streamlit.io/t/cannot-change-matplotlib-figure-size/10295/10 
-                    col1, col2, col3, col4, col5=st.columns([1,1, 2, 1, 1])
-                    with col3:
-                        labels = ['Carbohydrates', 'Protein', 'Fat'] # Beschriftungen
-                        sizes = [nutrition_info['carbs'], nutrition_info['protein'], nutrition_info['fat']] # Anteilige Grösse der Sektoren gem. API
-                        colors = ['#133337', '#cccccc', '#6897bb'] # Benutzerdefinierte Farben
-                        fig, ax = plt.subplots(figsize=(4, 4)) # Erstellen des Diagramms
-                        ax.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90) # Darstellung
-                        ax.axis('equal')  # "Rund" machen
-                        st.pyplot(fig) # Anzeigen des Diagramms
+                        col1, col2, col3, col4, col5=st.columns([1,1, 2, 1, 1])
+                        with col3:
+                            labels = ['Carbohydrates', 'Protein', 'Fat'] # Beschriftungen
+                            sizes = [nutrition_info['carbs'], nutrition_info['protein'], nutrition_info['fat']] # Anteilige Grösse der Sektoren gem. API
+                            colors = ['#133337', '#cccccc', '#6897bb'] # Benutzerdefinierte Farben
+                            fig, ax = plt.subplots(figsize=(4, 4)) # Erstellen des Diagramms
+                            ax.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90) # Darstellung
+                            ax.axis('equal')  # "Rund" machen
+                            st.pyplot(fig) # Anzeigen des Diagramms
 #  Spoonacular-API für Zubereitungsschritte der jeweiligen Rezepe (https://spoonacular.com/food-api/docs#Get-Recipe-Information)
                     api_info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
                     instructions_response = requests.get(api_info_url, params={'apiKey': api_key})
                     instructions_data = instructions_response.json() # Umwandeln in json
 
 # Überprüfen, ob detailierte Zubereitungsschrite in API verfügbar sind
-                    if 'analyzedInstructions' in instructions_data:
-                        steps = instructions_data['analyzedInstructions'] # Liste der Zubereitungsschritte
-                        if steps: # Wenn Zubereitungsschritte vorhanden sind:
-                            st.subheader("Instructions:") # Titel der Schritte
-                            for section in steps:
-                                for step in section['steps']:
-                                    st.write(f"Step {step['number']}: {step['step']}")  # Detaillierte Schritte anzeigen
-                                    st.divider() # Trennstrich, um die verschiedenen Abschnitte zu markieren
+                    with st.expander("Detailed Instructions"):
+                        if 'analyzedInstructions' in instructions_data:
+                            steps = instructions_data['analyzedInstructions'] # Liste der Zubereitungsschritte
+                            if steps: # Wenn Zubereitungsschritte vorhanden sind:
+                                st.subheader("Instructions:") # Titel der Schritte
+                                for section in steps:
+                                    for step in section['steps']:
+                                        st.write(f"Step {step['number']}: {step['step']}")  # Detaillierte Schritte anzeigen
+                                        st.divider() # Trennstrich, um die verschiedenen Abschnitte zu markieren
+                            else:
+                                st.write("No detailed instructions found.")
+                                st.divider() # Trennstrich, um die verschiedenen Abschnitte zu markieren
                         else:
-                            st.write("No detailed instructions found.")
-                            st.divider() # Trennstrich, um die verschiedenen Abschnitte zu markieren
-                    else:
-                        st.write("No instructions available.") 
-                        st.divider() # Trennstrich, um die verschiedenen Abschnitte zu markieren 
+                            st.write("No instructions available.") 
+                            st.divider() # Trennstrich, um die verschiedenen Abschnitte zu markieren 
 
 if __name__ == "__main__":
     main()
