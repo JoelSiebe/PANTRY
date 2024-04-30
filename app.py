@@ -62,7 +62,7 @@ def get_recipes(ingredients, cuisine, difficulty, duration, allergies, diet):
 
 #API-Abfrage senden
     response = requests.get(api_url, params=parameter)
-    recipes response.json() # Rückgabe des Ergebnisses
+    recipes = response.json() # Rückgabe des Ergebnisses
 
     st.write(recipes)
 
