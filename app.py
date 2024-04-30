@@ -36,7 +36,7 @@ api_url = "https://api.spoonacular.com/recipes/complexSearch"
 # Funktion zum Abrufen von Rezepten basierend auf Input (Zutaten) und den ausgewählten Filteroptionen
 def get_recipes(ingredients, cuisine, difficulty, duration, allergies, diet):
     # Parameter, die an API gesendet werden
-    params = {
+    parameter = {
         'query': ingredients,
         'number': 2, # Anz. angezeigter Rezepte
         'apiKey': api_key,
@@ -44,27 +44,27 @@ def get_recipes(ingredients, cuisine, difficulty, duration, allergies, diet):
     }
 # Filteroptionen (https://docs.streamlit.io/library/api-reference/widgets)
     if cuisine != "Any":
-        params['cuisine']= cuisine # Auswählen der versch. Küchen
+        parameter['cuisine']= cuisine # Auswählen der versch. Küchen
     if difficulty != "Any":
-        params['difficulty'] = difficulty.lower() # In Kleinbuchstaben umwandeln, um von der API gelesen zu werden
+        parameter['difficulty'] = difficulty.lower() # In Kleinbuchstaben umwandeln, um von der API gelesen zu werden
     if diet != "None":
-        params["diet"] = diet
+        parameter["diet"] = diet
     if duration != "Any":
         # Festlegen der max. Zubereitungsdauer
         if duration == "0-15 minutes":
-            params['maxReadyTime'] = 15
+            parameter['maxReadyTime'] = 15
         elif duration == "15-30 minutes":
-            params['maxReadyTime'] = 30
+            parameter['maxReadyTime'] = 30
         elif duration == "30-60 minutes":
-            params['maxReadyTime'] = 60
+            parameter['maxReadyTime'] = 60
         else:
-            params['maxReadyTime'] = 60 
+            parameter['maxReadyTime'] = 60 
     
     if allergies != "None":
-        params["intolerances"] = allergies
+        parameter["intolerances"] = allergies
 
 #API-Abfrage senden
-    response = requests.get(api_url, params=params)
+    response = requests.get(api_url, params=parameter)
     return response.json() # Rückgabe des Ergebnisses
 
 # Daten-Visualisierung in Form eines Piecharts (auf Basis der Nährwerten):
