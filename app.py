@@ -29,30 +29,26 @@ st.header("First, enter what's left in your fridge. Select any filters if needed
 st.title("Then let us do the magic")
 
 # Konfiguration für Spoonacular-API
-# api_url = "https://api.spoonacular.com/recipes/findByIngredients" # Spoonacular API-URL
-api_key = "06491aabe3d2435b8b21a749de46b765" # API-Schlüssel
-api_url = "https://api.spoonacular.com/recipes/complexSearch"
+api_url = "https://api.spoonacular.com/recipes/findByIngredients" # Spoonacular API-URL
+api_key = "4ea121e2c8424f89944d031e2dc68634" # API-Schlüssel
 
 # Funktion zum Abrufen von Rezepten basierend auf Input (Zutaten) und den ausgewählten Filteroptionen
-def get_recipes(ingredients, cuisine, difficulty, duration, intolerances, diet):
-    # Parameter, die an API gesendet werden (aus API-Dokumentation)
+def get_recipes(ingredients, cuisine, difficulty, duration, allergies, diet):
+    # Parameter, die an API gesendet werden
     parameter = {
-        'query': ingredients, # oder includeIngredients
+        'ingredients': ingredients,
         'cuisine': cuisine,
-        'difficulty': difficulty,
+        'difficutly': difficulty,
         'maxReadyTime': duration,
         'diet': diet,
-        'number': 2, # Anz. angezeigter Rezepte
-        'apiKey': api_key,
-        'addRecipeInformation': True
+        'number': 5, # Anz. angezeigter Rezepte
+        'apiKey': api_key
     }
 # Filteroptionen (https://docs.streamlit.io/library/api-reference/widgets)
     if cuisine != "Any":
-        parameter['cuisine']= cuisine.lower() # Auswählen der versch. Küchen
+        parameter['cuisine']=cuisine # Auswählen der versch. Küchen
     if difficulty != "Any":
-        parameter['difficulty'] = difficulty.lower() # Jeweils in Kleinbuchstaben umwandeln, um von der API gelesen zu werden
-    if diet != "None":
-        parameter["diet"] = diet.lower()
+        parameter['difficulty'] = difficulty.lower() # In Kleinbuchstaben umwandeln, um von der API gelesen zu werden
     if duration != "Any":
         # Festlegen der max. Zubereitungsdauer
         if duration == "0-15 minutes":
@@ -61,25 +57,12 @@ def get_recipes(ingredients, cuisine, difficulty, duration, intolerances, diet):
             parameter['maxReadyTime'] = 30
         elif duration == "30-60 minutes":
             parameter['maxReadyTime'] = 60
-        elif duration == "60+ minutes":
-            parameter['maxReadyTime'] = 120
-      
-    if intolerances != "None":
-        parameter["intolerances"] = intolerances.lower()
+        else:
+            parameter['maxReadyTime'] = 60 
 
 #API-Abfrage senden
     response = requests.get(api_url, params=parameter)
-    if response.status_code == 200 and response.text:
-        try:
-            recipes = response.json()  # In JSON umwandeln
-        except requests.exceptions.JSONDecodeError:
-            st.write("Error decoding JSON response. Please check the API.")
-            recipes = None
-    else:
-        st.write("Failed to fetch recipes. Please check the API and try again.")
-        recipes = None
-
-   # return response.json() # Rückgabe des Ergebnisses
+    return response.json() # Rückgabe des Ergebnisses
 
 # Daten-Visualisierung in Form eines Piecharts (auf Basis der Nährwerten):
 # Funktion, um Infos aus API abzurufen und in data zu speichern
@@ -104,7 +87,7 @@ def get_nutrition_info(recipe_id):
     return {'carbs': carbs, 'protein': protein, 'fat': fat}
    
 # Zwei Kolonnen als Platzhalter für Eingabefelder (Filteroptionen) erstellen
-with st.form(key='recipe_form'):
+with st.form(key='my_form'):
     col1, col2 = st.columns(2)
     with col1:
         ingredients = st.text_input('Ingredients') # Texteingabe der Zutaten
@@ -117,14 +100,14 @@ with st.form(key='recipe_form'):
         # Auswahlfeld für mögliche Zubereitungsdauer
         duration = st.selectbox('Duration', ['Any', '0-15 minutes', '15-30 minutes', '30-60 minutes', '60+ minutes'])
         # Auswahlfeld für mögliche Allergien
-        intolerances = st.selectbox('Allergies', ['None', 'Dairy', 'Egg', 'Gluten', 'Peanut', 'Seafood', 'Sesame', 'Shellfish', 'Soy', 'Tree Nut', 'Wheat'])
+        allergies = st.selectbox('Allergies', ['None', 'Dairy', 'Egg', 'Gluten', 'Peanut', 'Seafood', 'Sesame', 'Shellfish', 'Soy', 'Tree Nut', 'Wheat'])
 
     submit_button = st.form_submit_button('Show recipes') # Schaltfläche zum Absenden des Formulars
 
 # Rezepte anzeigen, wenn die Schaltfläche "Show recipes" geklickt wird
 if submit_button:
     if ingredients: # Es müssen Zutaten eingegeben worden sein
-        recipes = get_recipes(ingredients, cuisine, difficulty, duration, intolerances, diet)
+        recipes = get_recipes(ingredients, cuisine, difficulty, duration, allergies, diet)
         if recipes:  # Wenn es Rezepte ausgibt
             for recipe in recipes:
                 if 'title' in recipe:
