@@ -32,6 +32,5 @@ if recipes:
         st.write(f"Zutaten: {recipe['ingredients']}")
         st.write(f"Zubereitungszeit: {recipe['totalCookTime']} Minuten")
         st.write(f"Schwierigkeitsgrad: {recipe['difficulty']}")
-        st.write(f"Anleitung: https://m.youtube.com/watch?v=G8BgOzgkJl0}]({recipe['sourceUrl']})")
 else:
     st.write("Keine Rezepte gefunden.")
