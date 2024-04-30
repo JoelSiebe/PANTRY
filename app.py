@@ -32,8 +32,8 @@ st.title("Then let us do the magic")
 api_key = "06491aabe3d2435b8b21a749de46b765"
 
 @st.cache # Dektrator von Streamlit, um ein erneutes Senden der Anfrage an die API zu limitieren
-def get_recipes(query, cuisine, diet, intolerances, difficulty, maxReadyTime):
-    url = f"https://api.spoonacular.com/recipes/complexSearch?apiKey={api_key}&query={query}&cuisine={cuisine}&diet={diet}&intolerances={intolerances}&difficulty={difficulty}&maxReadyTime={maxReadyTime}"
+def get_recipes(query, cuisine, diet, intolerances, difficulty, duration):
+    url = f"https://api.spoonacular.com/recipes/complexSearch?apiKey={api_key}&query={query}&cuisine={cuisine}&diet={diet}&intolerances={intolerances}&difficulty={difficulty}&duration={duration}"
     response = requests.get(url)
     return response.json()
 
@@ -51,14 +51,14 @@ def main():
             # Auswahlfeld für Diät
             diet = st.selectbox("Dietary restriction", ["None", "Vegan", "Vegetarian" "Gluten Free", "Ketogenic"])
             # Auswahlfeld für Zubereitungsdauer - Achtung; funktionert ebenfalls nur bei wenigen Rezepten (Info nicht überall enthalten)
-            maxReadyTime = st.selectbox("Select duration (This option is available for only a few recipes)", ["Any", "0-15 minutes", "15-30 minutes", "30-60 minutes", "60+ minutes"])
+            duration = st.selectbox("Select duration (This option is available for only a few recipes)", ["Any", "0-15 minutes", "15-30 minutes", "30-60 minutes", "60+ minutes"])
             # Auswahlfeld für mögliche Allergien
             intolerances = st.selectbox('Allergies', ['None', 'Dairy', 'Egg', 'Gluten', 'Peanut', 'Seafood', 'Sesame', 'Shellfish', 'Soy', 'Tree Nut', 'Wheat'])
 
         submit_button = st.form_submit_button("Show recipes") 
 
         if submit_button: # Schaltfläche zum Absenden der Eingaben, resp. Anzeigen der entspr. Rezepten
-            recipes = get_recipes(query, cuisine, diet, intolerances, maxReadyTime, difficulty)
+            recipes = get_recipes(query, cuisine, diet, intolerances, duration, difficulty)
             if 'results' in recipes:
                 for recipe in recipes["results"]:
                     st.write(f"Name: {recipe['title']}")
@@ -75,9 +75,14 @@ if __name__ == "__main__":
 # def get_recipes(ingredients, cuisine, difficulty, duration, intolerances, diet):
 #     # Parameter, die an API gesendet werden (aus API-Dokumentation)
 #     parameter = {
- 
+#         'query': ingredients, # oder includeIngredients
+#         'cuisine': cuisine,
+#         'difficulty': difficulty,
+#         'maxReadyTime': duration,
+#         'diet': diet,
 #         'number': 2, # Anz. angezeigter Rezepte
-
+#         'apiKey': api_key,
+#         'addRecipeInformation': True
 #     }
 # # Filteroptionen (https://docs.streamlit.io/library/api-reference/widgets)
 #     if cuisine != "Any":
