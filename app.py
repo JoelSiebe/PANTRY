@@ -31,10 +31,10 @@ st.title("Then let us do the magic")
 # Konfiguration für Spoonacular-API
 # api_url = "https://api.spoonacular.com/recipes/findByIngredients" # Spoonacular API-URL
 api_key = "06491aabe3d2435b8b21a749de46b765" # API-Schlüssel
+api_url = "https://api.spoonacular.com/recipes/complexSearch"
 
 # Funktion zum Abrufen von Rezepten basierend auf Input (Zutaten) und den ausgewählten Filteroptionen
 def get_recipes(ingredients, cuisine, difficulty, duration, allergies, diet):
-    api_url: "https://api.spoonacular.com/recipes/complexSearch"
     # Parameter, die an API gesendet werden
     params = {
         'query': ingredients,
