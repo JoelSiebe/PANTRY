@@ -62,7 +62,11 @@ def get_recipes(ingredients, cuisine, difficulty, duration, allergies, diet):
 
 #API-Abfrage senden
     response = requests.get(api_url, params=parameter)
-    return response.json() # Rückgabe des Ergebnisses
+    recipes response.json() # Rückgabe des Ergebnisses
+
+    st.write(recipes)
+
+
 
 # Daten-Visualisierung in Form eines Piecharts (auf Basis der Nährwerten):
 # Funktion, um Infos aus API abzurufen und in data zu speichern
