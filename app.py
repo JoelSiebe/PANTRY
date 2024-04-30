@@ -114,7 +114,10 @@ if submit_button:
                     st.subheader(recipe['title'])  # Rezepttitel anzeigen
                 else:
                     st.write("No title found for this recipe")
-                st.image(recipe['image'])  # Bild des Rezepts anzeigen
+                if 'image' in recipe:
+                    st.image(recipe['image'])  # Bild des Rezepts anzeigen
+                else:
+                    st.write("No image found for this recipe")
                 used_ingredients = ', '.join([ing['name'] for ing in recipe['usedIngredients']])
                 missed_ingredients = ', '.join([ing['name'] for ing in recipe['missedIngredients']])
                 st.write("Used Ingredients:", used_ingredients) # Gebrauchte und noch erforderliche Zutaten anzeigen
