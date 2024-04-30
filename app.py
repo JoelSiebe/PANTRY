@@ -112,7 +112,7 @@ def main():
                     col1, col2, col3, col4, col5=st.columns([1,1, 2, 1, 1])
                     with col3:
                         labels = ['Carbohydrates', 'Protein', 'Fat'] # Beschriftungen
-                        sizes = [nutrition_data['carbs'], nutrition_data['protein'], nutrition_data['fat']] # Anteilige Grösse der Sektoren gem. API
+                        sizes = [nutrition_info['carbs'], nutrition_info['protein'], nutrition_info['fat']] # Anteilige Grösse der Sektoren gem. API
                         colors = ['#133337', '#cccccc', '#6897bb'] # Benutzerdefinierte Farben
                         fig, ax = plt.subplots(figsize=(4, 4)) # Erstellen des Diagramms
                         ax.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90) # Darstellung
