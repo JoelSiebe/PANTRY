@@ -29,30 +29,26 @@ st.header("First, enter what's left in your fridge. Select any filters if needed
 st.title("Then let us do the magic")
 
 # Konfiguration für Spoonacular-API
-# api_url = "https://api.spoonacular.com/recipes/findByIngredients" # Spoonacular API-URL
+api_url = "https://api.spoonacular.com/recipes/findByIngredients" # Spoonacular API-URL
 api_key = "4ea121e2c8424f89944d031e2dc68634" # API-Schlüssel
-api_url = "https://api.spoonacular.com/recipes/complexSearch"
 
 # Funktion zum Abrufen von Rezepten basierend auf Input (Zutaten) und den ausgewählten Filteroptionen
-def get_recipes(ingredients, cuisine, difficulty, duration, intolerances, diet):
-    # Parameter, die an API gesendet werden (aus API-Dokumentation)
+def get_recipes(ingredients, cuisine, difficulty, duration, allergies, diet):
+    # Parameter, die an API gesendet werden
     parameter = {
-        'query': ingredients, # oder includeIngredients
+        'ingredients': ingredients,
         'cuisine': cuisine,
-        'difficulty': difficulty,
+        'difficutly': difficulty,
         'maxReadyTime': duration,
         'diet': diet,
-        'number': 2, # Anz. angezeigter Rezepte
-        'apiKey': api_key,
-        'addRecipeInformation': True
+        'number': 5, # Anz. angezeigter Rezepte
+        'apiKey': api_key
     }
 # Filteroptionen (https://docs.streamlit.io/library/api-reference/widgets)
     if cuisine != "Any":
-        parameter['cuisine']= cuisine.lower() # Auswählen der versch. Küchen
+        parameter['cuisine']=cuisine # Auswählen der versch. Küchen
     if difficulty != "Any":
-        parameter['difficulty'] = difficulty.lower() # Jeweils in Kleinbuchstaben umwandeln, um von der API gelesen zu werden
-    if diet != "None":
-        parameter["diet"] = diet.lower()
+        parameter['difficulty'] = difficulty.lower() # In Kleinbuchstaben umwandeln, um von der API gelesen zu werden
     if duration != "Any":
         # Festlegen der max. Zubereitungsdauer
         if duration == "0-15 minutes":
@@ -61,11 +57,8 @@ def get_recipes(ingredients, cuisine, difficulty, duration, intolerances, diet):
             parameter['maxReadyTime'] = 30
         elif duration == "30-60 minutes":
             parameter['maxReadyTime'] = 60
-        elif duration == "60+ minutes":
-            parameter['maxReadyTime'] = 120
-      
-    if intolerances != "None":
-        parameter["intolerances"] = intolerances.lower()
+        else:
+            parameter['maxReadyTime'] = 60 
 
 #API-Abfrage senden
     response = requests.get(api_url, params=parameter)
@@ -94,7 +87,7 @@ def get_nutrition_info(recipe_id):
     return {'carbs': carbs, 'protein': protein, 'fat': fat}
    
 # Zwei Kolonnen als Platzhalter für Eingabefelder (Filteroptionen) erstellen
-with st.form(key='recipe_form'):
+with st.form(key='my_form'):
     col1, col2 = st.columns(2)
     with col1:
         ingredients = st.text_input('Ingredients') # Texteingabe der Zutaten
