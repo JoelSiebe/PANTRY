@@ -70,9 +70,9 @@ if __name__ == "__main__":
     main()
 
 #  Spoonacular-API für Zubereitungsschritte der jeweiligen Rezepe (https://spoonacular.com/food-api/docs#Get-Recipe-Information)
-                api_info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
-                instructions_response = requests.get(api_info_url, params={'apiKey': api_key})
-                instructions_data = instructions_response.json() # Umwandeln in json
+api_info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
+instructions_response = requests.get(api_info_url, params={'apiKey': api_key})
+instructions_data = instructions_response.json() # Umwandeln in json
 
 # Überprüfen, ob detailierte Zubereitungsschrite in API verfügbar sind
                 if 'analyzedInstructions' in instructions_data:
