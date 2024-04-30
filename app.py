@@ -44,28 +44,9 @@ def main():
     duration = st.selectbox("Select duration", ["Any", "0-15 minutes", "15-30 minutes", "30-60 minutes", "60+ minutes"])
     intolerances = st.selectbox('Allergies', ['None', 'Dairy', 'Egg', 'Gluten', 'Peanut', 'Seafood', 'Sesame', 'Shellfish', 'Soy', 'Tree Nut', 'Wheat'])
 
-    parameter = {"query": query}
-
-    if cuisine != "Any":
-        parameter['cuisine'] = cuisine.lower()
-    if difficulty != "Any":
-        parameter['difficulty'] = difficulty.lower()
-    if diet != "None":
-        parameter["diet"] = diet.lower()
-    if duration != "Any":
-        if duration == "0-15 minutes":
-            parameter['maxReadyTime'] = 15
-        elif duration == "15-30 minutes":
-            parameter['maxReadyTime'] = 30
-        elif duration == "30-60 minutes":
-            parameter['maxReadyTime'] = 60
-        elif duration == "60+ minutes":
-            parameter['maxReadyTime'] = 120
-    if intolerances != "None":
-        parameter["intolerances"] = intolerances.lower()
 
     if st.button("Rezepte suchen"):
-        recipes = get_recipes(parameter)
+        recipes = get_recipes(query, cuisine, diet, intolerances, duration, difficulty)
         if 'results' in recipes:
             for recipe in recipes["results"]:
                 st.write(f"Name: {recipe['title']}")
@@ -75,19 +56,28 @@ def main():
 
 if __name__ == "__main__":
     main()
+#     parameter = {"query": query}
 
-
-
-
-
-
-#     cuisine = st.text_input("Cuisine")
-#     diet = st.text_input("Diät eingeben")
-#     intolerances = st.text_input("Unverträglichkeiten eingeben")
-#     difficulty = st.text_
+#     if cuisine != "Any":
+#         parameter['cuisine'] = cuisine.lower()
+#     if difficulty != "Any":
+#         parameter['difficulty'] = difficulty.lower()
+#     if diet != "None":
+#         parameter["diet"] = diet.lower()
+#     if duration != "Any":
+#         if duration == "0-15 minutes":
+#             parameter['maxReadyTime'] = 15
+#         elif duration == "15-30 minutes":
+#             parameter['maxReadyTime'] = 30
+#         elif duration == "30-60 minutes":
+#             parameter['maxReadyTime'] = 60
+#         elif duration == "60+ minutes":
+#             parameter['maxReadyTime'] = 120
+#     if intolerances != "None":
+#         parameter["intolerances"] = intolerances.lower()
 
 #     if st.button("Rezepte suchen"):
-#         recipes = get_recipes(query, cuisine, diet, intolerances)
+#         recipes = get_recipes(parameter)
 #         if 'results' in recipes:
 #             for recipe in recipes["results"]:
 #                 st.write(f"Name: {recipe['title']}")
@@ -97,3 +87,7 @@ if __name__ == "__main__":
 
 # if __name__ == "__main__":
 #     main()
+
+
+
+
