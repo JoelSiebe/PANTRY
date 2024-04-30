@@ -32,8 +32,8 @@ st.title("Then let us do the magic")
 api_key = "06491aabe3d2435b8b21a749de46b765"
 
 @st.cache # Dektrator von Streamlit, um ein erneutes Senden der Anfrage an die API zu limitieren
-def get_recipes(query, cuisine, diet, intolerances, difficulty, duration):
-    url = f"https://api.spoonacular.com/recipes/complexSearch?apiKey={api_key}&query={query}&cuisine={cuisine}&diet={diet}&intolerances={intolerances}&difficulty={difficulty}&duration={duration}"
+def get_recipes(query, cuisine, diet, intolerances, difficulty, duration, number_of_recipes=3):
+    url = f"https://api.spoonacular.com/recipes/complexSearch?apiKey={api_key}&query={query}&cuisine={cuisine}&diet={diet}&intolerances={intolerances}&difficulty={difficulty}&duration={duration}&number={number_of_recipes}"
     response = requests.get(url)
     return response.json()
 
@@ -80,10 +80,10 @@ def main():
         submit_button = st.form_submit_button("Show recipes") 
 
         if submit_button: # Schaltfläche zum Absenden der Eingaben, resp. Anzeigen der entspr. Rezepten
-            recipes = get_recipes(query, cuisine, diet, intolerances, duration, difficulty)
+            recipes = get_recipes(query, cuisine, diet, intolerances, duration, difficulty, number_of_recipes=3)
             if 'results' in recipes:
                 for recipe in recipes["results"]:
-                    st.subheader(recipe['title'])
+                    st.header(recipe['title'])
                     st.write(f"Name: {recipe['title']}")
                     st.image(recipe['image'])
 
@@ -102,10 +102,11 @@ def main():
                     else:
                         st.write("No missing ingredients found")    
                     st.write("---")
+                    st.divider() # Trennstrich, um die verschiedenen Abschnitte zu markieren
 
                     # Aufrufen der Nährwerte-Funktion
                     nutrition_info = get_nutrition_info(recipe['id'])
-                    st.write(f"Nährwerte: {nutrition_info}")
+                    st.subheader("Nutrition")
 
 # Anzeigen des Piecharts (Konfiguration von Grösse und Darstellung)
 # Quelle für Workaround, um den Piechart kleiner zu machen: https://discuss.streamlit.io/t/cannot-change-matplotlib-figure-size/10295/10 
@@ -131,10 +132,13 @@ def main():
                             for section in steps:
                                 for step in section['steps']:
                                     st.write(f"Step {step['number']}: {step['step']}")  # Detaillierte Schritte anzeigen
+                                    st.divider() # Trennstrich, um die verschiedenen Abschnitte zu markieren
                         else:
                             st.write("No detailed instructions found.")
+                            st.divider() # Trennstrich, um die verschiedenen Abschnitte zu markieren
                     else:
-                        st.write("No instructions available.")  
+                        st.write("No instructions available.") 
+                        st.divider() # Trennstrich, um die verschiedenen Abschnitte zu markieren 
 
 if __name__ == "__main__":
     main()
