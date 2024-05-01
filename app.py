@@ -73,14 +73,14 @@ def main():
     with st.form(key='recipe_form'):
         col1, col2 = st.columns(2)
         with col1:
-            query = st.text_input("🥘 Ingredients: Your choice") # Texteingabe der Zutaten
+            query = st.text_input("Ingredients: Your choice") # Texteingabe der Zutaten
             # Auswahlfeld für mögliche Küchen
-            cuisine = st.selectbox('🌐 Cuisine: Sky\'s the limit',  ['Any', 'African', 'Asian', 'American', 'Chinese', 'Eastern European', 'Greek', 'Indian', 'Italian', 'Japanese', 'Mexican', 'Thai', 'Vietnamese'])           
+            cuisine = st.selectbox('Cuisine: All around the world',  ['Any', 'African', 'Asian', 'American', 'Chinese', 'Eastern European', 'Greek', 'Indian', 'Italian', 'Japanese', 'Mexican', 'Thai', 'Vietnamese'])           
         with col2:
             # Auswahlfeld für Diät
-            diet = st.selectbox("Dietary restriction", ["None", "Vegan", "Vegetarian", "Gluten Free", "Ketogenic"])
+            diet = st.selectbox("Dietary Restrictions: We've got you covered", ["None", "Vegan", "Vegetarian", "Gluten Free", "Ketogenic"])
             # Auswahlfeld für mögliche Allergien
-            intolerances = st.selectbox('Allergies', ['None', 'Dairy', 'Egg', 'Gluten', 'Peanut', 'Seafood', 'Sesame', 'Shellfish', 'Soy', 'Tree Nut', 'Wheat'])
+            intolerances = st.selectbox('Allergies: Say no more', ['None', 'Dairy', 'Egg', 'Gluten', 'Peanut', 'Seafood', 'Sesame', 'Shellfish', 'Soy', 'Tree Nut', 'Wheat'])
 
         submit_button = st.form_submit_button("Show recipes") 
 
