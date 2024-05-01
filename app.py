@@ -92,8 +92,8 @@ def main():
         submit_button = st.form_submit_button("Show recipes") 
 
         if submit_button: # Schaltfläche zum Absenden der Eingaben, resp. Anzeigen der entspr. Rezepten
-            convert_duration_to_minutes = convert_duration_to_minutes(duration)
-            recipes = get_recipes(query, cuisine, diet, intolerances, duration, difficulty, number_of_recipes=3)
+            duration_in_minutes = convert_duration_to_minutes(duration)
+            recipes = get_recipes(query, cuisine, diet, intolerances, duration_in_minutes, difficulty, number_of_recipes=3)
             if 'results' in recipes:
                 for recipe in recipes["results"]:
                     st.header(recipe['title'])
