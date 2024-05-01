@@ -29,7 +29,7 @@ st.header("First, enter what's left in your fridge. Select any filters if needed
 st.title("Then let us do the magic")
 
 # Konfiguration für Spoonacular-API (key)
-api_key = "4f7e1499f8784e6aa5cd54ae451fce53"
+api_key = "b25d54dc98684a458a301fdfc0700da4"
 
 @st.cache # Dektrator von Streamlit, um ein erneutes Senden der Anfrage an die API zu limitieren
 def get_recipes(query, cuisine, diet, intolerances, difficulty, duration, number_of_recipes=3):
@@ -85,25 +85,45 @@ def main():
                 for recipe in recipes["results"]:
                     st.header(recipe['title'])
                     st.write(f"Name: {recipe['title']}")
-                    st.image(recipe['image'])
 
                     recipe_info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
                     recipe_info_response = requests.get(recipe_info_url, params={'apiKey': api_key})
                     recipe_info = recipe_info_response.json()
 
-                    if 'usedIngredients' in recipe_info:
-                        used_ingredients = ', '.join([ing['name'] for ing in recipe_info['usedIngredients']])
-                        st.write("Used Ingredients:", used_ingredients)
+                    if 'extendedIngredients' in recipe_info:
+                        ingredients = ', '.join([ing['name'] for ing in recipe_info['extendedIngredients']])
+                        st.write("Ingredients:", ingredients)
                     else:
-                        st.write("No used ingredients found.")
-                    if 'missedIngredients' in recipe_info:
-                        missed_ingredients = ', '.join([ing['name'] for ing in recipe_info['missedIngredients']])
-                        st.write("Missing Ingredients:", missed_ingredients)
-                    else:
-                        st.write("No missing ingredients found")    
+                        st.write("No ingredients found.")
+
+                    st.image(recipe['image'])
                     st.write("---")
+
+        # if submit_button: # Schaltfläche zum Absenden der Eingaben, resp. Anzeigen der entspr. Rezepten
+        #     recipes = get_recipes(query, cuisine, diet, intolerances, duration, difficulty, number_of_recipes=3)
+        #     if 'results' in recipes:
+        #         for recipe in recipes["results"]:
+        #             st.header(recipe['title'])
+        #             st.write(f"Name: {recipe['title']}")
+        #             st.image(recipe['image'])
+
+        #             recipe_info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
+        #             recipe_info_response = requests.get(recipe_info_url, params={'apiKey': api_key})
+        #             recipe_info = recipe_info_response.json()
+
+        #             if 'usedIngredients' in recipe_info:
+        #                 used_ingredients = ', '.join([ing['name'] for ing in recipe_info['usedIngredients']])
+        #                 st.write("Used Ingredients:", used_ingredients)
+        #             else:
+        #                 st.write("No used ingredients found.")
+        #             if 'missedIngredients' in recipe_info:
+        #                 missed_ingredients = ', '.join([ing['name'] for ing in recipe_info['missedIngredients']])
+        #                 st.write("Missing Ingredients:", missed_ingredients)
+        #             else:
+        #                 st.write("No missing ingredients found")    
+        #             st.write("---")
                     
-        #             # Aufrufen der Nährwerte-Funktion
+        # #             # Aufrufen der Nährwerte-Funktion
                     nutrition_info = get_nutrition_info(recipe['id'])
                     with st.expander("Click here to see more informations about the nutrition"):
                         st.subheader("Nutrition")
