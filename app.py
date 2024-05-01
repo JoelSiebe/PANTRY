@@ -29,7 +29,7 @@ st.header("First, enter what's left in your fridge. Select any filters if needed
 st.title("Then let us do the magic")
 
 # Konfiguration für Spoonacular-API (key)
-api_key = "85225a1e57d84d85225a1e57d84d0bafc6d59d7dac51c50bafc6d59d7dac51c5"
+api_key = "85225a1e57d84d0bafc6d59d7dac51c5"
 
 @st.cache # Dektrator von Streamlit, um ein erneutes Senden der Anfrage an die API zu limitieren
 def get_recipes(query, cuisine, diet, intolerances, difficulty, duration, number_of_recipes=3):
