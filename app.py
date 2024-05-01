@@ -89,6 +89,11 @@ def main():
                     recipe_info_response = requests.get(recipe_info_url, params={'apiKey': api_key})
                     recipe_info = recipe_info_response.json()
 
+                    if 'readyInMinutes' in recipe_info:
+                        st.write("Cooking Time:", recipe_info['readyInMinutes'], "minutes")
+                    else:
+                        st.write("No cooking time available.")
+
                     if 'extendedIngredients' in recipe_info:
                         ingredients = ', '.join([ing['name'] for ing in recipe_info['extendedIngredients']])
                         st.write("Ingredients:", ingredients)
