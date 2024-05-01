@@ -87,15 +87,15 @@ def main():
                     st.write(f"Name: {recipe['title']}")
                     st.image(recipe['image'])
 
-                    recipe_info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
-                    recipe_info_response = requests.get(recipe_info_url, params={'apiKey': api_key})
-                    recipe_info = recipe_info_response.json()
+                    # recipe_info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
+                    # recipe_info_response = requests.get(recipe_info_url, params={'apiKey': api_key})
+                    # recipe_info = recipe_info_response.json()
 
-                    if 'extendedIngredients' in recipe_info:
-                        ingredients = ', '.join([ing['name'] for ing in recipe_info['extendedIngredients']])
-                        st.write("Ingredients:", ingredients)
-                    else:
-                        st.write("No ingredients found.")   
+                    # if 'extendedIngredients' in recipe_info:
+                    #     ingredients = ', '.join([ing['name'] for ing in recipe_info['extendedIngredients']])
+                    #     st.write("Ingredients:", ingredients)
+                    # else:
+                    #     st.write("No ingredients found.")   
                     st.write("---")
                     
         #             # Aufrufen der Nährwerte-Funktion
