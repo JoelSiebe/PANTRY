@@ -59,18 +59,6 @@ def get_nutrition_info(recipe_id):
 # Return eines Dictionaries mit den entsprechenden Nährwerten
     return {'carbs': carbs, 'protein': protein, 'fat': fat}
 
-def convert_duration_to_minutes(duration):
-    if duration == "0-15 minutes":
-        return 15
-    elif duration == "15-30 minutes":
-        return 30
-    elif duration == "30-60 minutes":
-        return 60
-    elif duration == "60+ minutes":
-        return 120  
-    else:
-        return None
-
 def main():
     # Zwei Kolonnen als Platzhalter für Eingabefelder (Filteroptionen) erstellen
     with st.form(key='recipe_form'):
@@ -85,15 +73,14 @@ def main():
             # Auswahlfeld für Diät
             diet = st.selectbox("Dietary restriction", ["None", "Vegan", "Vegetarian", "Gluten Free", "Ketogenic"])
             # Auswahlfeld für Zubereitungsdauer - Achtung; funktionert ebenfalls nur bei wenigen Rezepten (Info nicht überall enthalten)
-            duration = st.selectbox("Select duration (This option is available for only a few recipes)", ["Any", "0-15 minutes", "15-30 minutes", "30-60 minutes", "60+ minutes"])
+            duration = st.number_input("Type in a max. Ready time (e.g. 35) (This option is available for only a few recipes)", ["Any", "0-15 minutes", "15-30 minutes", "30-60 minutes", "60+ minutes"])
             # Auswahlfeld für mögliche Allergien
             intolerances = st.selectbox('Allergies', ['None', 'Dairy', 'Egg', 'Gluten', 'Peanut', 'Seafood', 'Sesame', 'Shellfish', 'Soy', 'Tree Nut', 'Wheat'])
 
         submit_button = st.form_submit_button("Show recipes") 
 
         if submit_button: # Schaltfläche zum Absenden der Eingaben, resp. Anzeigen der entspr. Rezepten
-            duration_in_minutes = convert_duration_to_minutes(duration)
-            recipes = get_recipes(query, cuisine, diet, intolerances, duration_in_minutes, difficulty, number_of_recipes=3)
+            recipes = get_recipes(query, cuisine, diet, intolerances, duration, difficulty, number_of_recipes=3)
             if 'results' in recipes:
                 for recipe in recipes["results"]:
                     st.header(recipe['title'])
