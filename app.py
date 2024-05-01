@@ -52,7 +52,7 @@ def get_nutrition_info(recipe_id):
     api_nutrition_url = f"https://api.spoonacular.com/recipes/{recipe_id}/nutritionWidget.json"
     response = requests.get(api_nutrition_url, params={'apiKey': api_key})
     if response.status_code != 200:
-        print(f"Fehler bei der Anfrage: {response.status_code}")
+        print(f"Looks like we hit a speed bump 🚧. Error code: {response.status_code}")
         return None
     data = response.json() # Antwort in json umwandeln
 
@@ -93,34 +93,34 @@ def main():
             recipes = get_recipes(query, cuisine, diet, intolerances, number_of_recipes=3)
             if 'results' in recipes:
                 for recipe in recipes["results"]:
-                    st.header(recipe['title'])
+                    st.header(f"🍽️ {recipe['title']}")
                     
                     recipe_info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
                     recipe_info_response = requests.get(recipe_info_url, params={'apiKey': api_key})
                     recipe_info = recipe_info_response.json()
 
                     if 'readyInMinutes' in recipe_info:
-                        st.write("Cooking Time:", recipe_info['readyInMinutes'], "minutes")
+                        st.write("⏰ Cooking Time:", f"{recipe_info['readyInMinutes']} minutes")
                     else:
-                        st.write("No cooking time available.")
+                        st.write("⏰ Cooking Time: It's a mystery! 🕵️")
 
                     if 'extendedIngredients' in recipe_info:
                         ingredients = ', '.join([ing['name'] for ing in recipe_info['extendedIngredients']])
-                        st.write("Ingredients:", ingredients)
+                        st.write("🥦 Ingredients:", ingredients)
                     else:
-                        st.write("No ingredients found.")
+                        st.write("🥦 Ingredients: It's a surprise! 🎁")
 
                     if 'image' in recipe_info:
                         st.image(recipe['image'])
                     else:
-                        st.write("No picture found.")
+                        st.write("🖼️ Picture: It's left to your imagination! 🌈")
                     st.write("---")
 
                    
 # Aufrufen der Nährwerte-Funktion
                     nutrition_info = get_nutrition_info(recipe['id'])
                     if nutrition_info is not None:
-                        with st.expander("Click here to see more informations about the nutrition"):
+                        with st.expander("Want to know more about if this recipe helps you for your sommer body?"):
                             st.subheader("Nutrition")
 
     # Anzeigen des Piecharts (Konfiguration von Grösse und Darstellung)
