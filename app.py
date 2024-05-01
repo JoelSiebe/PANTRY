@@ -52,9 +52,9 @@ def get_nutrition_info(recipe_id):
 
  # Die relevanten Nährwerte (Kohlenhydrate, Protein, Fett) extrahieren
  # und mittels zuvor definierter Funktion Float umwandeln
-    carbs = parse_nutrition_value(data['carbs'])
-    protein = parse_nutrition_value(data['protein'])
-    fat = parse_nutrition_value(data['fat'])
+    carbs = parse_nutrition_value(data['carbs']) if 'carbs' in data else 0
+    protein = parse_nutrition_value(data['protein']) if 'protein' in data else 0
+    fat = parse_nutrition_value(data['fat']) if 'fat' in data else 0
 
 # Return eines Dictionaries mit den entsprechenden Nährwerten
     return {'carbs': carbs, 'protein': protein, 'fat': fat}
