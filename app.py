@@ -27,7 +27,10 @@ with col2:
 st.title("How does it work?") 
 st.header("Start with Leftovers.")
 st.subheader("Just type in what's still hanging out in your fridge.")
-st.title("Then let us do the magic")
+st.header("Choose Your Adventure:")
+st.subheader("Got a favorite cuisine? Any dietary restrictions or allergies? Let us know!")
+st.header("Then let us do the magic 🎩🐇")
+st.subheader("Leave the rest to us. We're about to turn your leftovers into a feast!")
 
 # Konfiguration für Spoonacular-API (key)
 api_key = "0aeaf38837284366b29170821a0ed402"
