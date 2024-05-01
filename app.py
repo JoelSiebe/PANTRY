@@ -25,10 +25,13 @@ with col2:
 
 # Einführung in App mit entsprechenden Untertiteln
 st.title("🍽️ How does it work?")
+st.write("")
 st.header("🥦 Start with Leftovers.")
 st.subheader("Just type in what's still hanging out in your fridge.")
+st.write("")
 st.header("🌍 Choose Your Adventure:")
 st.subheader("Got a favorite cuisine? Any dietary restrictions or allergies? Let us know!")
+st.write("")
 st.header("🎩 Then let us do the magic 🐇")
 st.subheader("Leave the rest to us. We're about to turn your leftovers into a feast!")
 st.write("")
