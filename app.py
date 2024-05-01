@@ -116,7 +116,7 @@ def main():
                             labels = ['Carbohydrates', 'Protein', 'Fat'] # Beschriftungen
                             sizes = [nutrition_info['carbs'], nutrition_info['protein'], nutrition_info['fat']] # Anteilige Grösse der Sektoren gem. API
                             colors = ['#133337', '#cccccc', '#6897bb'] # Benutzerdefinierte Farben
-                            fig, ax = plt.subplots(figsize=(6, 6)) # Erstellen des Diagramms
+                            fig, ax = plt.subplots(figsize=(10, 10)) # Erstellen des Diagramms
                             ax.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90) # Darstellung
                             ax.axis('equal')  # "Rund" machen
                             st.pyplot(fig) # Anzeigen des Diagramms
