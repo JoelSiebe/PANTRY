@@ -73,9 +73,9 @@ def main():
     with st.form(key='recipe_form'):
         col1, col2 = st.columns(2)
         with col1:
-            query = st.text_input("Ingredients") # Texteingabe der Zutaten
+            query = st.text_input("🥘 Ingredients: Your choice") # Texteingabe der Zutaten
             # Auswahlfeld für mögliche Küchen
-            cuisine = st.selectbox('Select Cuisine', ['Any', 'African', 'Asian', 'American', 'Chinese', 'Eastern European', 'Greek', 'Indian', 'Italian', 'Japanese', 'Mexican', 'Thai', 'Vietnamese'])           
+            cuisine = st.selectbox('🌐 Cuisine: Sky\'s the limit',  ['Any', 'African', 'Asian', 'American', 'Chinese', 'Eastern European', 'Greek', 'Indian', 'Italian', 'Japanese', 'Mexican', 'Thai', 'Vietnamese'])           
         with col2:
             # Auswahlfeld für Diät
             diet = st.selectbox("Dietary restriction", ["None", "Vegan", "Vegetarian", "Gluten Free", "Ketogenic"])
