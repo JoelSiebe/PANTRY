@@ -73,7 +73,7 @@ def main():
             # Auswahlfeld für Diät
             diet = st.selectbox("Dietary restriction", ["None", "Vegan", "Vegetarian", "Gluten Free", "Ketogenic"])
             # Auswahlfeld für Zubereitungsdauer - Achtung; funktionert ebenfalls nur bei wenigen Rezepten (Info nicht überall enthalten)
-            duration = st.selectbox("Select duration (This option is available for only a few recipes)", ["Any", "0-15 minutes", "15-30 minutes", "30-60 minutes", "60+ minutes"])
+            duration = st.number_input("Enter duration in minutes", min_value=0, max_value=120, step=1)
             # Auswahlfeld für mögliche Allergien
             intolerances = st.selectbox('Allergies', ['None', 'Dairy', 'Egg', 'Gluten', 'Peanut', 'Seafood', 'Sesame', 'Shellfish', 'Soy', 'Tree Nut', 'Wheat'])
 
