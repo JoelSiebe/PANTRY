@@ -102,7 +102,7 @@ def main():
 
                 # Überprüfe auf fehlende Zutaten
                         if 'missedIngredients' in recipe_info:
-                            missed_ingredients = ', '.join([ing['name'] für ing in recipe_info['missedIngredients']])
+                            missed_ingredients = ', '.join([ing['name'] for ing in recipe_info['missedIngredients']])
                             st.write("Missing Ingredients:", missed_ingredients)
                         else:
                             st.write("No missing ingredients found.")
