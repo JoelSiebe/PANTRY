@@ -32,8 +32,8 @@ st.title("Then let us do the magic")
 api_key = "06491aabe3d2435b8b21a749de46b765"
 
 @st.cache # Dektrator von Streamlit, um ein erneutes Senden der Anfrage an die API zu limitieren
-def get_recipes(query, cuisine, diet, intolerances, difficulty, duration, number_of_recipes=3):
-    url = f"https://api.spoonacular.com/recipes/complexSearch?apiKey={api_key}&query={query}&cuisine={cuisine}&diet={diet}&intolerances={intolerances}&difficulty={difficulty}&duration={duration}&number={number_of_recipes}"
+def get_recipes(ingredients, cuisine, diet, intolerances, difficulty, duration, number_of_recipes=3):
+    url = f"https://api.spoonacular.com/recipes/complexSearch?apiKey={api_key}&ingredients={ingredients}&cuisine={cuisine}&diet={diet}&intolerances={intolerances}&difficulty={difficulty}&duration={duration}&number={number_of_recipes}"
     response = requests.get(url)
     return response.json()
 
@@ -64,7 +64,7 @@ def main():
     with st.form(key='recipe_form'):
         col1, col2 = st.columns(2)
         with col1:
-            query = st.text_input("Ingredients") # Texteingabe der Zutaten
+            ingredients = st.text_input("Ingredients") # Texteingabe der Zutaten
             # Auswahlfeld für mögliche Küchen
             cuisine = st.selectbox('Select Cuisine', ['Any', 'African', 'Asian', 'American', 'Chinese', 'Eastern European', 'Greek', 'Indian', 'Italian', 'Japanese', 'Mexican', 'Thai', 'Vietnamese'])
             # Auswahlfeld für möglichen Schwierigkeitsgrad - Achtung; funktioniert nur bei wenigen Rezepten (Info nicht überall enthalten)       
@@ -80,7 +80,7 @@ def main():
         submit_button = st.form_submit_button("Show recipes") 
 
         if submit_button: # Schaltfläche zum Absenden der Eingaben, resp. Anzeigen der entspr. Rezepten
-            recipes = get_recipes(query, cuisine, diet, intolerances, duration, difficulty, number_of_recipes=3)
+            recipes = get_recipes(ingredients, cuisine, diet, intolerances, duration, difficulty, number_of_recipes=3)
             if 'results' in recipes:
                 for recipe in recipes["results"]:
                     st.header(recipe['title'])
@@ -102,8 +102,7 @@ def main():
                     else:
                         st.write("No missing ingredients found")    
                     st.write("---")
-                    st.divider() # Trennstrich, um die verschiedenen Abschnitte zu markieren
-
+                    
                     # Aufrufen der Nährwerte-Funktion
                     nutrition_info = get_nutrition_info(recipe['id'])
                     with st.expander("Click here to see more informations about the nutrition"):
@@ -111,8 +110,8 @@ def main():
 
 # Anzeigen des Piecharts (Konfiguration von Grösse und Darstellung)
 # Quelle für Workaround, um den Piechart kleiner zu machen: https://discuss.streamlit.io/t/cannot-change-matplotlib-figure-size/10295/10 
-                        col1, col2, col3, col4, col5, col6, col7=st.columns([1, 1, 1, 2, 1, 1, 1])
-                        with col4:
+                        col1, col2, col3 =st.columns([1, 2, 1])
+                        with col2:
                             labels = ['Carbohydrates', 'Protein', 'Fat'] # Beschriftungen
                             sizes = [nutrition_info['carbs'], nutrition_info['protein'], nutrition_info['fat']] # Anteilige Grösse der Sektoren gem. API
                             colors = ['#133337', '#cccccc', '#6897bb'] # Benutzerdefinierte Farben
@@ -150,7 +149,7 @@ if __name__ == "__main__":
 st.markdown("---")
 st.write("© 2024 Pantry Pal - Where Leftovers Meets Deliciousness. All rights reserved.")
 
-# ###################################################################
+# # ###################################################################
 # # Importieren der verschiedenen Bibliotheken
 # import streamlit as st # Streamlit
 # import requests # HTTP-Anfragen
