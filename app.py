@@ -84,8 +84,7 @@ def main():
             if 'results' in recipes:
                 for recipe in recipes["results"]:
                     st.header(recipe['title'])
-                    st.write(f"Name: {recipe['title']}")
-
+                    
                     recipe_info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
                     recipe_info_response = requests.get(recipe_info_url, params={'apiKey': api_key})
                     recipe_info = recipe_info_response.json()
@@ -96,7 +95,10 @@ def main():
                     else:
                         st.write("No ingredients found.")
 
-                    st.image(recipe['image'])
+                    if 'image' in recipe_info:
+                        st.image(recipe['image'])
+                    else:
+                        st.write("No picture found.")
                     st.write("---")
 
         # if submit_button: # Schaltfläche zum Absenden der Eingaben, resp. Anzeigen der entspr. Rezepten
