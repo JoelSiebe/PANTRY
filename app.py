@@ -110,17 +110,21 @@ def main():
                    
 # Aufrufen der Nährwerte-Funktion
                     nutrition_info = get_nutrition_info(recipe['id'])
-                    with st.expander("Click here to see more informations about the nutrition"):
-                        st.subheader("Nutrition")
+                    if nutrition_info is not None:
+                        with st.expander("Click here to see more informations about the nutrition"):
+                            st.subheader("Nutrition")
 
-# Anzeigen des Piecharts (Konfiguration von Grösse und Darstellung)
-                        labels = ['Carbohydrates', 'Protein', 'Fat'] # Beschriftungen
-                        sizes = [nutrition_info['carbs'], nutrition_info['protein'], nutrition_info['fat']] # Anteilige Grösse der Sektoren gem. API
-                        colors = ['#133337', '#cccccc', '#6897bb'] # Benutzerdefinierte Farben
-                        fig, ax = plt.subplots(figsize=(4, 4)) # Erstellen dess Diagramms
-                        ax.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90) # Darstellung
-                        ax.axis('equal')  # "Rund" machen
-                        st.pyplot(fig) # Anzeigen des Diagramms
+    # Anzeigen des Piecharts (Konfiguration von Grösse und Darstellung)
+                            labels = ['Carbohydrates', 'Protein', 'Fat'] # Beschriftungen
+                            sizes = [nutrition_info['carbs'], nutrition_info['protein'], nutrition_info['fat']] # Anteilige Grösse der Sektoren gem. API
+                            colors = ['#133337', '#cccccc', '#6897bb'] # Benutzerdefinierte Farben
+                            fig, ax = plt.subplots(figsize=(4, 4)) # Erstellen dess Diagramms
+                            ax.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90) # Darstellung
+                            ax.axis('equal')  # "Rund" machen
+                            st.pyplot(fig) # Anzeigen des Diagramms
+                    else:
+                        st.write("Problems with nutrition-score")
+                      
 
 #  Spoonacular-API für Zubereitungsschritte der jeweiligen Rezepe (https://spoonacular.com/food-api/docs#Get-Recipe-Information)
                     api_info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
