@@ -42,19 +42,24 @@ def get_recipes(query, cuisine, diet, intolerances,number_of_recipes=3):
 def get_nutrition_info(recipe_id):
     api_nutrition_url = f"https://api.spoonacular.com/recipes/{recipe_id}/nutritionWidget.json"
     response = requests.get(api_nutrition_url, params={'apiKey': api_key})
+    if response.status_code != 200:
+        print(f"Fehler bei der Anfrage: {response.status_code}")
+        return None
     data = response.json() # Antwort in json umwandeln
 
 # Funktion, um die Nährwerte als Float zurückzugeben (ansonsten funtioniert der Chart auf Streamlit nicht)
     def parse_nutrition_value(value):
+        if isinstance(value, (int, float)):
+            return float(value)
         # Entfernen von Nicht-Zahlen (ungleich isdigit) und Umwandeln
         clean_value = ''.join([ch for ch in value if ch.isdigit() or ch == '.'])
-        return float(clean_value)
+        return float(clean_value) if clean_value else 0
 
  # Die relevanten Nährwerte (Kohlenhydrate, Protein, Fett) extrahieren
  # und mittels zuvor definierter Funktion Float umwandeln
-    carbs = parse_nutrition_value(data['carbs']) if 'carbs' in data else 0
-    protein = parse_nutrition_value(data['protein']) if 'protein' in data else 0
-    fat = parse_nutrition_value(data['fat']) if 'fat' in data else 0
+    carbs = parse_nutrition_value(data['carbs']) 
+    protein = parse_nutrition_value(data['protein']) 
+    fat = parse_nutrition_value(data['fat']) 
 
 # Return eines Dictionaries mit den entsprechenden Nährwerten
     return {'carbs': carbs, 'protein': protein, 'fat': fat}
