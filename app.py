@@ -111,12 +111,12 @@ def main():
 # Anzeigen des Piecharts (Konfiguration von Grösse und Darstellung)
 # Quelle für Workaround, um den Piechart kleiner zu machen: https://discuss.streamlit.io/t/cannot-change-matplotlib-figure-size/10295/10 
                         # col1, col2, col3, col4, col5=st.columns([1, 1, 2, 1, 1])
-                        col1, col2, col3=st.columns([1, 2, 1])
-                        with col2:
+                        col1, col2, col3, col4, col5=st.columns([1, 1, 2, 1, 1])
+                        with col3:
                             labels = ['Carbohydrates', 'Protein', 'Fat'] # Beschriftungen
                             sizes = [nutrition_info['carbs'], nutrition_info['protein'], nutrition_info['fat']] # Anteilige Grösse der Sektoren gem. API
                             colors = ['#133337', '#cccccc', '#6897bb'] # Benutzerdefinierte Farben
-                            fig, ax = plt.subplots(figsize=(4, 4)) # Erstellen des Diagramms
+                            fig, ax = plt.subplots(figsize=(6, 6)) # Erstellen des Diagramms
                             ax.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90) # Darstellung
                             ax.axis('equal')  # "Rund" machen
                             st.pyplot(fig) # Anzeigen des Diagramms
