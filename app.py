@@ -77,11 +77,11 @@ def main():
             # Auswahlfeld für mögliche Allergien
             intolerances = st.selectbox('Allergies', ['None', 'Dairy', 'Egg', 'Gluten', 'Peanut', 'Seafood', 'Sesame', 'Shellfish', 'Soy', 'Tree Nut', 'Wheat'])
 
-        submit_button = st.form_submit_button("Show recipes") 
+            submit_button = st.form_submit_button("Show recipes") 
 
-
-        if submit_button: # Schaltfläche zum Absenden der Eingaben, resp. Anzeigen der entspr. Rezepten
-            recipes = get_recipes(query, cuisine, diet, intolerances, duration, difficulty, number_of_recipes=3)
+        if submit_button:
+            recipes = get_recipes(query, cuisine, diet, intolerances, duration, difficulty, 3)
+    
             if 'results' in recipes:
                 for recipe in recipes["results"]:
                     st.header(recipe['title'])
@@ -90,21 +90,51 @@ def main():
 
                     recipe_info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
                     recipe_info_response = requests.get(recipe_info_url, params={'apiKey': api_key})
-                    recipe_info = recipe_info_response.json()
+                    if recipe_info_response.status_code == 200:
+                        recipe_info = recipe_info_response.json()
+                
+                # Überprüfe auf vorhandene Zutaten
+                        if 'usedIngredients' in recipe_info:
+                            used_ingredients = ', '.join([ing['name'] for ing in recipe_info['usedIngredients']])
+                            st.write("Used Ingredients:", used_ingredients)
+                        else:
+                            st.write("No used ingredients found.")
 
-                    if 'usedIngredients' in recipe_info:
-                        used_ingredients = ', '.join([ing['name'] for ing in recipe_info['usedIngredients']])
-                        st.write("Used Ingredients:", used_ingredients)
-                    else:
-                        st.write("No used ingredients found.")
-                    if 'missedIngredients' in recipe_info:
-                        missed_ingredients = ', '.join([ing['name'] for ing in recipe_info['missedIngredients']])
-                        st.write("Missing Ingredients:", missed_ingredients)
-                    else:
-                        st.write("No missing ingredients found")    
-                    st.write("---")
+                # Überprüfe auf fehlende Zutaten
+                        if 'missedIngredients' in recipe_info:
+                            missed_ingredients = ', '.join([ing['name'] für ing in recipe_info['missedIngredients']])
+                            st.write("Missing Ingredients:", missed_ingredients)
+                        else:
+                            st.write("No missing ingredients found.")
+
+                        st.write("---")
+
+
+        # if submit_button: # Schaltfläche zum Absenden der Eingaben, resp. Anzeigen der entspr. Rezepten
+        #     recipes = get_recipes(query, cuisine, diet, intolerances, duration, difficulty, number_of_recipes=3)
+        #     if 'results' in recipes:
+        #         for recipe in recipes["results"]:
+        #             st.header(recipe['title'])
+        #             st.write(f"Name: {recipe['title']}")
+        #             st.image(recipe['image'])
+
+        #             recipe_info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
+        #             recipe_info_response = requests.get(recipe_info_url, params={'apiKey': api_key})
+        #             recipe_info = recipe_info_response.json()
+
+        #             if 'usedIngredients' in recipe_info:
+        #                 used_ingredients = ', '.join([ing['name'] for ing in recipe_info['usedIngredients']])
+        #                 st.write("Used Ingredients:", used_ingredients)
+        #             else:
+        #                 st.write("No used ingredients found.")
+        #             if 'missedIngredients' in recipe_info:
+        #                 missed_ingredients = ', '.join([ing['name'] for ing in recipe_info['missedIngredients']])
+        #                 st.write("Missing Ingredients:", missed_ingredients)
+        #             else:
+        #                 st.write("No missing ingredients found")    
+        #             st.write("---")
                     
-                    # Aufrufen der Nährwerte-Funktion
+        #             # Aufrufen der Nährwerte-Funktion
                     nutrition_info = get_nutrition_info(recipe['id'])
                     with st.expander("Click here to see more informations about the nutrition"):
                         st.subheader("Nutrition")
