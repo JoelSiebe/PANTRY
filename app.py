@@ -80,7 +80,7 @@ def main():
         submit_button = st.form_submit_button("Show recipes") 
 
         if submit_button:
-            recipes = get_recipes(query, cuisine, diet, intolerances, duration, difficulty, 3)
+            recipes = get_recipes(query, cuisine, diet, intolerances, duration, difficulty, number_of_recipes=3)
     
             if 'results' in recipes:
                 for recipe in recipes["results"]:
