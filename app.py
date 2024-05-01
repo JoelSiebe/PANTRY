@@ -24,8 +24,9 @@ with col2:
    st.image("https://i.postimg.cc/RZ0FH4BX/pexels-valeria-boltneva-1199957.jpg") #Stock-Bild
 
 # Einführung in App mit entsprechenden Untertiteln
-st.header("How does it work?") 
-st.header("First, enter what's left in your fridge. Select any filters if needed.")
+st.title("How does it work?") 
+st.header("Start with Leftovers.")
+st.subheader("Just type in what's still hanging out in your fridge.")
 st.title("Then let us do the magic")
 
 # Konfiguration für Spoonacular-API (key)
