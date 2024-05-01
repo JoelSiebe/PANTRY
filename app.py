@@ -77,7 +77,7 @@ def main():
             # Auswahlfeld für mögliche Allergien
             intolerances = st.selectbox('Allergies', ['None', 'Dairy', 'Egg', 'Gluten', 'Peanut', 'Seafood', 'Sesame', 'Shellfish', 'Soy', 'Tree Nut', 'Wheat'])
 
-            submit_button = st.form_submit_button("Show recipes") 
+        submit_button = st.form_submit_button("Show recipes") 
 
         if submit_button:
             recipes = get_recipes(query, cuisine, diet, intolerances, duration, difficulty, 3)
