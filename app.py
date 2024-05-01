@@ -80,12 +80,33 @@ def main():
         submit_button = st.form_submit_button("Show recipes") 
 
         if submit_button: # Schaltfläche zum Absenden der Eingaben, resp. Anzeigen der entspr. Rezepten
-            recipes = get_recipes(query, cuisine, diet, intolerances, duration, difficulty, number_of_recipes=3)
-            if 'results' in recipes:
-                for recipe in recipes["results"]:
-                    st.header(recipe['title'])
-                    st.write(f"Name: {recipe['title']}")
-                    st.image(recipe['image'])
+            if query:
+                recipes = get_recipes(query, cuisine, diet, intolerances, duration, difficulty, number_of_recipes=3)
+                if 'results' in recipes:
+                    for recipe in recipes["results"]:
+                        st.header(recipe['title'])
+                        st.write(f"Name: {recipe['title']}")
+
+                        recipe_info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
+                        recipe_info_response = requests.get(recipe_info_url, params={'apiKey': api_key})
+                        recipe_info = recipe_info_response.json()
+
+                        if 'extendedIngredients' in recipe_info:
+                            ingredients = ', '.join([ing['name'] for ing in recipe_info['extendedIngredients']])
+                            st.write("Ingredients:", ingredients)
+                        else:
+                            st.write("No ingredients found.")
+
+                        st.image(recipe['image'])
+                        st.write("---")
+
+        # if submit_button: # Schaltfläche zum Absenden der Eingaben, resp. Anzeigen der entspr. Rezepten
+        #     recipes = get_recipes(query, cuisine, diet, intolerances, duration, difficulty, number_of_recipes=3)
+        #     if 'results' in recipes:
+        #         for recipe in recipes["results"]:
+        #             st.header(recipe['title'])
+        #             st.write(f"Name: {recipe['title']}")
+        #             st.image(recipe['image'])
 
                     # recipe_info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
                     # recipe_info_response = requests.get(recipe_info_url, params={'apiKey': api_key})
@@ -101,7 +122,7 @@ def main():
                     #     st.write("Missing Ingredients:", missed_ingredients)
                     # else:
                     #     st.write("No missing ingredients found")    
-                    st.write("---")
+                    # st.write("---")
                     
         #             # Aufrufen der Nährwerte-Funktion
                     nutrition_info = get_nutrition_info(recipe['id'])
