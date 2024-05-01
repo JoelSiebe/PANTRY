@@ -59,6 +59,18 @@ def get_nutrition_info(recipe_id):
 # Return eines Dictionaries mit den entsprechenden Nährwerten
     return {'carbs': carbs, 'protein': protein, 'fat': fat}
 
+def convert_duration_to_minutes(duration):
+    if duration == "0-15 minutes":
+        return 15
+    elif duration == "15-30 minutes":
+        return 30
+    elif duration == "30-60 minutes":
+        return 60
+    elif duration == "60+ minutes":
+        return 120  
+    else:
+        return None
+
 def main():
     # Zwei Kolonnen als Platzhalter für Eingabefelder (Filteroptionen) erstellen
     with st.form(key='recipe_form'):
@@ -80,6 +92,7 @@ def main():
         submit_button = st.form_submit_button("Show recipes") 
 
         if submit_button: # Schaltfläche zum Absenden der Eingaben, resp. Anzeigen der entspr. Rezepten
+            convert_duration_to_minutes = convert_duration_to_minutes(duration)
             recipes = get_recipes(query, cuisine, diet, intolerances, duration, difficulty, number_of_recipes=3)
             if 'results' in recipes:
                 for recipe in recipes["results"]:
