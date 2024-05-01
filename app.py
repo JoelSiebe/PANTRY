@@ -80,30 +80,30 @@ def main():
         submit_button = st.form_submit_button("Show recipes") 
 
 
-            if submit_button: # Schaltfläche zum Absenden der Eingaben, resp. Anzeigen der entspr. Rezepten
-                if query:
-                    recipes = get_recipes(query, cuisine, diet, intolerances, duration, difficulty, number_of_recipes=3)
-                    if 'results' in recipes:
-                        for recipe in recipes["results"]:
-                            st.header(recipe['title'])
-                            st.write(f"Name: {recipe['title']}")
-                            st.image(recipe['image'])
+        if submit_button: # Schaltfläche zum Absenden der Eingaben, resp. Anzeigen der entspr. Rezepten
+            if query:
+                recipes = get_recipes(query, cuisine, diet, intolerances, duration, difficulty, number_of_recipes=3)
+                if 'results' in recipes:
+                    for recipe in recipes["results"]:
+                        st.header(recipe['title'])
+                        st.write(f"Name: {recipe['title']}")
+                        st.image(recipe['image'])
 
-                            recipe_info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
-                            recipe_info_response = requests.get(recipe_info_url, params={'apiKey': api_key})
-                            recipe_info = recipe_info_response.json()
+                        recipe_info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
+                        recipe_info_response = requests.get(recipe_info_url, params={'apiKey': api_key})
+                        recipe_info = recipe_info_response.json()
 
-                            if 'usedIngredients' in recipe_info:
-                                used_ingredients = ', '.join([ing['name'] for ing in recipe_info['usedIngredients']])
-                                st.write("Used Ingredients:", used_ingredients)
-                            else:
-                                st.write("No used ingredients found.")
-                            if 'missedIngredients' in recipe_info:
-                                missed_ingredients = ', '.join([ing['name'] for ing in recipe_info['missedIngredients']])
-                                st.write("Missing Ingredients:", missed_ingredients)
-                            else:
-                                st.write("No missing ingredients found")    
-                            st.write("---")
+                        if 'usedIngredients' in recipe_info:
+                            used_ingredients = ', '.join([ing['name'] for ing in recipe_info['usedIngredients']])
+                            st.write("Used Ingredients:", used_ingredients)
+                        else:
+                            st.write("No used ingredients found.")
+                        if 'missedIngredients' in recipe_info:
+                            missed_ingredients = ', '.join([ing['name'] for ing in recipe_info['missedIngredients']])
+                            st.write("Missing Ingredients:", missed_ingredients)
+                        else:
+                            st.write("No missing ingredients found")    
+                        st.write("---")
 
 # bisheriger code hier
         # if submit_button: # Schaltfläche zum Absenden der Eingaben, resp. Anzeigen der entspr. Rezepten
