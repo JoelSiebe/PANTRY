@@ -120,8 +120,8 @@ def main():
 # Aufrufen der Nährwerte-Funktion
                     nutrition_info = get_nutrition_info(recipe['id'])
                     if nutrition_info is not None:
-                        with st.expander("Want to know more about if this recipe helps you for your sommer body?"):
-                            st.subheader("Nutrition")
+                        with st.expander("🏖️ Dreaming of that summer body? Let's check the nutrition!"):
+                            st.subheader("🍎 Nutrition Breakdown")
 
     # Anzeigen des Piecharts (Konfiguration von Grösse und Darstellung)
                             labels = ['Carbohydrates', 'Protein', 'Fat'] # Beschriftungen
@@ -132,7 +132,7 @@ def main():
                             ax.axis('equal')  # "Rund" machen
                             st.pyplot(fig) # Anzeigen des Diagramms
                     else:
-                        st.write("Problems with nutrition-score")
+                        st.write("Looks like we hit a speed bump with the nutrition score 🚧")
                       
 
 #  Spoonacular-API für Zubereitungsschritte der jeweiligen Rezepe (https://spoonacular.com/food-api/docs#Get-Recipe-Information)
@@ -141,17 +141,17 @@ def main():
                     instructions_data = instructions_response.json() # Umwandeln in json
 
 # Überprüfen, ob detailierte Zubereitungsschrite in API verfügbar sind
-                    with st.expander("Click here to see detailed instructions"):
+                    with st.expander("🔍 Ready to cook? Click here for step-by-step instructions"):
                         if 'analyzedInstructions' in instructions_data:
                             steps = instructions_data['analyzedInstructions'] # Liste der Zubereitungsschritte
                             if steps: # Wenn Zubereitungsschritte vorhanden sind:
-                                st.subheader("Instructions:") # Titel der Schritte
+                                st.subheader("📝 Let's Get Cooking!") # Titel der Schritte
                                 for section in steps:
                                     for step in section['steps']:
                                         st.write(f"Step {step['number']}: {step['step']}")  # Detaillierte Schritte anzeigen
                                         st.divider() # Trennstrich, um die verschiedenen Abschnitte zu markieren
                             else:
-                                st.write("No detailed instructions found.")
+                                st.write("Looks like there are no instructions - what about just going freestyle?")
                                 st.divider() # Trennstrich, um die verschiedenen Abschnitte zu markieren
                         else:
                             st.write("No instructions available.") 
