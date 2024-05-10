@@ -38,7 +38,7 @@ st.write("")
 st.write("")
 
 # Konfiguration für Spoonacular-API (key)
-api_key = "0aeaf38837284366b29170821a0ed402"
+api_key = "4f7e1499f8784e6aa5cd54ae451fce53"
 
 @st.cache # Dektrator von Streamlit, um ein erneutes Senden der Anfrage an die API zu limitieren
 def get_recipes(query, cuisine, diet, intolerances,number_of_recipes=3):
