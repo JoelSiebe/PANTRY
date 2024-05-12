@@ -13,7 +13,7 @@ st.title("Tame your kitchen with Pantry Pal",)
 st.divider() # Trennstrich, um die verschiedenen Abschnitte zu markieren
 
 
-# Bilder in 2 Kolonnen anzeigen
+# Chatnachrichten sowie Bilder in 2 Kolonnen anzeigen
 # Quelle für Streamlit Layout: https://docs.streamlit.io/library/api-reference/layout/st.columns) und https://github.com/AI-Yash/st-chat/blob/8ac13aa3fdf98bacb971f24c759c3daa16669183/streamlit_chat/__init__.py#L24
 col1, col2= st.columns(2)
 def message(txt:str, size="1.25rem", **kwargs):
@@ -99,8 +99,8 @@ def main():
         submit_button = st.form_submit_button("Show recipes") 
 
         if submit_button: # Schaltfläche zum Absenden der Eingaben, resp. Anzeigen der entspr. Rezepten
-            recipes = get_recipes(query, cuisine, diet, intolerances, number_of_recipes=3)
-            if 'results' in recipes:
+            recipes = get_recipes(query, cuisine, diet, intolerances, number_of_recipes=3) # Aufrufen der Funktion get_recipes, um Rezepte auf Basis der eingegebenen Kriterien abzurufen
+            if 'results' in recipes: # Schleifen, um zu überprüfen, ob es Resultate gibt und wenn ja, dann die weiteren Informationen anzeigen
                 for recipe in recipes["results"]:
                     st.header(f"🍽️ {recipe['title']}")
                     
