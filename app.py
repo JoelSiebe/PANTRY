@@ -1,21 +1,28 @@
-# Importieren der verschiedenen Bibliotheken
+    # Importieren der verschiedenen Bibliotheken
 import streamlit as st # Streamlit
+import streamlit_chat
+from streamlit_chat import message as msg
 import requests # HTTP-Anfragen
 import matplotlib.pyplot as plt # Datenvisualisierung
 
 # Titel und Header
-# Quelle für Header:https://stackoverflow.com/questions/70932538/how-to-center-the-title-and-an-image-in-streamlit
-st.markdown("<h1 style='text-align: center; color: grey;'>Pantry Pal</h1>", unsafe_allow_html=True) # Mit unsafe_allow_html=True wird das Einfügen von HTML-Elementen ermöglicht
-st.markdown("<h2 style='text-align: center; color: grey;'>Conquering Leftovers, Mastering Meals </h2>", unsafe_allow_html=True)
+# Quelle für Header: https://stackoverflow.com/questions/70932538/how-to-center-the-title-and-an-image-in-streamlit
+st.markdown("<h1 style='text-align: center; font-size:100px; color: grey;'>Pantry Pal</h1>", unsafe_allow_html=True) # Mit unsafe_allow_html=True wird das Einfügen von HTML-Elementen ermöglicht
+st.markdown("<h2 style='text-align: center; color: grey;'>Conquering leftovers, Mastering meals </h2>", unsafe_allow_html=True)
 st.title("Tame your kitchen with Pantry Pal",)
 st.divider() # Trennstrich, um die verschiedenen Abschnitte zu markieren
 
+
 # Bilder in 2 Kolonnen anzeigen
-# Quelle: https://docs.streamlit.io/library/api-reference/layout/st.columns)
-st.header("So, what's the plan for today?")
-st.header("Is it Italian? Or maybe a tasty burger?")
-st.title("You decide.")
+# Quelle für Streamlit Layout: https://docs.streamlit.io/library/api-reference/layout/st.columns) and https://github.com/AI-Yash/st-chat/blob/8ac13aa3fdf98bacb971f24c759c3daa16669183/streamlit_chat/__init__.py#L24
 col1, col2= st.columns(2)
+def message(txt:str, size="1.25rem", **kwargs):
+    styled_text = f"""<p style="font-size:{size};">{txt}</p>"""
+    msg(styled_text, allow_html=True, **kwargs)
+message("So, what's the plan for today?", avatar_style="personas")
+message("Is it Italian? Or maybe a tasty burger?", is_user=True, avatar_style="bottts")
+message("You decide.", size="3rem", avatar_style="personas")
+st.divider() # Trennstrich, um die verschiedenen Abschnitte zu markieren
 
 with col1:
    st.image("https://i.postimg.cc/44rnqrp3/pexels-lisa-fotios-1373915.jpgg") #Stock-Bild
@@ -24,23 +31,23 @@ with col2:
    st.image("https://i.postimg.cc/RZ0FH4BX/pexels-valeria-boltneva-1199957.jpg") #Stock-Bild
 
 # Einführung in App mit entsprechenden Untertiteln
-st.title("🍽️ How does it work?")
+st.markdown("<h1 style='text-align: left; font-size:50px; color: black;'>How does it work?🍽️ </h1>", unsafe_allow_html=True)
+st.header("🥦 Start with leftovers.")
+st.subheader("Just type in what's still hanging out in your :green[fridge].")
 st.write("")
-st.header("🥦 Start with Leftovers.")
-st.subheader("Just type in what's still hanging out in your fridge.")
+st.header("🌍 Choose your adventure.")
+st.subheader("Got a favorite :blue[cuisine]? Any dietary restrictions or allergies? Let us know!")
 st.write("")
-st.header("🌍 Choose Your Adventure:")
-st.subheader("Got a favorite cuisine? Any dietary restrictions or allergies? Let us know!")
-st.write("")
-st.header("🎩 Then let us do the magic 🐇")
-st.subheader("Leave the rest to us. We're about to turn your leftovers into a feast!")
+st.header("🎩 Then, let us do the magic! 🐇")
+st.subheader("Leave the rest to us. We're about to turn your leftovers into a :orange[feast]!")
 st.write("")
 st.write("")
 
 # Konfiguration für Spoonacular-API (key)
-api_key = "06491aabe3d2435b8b21a749de46b765"
+# Quelle für API und Key: https://spoonacular.com/food-api 
+api_key = "4f7e1499f8784e6aa5cd54ae451fce53"
 
-@st.cache # Dektrator von Streamlit, um ein erneutes Senden der Anfrage an die API zu limitieren
+@st.cache_data # Dektrator von Streamlit, um ein erneutes Senden der Anfrage an die API zu limitieren
 def get_recipes(query, cuisine, diet, intolerances,number_of_recipes=3):
     url = f"https://api.spoonacular.com/recipes/complexSearch?apiKey={api_key}&query={query}&cuisine={cuisine}&diet={diet}&intolerances={intolerances}&number={number_of_recipes}"
     response = requests.get(url)
@@ -121,13 +128,14 @@ def main():
                     nutrition_info = get_nutrition_info(recipe['id'])
                     if nutrition_info is not None:
                         with st.expander("🏖️ Dreaming of that summer body? Let's check the nutrition!"):
-                            st.subheader("🍎 Nutrition Breakdown")
+                            st.subheader("🍎 Nutrition breakdown")
 
     # Anzeigen des Piecharts (Konfiguration von Grösse und Darstellung)
+    #Quelle Design: https://matplotlib.org/stable/gallery/pie_and_polar_charts/pie_features.html 
                             labels = ['Carbohydrates', 'Protein', 'Fat'] # Beschriftungen
                             sizes = [nutrition_info['carbs'], nutrition_info['protein'], nutrition_info['fat']] # Anteilige Grösse der Sektoren gem. API
-                            colors = ['#133337', '#cccccc', '#6897bb'] # Benutzerdefinierte Farben
-                            fig, ax = plt.subplots(figsize=(4, 4)) # Erstellen dess Diagramms
+                            colors = ['#faaa5f', '#9cd7f0', '#eda1b3'] # Benutzerdefinierte Farben
+                            fig, ax = plt.subplots(figsize=(4, 4)) # Erstellen des Diagramms
                             ax.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90) # Darstellung
                             ax.axis('equal')  # "Rund" machen
                             st.pyplot(fig) # Anzeigen des Diagramms
@@ -164,3 +172,4 @@ if __name__ == "__main__":
 # Fusszeile der Anwendung
 st.markdown("---")
 st.write("© 2024 Pantry Pal - Where Leftovers Meets Deliciousness. All rights reserved.")
+    
