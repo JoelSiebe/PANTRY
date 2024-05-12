@@ -14,7 +14,7 @@ st.divider() # Trennstrich, um die verschiedenen Abschnitte zu markieren
 
 
 # Bilder in 2 Kolonnen anzeigen
-# Quelle für Streamlit Layout: https://docs.streamlit.io/library/api-reference/layout/st.columns) and https://github.com/AI-Yash/st-chat/blob/8ac13aa3fdf98bacb971f24c759c3daa16669183/streamlit_chat/__init__.py#L24
+# Quelle für Streamlit Layout: https://docs.streamlit.io/library/api-reference/layout/st.columns) und https://github.com/AI-Yash/st-chat/blob/8ac13aa3fdf98bacb971f24c759c3daa16669183/streamlit_chat/__init__.py#L24
 col1, col2= st.columns(2)
 def message(txt:str, size="1.25rem", **kwargs):
     styled_text = f"""<p style="font-size:{size};">{txt}</p>"""
@@ -32,6 +32,7 @@ with col2:
 
 # Einführung in App mit entsprechenden Untertiteln
 st.markdown("<h1 style='text-align: left; font-size:50px; color: black;'>How does it work?🍽️ </h1>", unsafe_allow_html=True)
+st.write("")
 st.header("🥦 Start with leftovers.")
 st.subheader("Just type in what's still hanging out in your :green[fridge].")
 st.write("")
@@ -59,6 +60,7 @@ def get_nutrition_info(recipe_id):
     api_nutrition_url = f"https://api.spoonacular.com/recipes/{recipe_id}/nutritionWidget.json"
     response = requests.get(api_nutrition_url, params={'apiKey': api_key})
     if response.status_code != 200:
+        # Errormessage, wenn keine Nährwerte vorhanden sind
         print(f"Looks like we hit a speed bump 🚧. Error code: {response.status_code}")
         return None
     data = response.json() # Antwort in json umwandeln
@@ -130,8 +132,8 @@ def main():
                         with st.expander("🏖️ Dreaming of that summer body? Let's check the nutrition!"):
                             st.subheader("🍎 Nutrition breakdown")
 
-    # Anzeigen des Piecharts (Konfiguration von Grösse und Darstellung)
-    #Quelle Design: https://matplotlib.org/stable/gallery/pie_and_polar_charts/pie_features.html 
+# Anzeigen des Piecharts (Konfiguration von Grösse und Darstellung)
+# Quelle Design: https://matplotlib.org/stable/gallery/pie_and_polar_charts/pie_features.html 
                             labels = ['Carbohydrates', 'Protein', 'Fat'] # Beschriftungen
                             sizes = [nutrition_info['carbs'], nutrition_info['protein'], nutrition_info['fat']] # Anteilige Grösse der Sektoren gem. API
                             colors = ['#faaa5f', '#9cd7f0', '#eda1b3'] # Benutzerdefinierte Farben
