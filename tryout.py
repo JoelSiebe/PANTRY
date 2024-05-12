@@ -24,137 +24,142 @@ with col2:
    st.image("https://i.postimg.cc/RZ0FH4BX/pexels-valeria-boltneva-1199957.jpg") #Stock-Bild
 
 # Einführung in App mit entsprechenden Untertiteln
-st.header("How does it work?") 
-st.header("First, enter what's left in your fridge. Select any filters if needed.")
-st.title("Then let us do the magic")
+st.title("🍽️ How does it work?")
+st.write("")
+st.header("🥦 Start with Leftovers.")
+st.subheader("Just type in what's still hanging out in your fridge.")
+st.write("")
+st.header("🌍 Choose Your Adventure:")
+st.subheader("Got a favorite cuisine? Any dietary restrictions or allergies? Let us know!")
+st.write("")
+st.header("🎩 Then let us do the magic 🐇")
+st.subheader("Leave the rest to us. We're about to turn your leftovers into a feast!")
+st.write("")
+st.write("")
 
-# Konfiguration für Spoonacular-API
-api_url = "https://api.spoonacular.com/recipes/findByIngredients" # Spoonacular API-URL
-api_key = "4ea121e2c8424f89944d031e2dc68634" # API-Schlüssel
+# Konfiguration für Spoonacular-API (key)
+api_key = "06491aabe3d2435b8b21a749de46b765"
 
-# Funktion zum Abrufen von Rezepten basierend auf Input (Zutaten) und den ausgewählten Filteroptionen
-def get_recipes(ingredients, cuisine, difficulty, duration, allergies, diet):
-    # Parameter, die an API gesendet werden
-    parameter = {
-        'ingredients': ingredients,
-        'cuisine': cuisine,
-        'difficutly': difficulty,
-        'maxReadyTime': duration,
-        'diet': diet,
-        'number': 5, # Anz. angezeigter Rezepte
-        'apiKey': api_key
-    }
-# Filteroptionen (https://docs.streamlit.io/library/api-reference/widgets)
-    if cuisine != "Any":
-        parameter['cuisine']=cuisine # Auswählen der versch. Küchen
-    if difficulty != "Any":
-        parameter['difficulty'] = difficulty.lower() # In Kleinbuchstaben umwandeln, um von der API gelesen zu werden
-    if duration != "Any":
-        # Festlegen der max. Zubereitungsdauer
-        if duration == "0-15 minutes":
-            parameter['maxReadyTime'] = 15
-        elif duration == "15-30 minutes":
-            parameter['maxReadyTime'] = 30
-        elif duration == "30-60 minutes":
-            parameter['maxReadyTime'] = 60
-        else:
-            parameter['maxReadyTime'] = 60 
-
-#API-Abfrage senden
-    response = requests.get(api_url, params=parameter)
-    return response.json() # Rückgabe des Ergebnisses
+@st.cache # Dektrator von Streamlit, um ein erneutes Senden der Anfrage an die API zu limitieren
+def get_recipes(query, cuisine, diet, intolerances,number_of_recipes=3):
+    url = f"https://api.spoonacular.com/recipes/complexSearch?apiKey={api_key}&query={query}&cuisine={cuisine}&diet={diet}&intolerances={intolerances}&number={number_of_recipes}"
+    response = requests.get(url)
+    return response.json()
 
 # Daten-Visualisierung in Form eines Piecharts (auf Basis der Nährwerten):
 # Funktion, um Infos aus API abzurufen und in data zu speichern
 def get_nutrition_info(recipe_id):
     api_nutrition_url = f"https://api.spoonacular.com/recipes/{recipe_id}/nutritionWidget.json"
     response = requests.get(api_nutrition_url, params={'apiKey': api_key})
+    if response.status_code != 200:
+        print(f"Looks like we hit a speed bump 🚧. Error code: {response.status_code}")
+        return None
     data = response.json() # Antwort in json umwandeln
 
 # Funktion, um die Nährwerte als Float zurückzugeben (ansonsten funtioniert der Chart auf Streamlit nicht)
     def parse_nutrition_value(value):
+        if isinstance(value, (int, float)):
+            return float(value)
         # Entfernen von Nicht-Zahlen (ungleich isdigit) und Umwandeln
         clean_value = ''.join([ch for ch in value if ch.isdigit() or ch == '.'])
-        return float(clean_value)
+        return float(clean_value) if clean_value else 0
 
  # Die relevanten Nährwerte (Kohlenhydrate, Protein, Fett) extrahieren
  # und mittels zuvor definierter Funktion Float umwandeln
-    carbs = parse_nutrition_value(data['carbs'])
-    protein = parse_nutrition_value(data['protein'])
-    fat = parse_nutrition_value(data['fat'])
+    carbs = parse_nutrition_value(data['carbs']) 
+    protein = parse_nutrition_value(data['protein']) 
+    fat = parse_nutrition_value(data['fat']) 
 
 # Return eines Dictionaries mit den entsprechenden Nährwerten
     return {'carbs': carbs, 'protein': protein, 'fat': fat}
-   
-# Zwei Kolonnen als Platzhalter für Eingabefelder (Filteroptionen) erstellen
-with st.form(key='my_form'):
-    col1, col2 = st.columns(2)
-    with col1:
-        ingredients = st.text_input('Ingredients') # Texteingabe der Zutaten
-        # Auswahlfeld für eine mögliche Küche
-        cuisine = st.selectbox('Cuisine', ['Any', 'African', 'Asian', 'American', 'Chinese', 'Eastern European', 'Greek', 'Indian', 'Italian', 'Japanese', 'Mexican', 'Thai', 'Vietnamese'])
-        diet = st.selectbox("Dietary restrictions", ["None", "Vegetarian", "Vegan", "Gluten-Free", "Ketogenic"]) # Quelle: https://github.com/deepankarvarma/Recipe-Finder-Using-Python/blob/master/app.py
-    with col2:
-        # Auswahlfeld für mögliches Schwierigkeitsleven
-        difficulty = st.selectbox('Difficulty Level', ['Any', 'Easy', 'Medium', 'Hard'])
-        # Auswahlfeld für mögliche Zubereitungsdauer
-        duration = st.selectbox('Duration', ['Any', '0-15 minutes', '15-30 minutes', '30-60 minutes', '60+ minutes'])
-        # Auswahlfeld für mögliche Allergien
-        allergies = st.selectbox('Allergies', ['None', 'Dairy', 'Egg', 'Gluten', 'Peanut', 'Seafood', 'Sesame', 'Shellfish', 'Soy', 'Tree Nut', 'Wheat'])
 
-    submit_button = st.form_submit_button('Show recipes') # Schaltfläche zum Absenden des Formulars
+def main():
+    # Zwei Kolonnen als Platzhalter für Eingabefelder (Filteroptionen) erstellen
+    with st.form(key='recipe_form'):
+        col1, col2 = st.columns(2)
+        with col1:
+            query = st.text_input("Ingredients: Your choice") # Texteingabe der Zutaten
+            # Auswahlfeld für mögliche Küchen
+            cuisine = st.selectbox('Cuisine: All around the world',  ['Any', 'African', 'Asian', 'American', 'Chinese', 'Eastern European', 'Greek', 'Indian', 'Italian', 'Japanese', 'Mexican', 'Thai', 'Vietnamese'])           
+        with col2:
+            # Auswahlfeld für Diät
+            diet = st.selectbox("Dietary Restrictions: We've got you covered", ["None", "Vegan", "Vegetarian", "Gluten Free", "Ketogenic"])
+            # Auswahlfeld für mögliche Allergien
+            intolerances = st.selectbox('Allergies: Say no more', ['None', 'Dairy', 'Egg', 'Gluten', 'Peanut', 'Seafood', 'Sesame', 'Shellfish', 'Soy', 'Tree Nut', 'Wheat'])
 
-# Rezepte anzeigen, wenn die Schaltfläche "Show recipes" geklickt wird
-if submit_button:
-    if ingredients: # Es müssen Zutaten eingegeben worden sein
-        recipes = get_recipes(ingredients, cuisine, difficulty, duration, allergies, diet)
-        if recipes:  # Wenn es Rezepte ausgibt
-            for recipe in recipes:
-                if 'title' in recipe:
-                    st.subheader(recipe['title'])  # Rezepttitel anzeigen
-                else:
-                    st.write("No title found for this recipe")
-                if 'image' in recipe:
-                    st.image(recipe['image'])  # Bild des Rezepts anzeigen
-                else:
-                    st.write("No image found for this recipe")
-                used_ingredients = ', '.join([ing['name'] for ing in recipe['usedIngredients']])
-                missed_ingredients = ', '.join([ing['name'] for ing in recipe['missedIngredients']])
-                st.write("Used Ingredients:", used_ingredients) # Gebrauchte und noch erforderliche Zutaten anzeigen
-                st.write("Missing Ingredients:", missed_ingredients)
-                
-# Nährwertinformationen für das ausgewählte Rezept abrufen (um Piechart zu erstellen)
-                nutrition_data = get_nutrition_info(recipe['id'])
+        submit_button = st.form_submit_button("Show recipes") 
 
-# Anzeigen des Piecharts (Konfiguration von Grösse und Darstellung)
-# Quelle für Workaround, um den Piechart kleiner zu machen: https://discuss.streamlit.io/t/cannot-change-matplotlib-figure-size/10295/10 
-                col1, col2, col3, col4, col5=st.columns([1,1, 2, 1, 1])
-                with col3:
-                    labels = ['Carbohydrates', 'Protein', 'Fat'] # Beschriftungen
-                    sizes = [nutrition_data['carbs'], nutrition_data['protein'], nutrition_data['fat']] # Anteilige Grösse der Sektoren gem. API
-                    colors = ['#133337', '#cccccc', '#6897bb'] # Benutzerdefinierte Farben
-                    fig, ax = plt.subplots(figsize=(4, 4)) # Erstellen des Diagramms
-                    ax.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90) # Darstellung
-                    ax.axis('equal')  # "Rund" machen
-                    st.pyplot(fig) # Anzeigen des Diagramms
+        if submit_button: # Schaltfläche zum Absenden der Eingaben, resp. Anzeigen der entspr. Rezepten
+            recipes = get_recipes(query, cuisine, diet, intolerances, number_of_recipes=3)
+            if 'results' in recipes:
+                for recipe in recipes["results"]:
+                    st.header(f"🍽️ {recipe['title']}")
+                    
+                    recipe_info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
+                    recipe_info_response = requests.get(recipe_info_url, params={'apiKey': api_key})
+                    recipe_info = recipe_info_response.json()
+
+                    if 'readyInMinutes' in recipe_info:
+                        st.write("⏰ Cooking Time:", f"{recipe_info['readyInMinutes']} minutes")
+                    else:
+                        st.write("⏰ Cooking Time: It's a mystery! 🕵️")
+
+                    if 'extendedIngredients' in recipe_info:
+                        ingredients = ', '.join([ing['name'] for ing in recipe_info['extendedIngredients']])
+                        st.write("🥦 Ingredients:", ingredients)
+                    else:
+                        st.write("🥦 Ingredients: It's a surprise! 🎁")
+
+                    if 'image' in recipe_info:
+                        st.image(recipe['image'])
+                    else:
+                        st.write("🖼️ Picture: It's left to your imagination! 🌈")
+                    st.write("---")
+
+                   
+# Aufrufen der Nährwerte-Funktion
+                    nutrition_info = get_nutrition_info(recipe['id'])
+                    if nutrition_info is not None:
+                        with st.expander("🏖️ Dreaming of that summer body? Let's check the nutrition!"):
+                            st.subheader("🍎 Nutrition Breakdown")
+
+    # Anzeigen des Piecharts (Konfiguration von Grösse und Darstellung)
+                            labels = ['Carbohydrates', 'Protein', 'Fat'] # Beschriftungen
+                            sizes = [nutrition_info['carbs'], nutrition_info['protein'], nutrition_info['fat']] # Anteilige Grösse der Sektoren gem. API
+                            colors = ['#133337', '#cccccc', '#6897bb'] # Benutzerdefinierte Farben
+                            fig, ax = plt.subplots(figsize=(4, 4)) # Erstellen dess Diagramms
+                            ax.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90) # Darstellung
+                            ax.axis('equal')  # "Rund" machen
+                            st.pyplot(fig) # Anzeigen des Diagramms
+                    else:
+                        st.write("Looks like we hit a speed bump with the nutrition score 🚧")
+                      
 
 #  Spoonacular-API für Zubereitungsschritte der jeweiligen Rezepe (https://spoonacular.com/food-api/docs#Get-Recipe-Information)
-                api_info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
-                instructions_response = requests.get(api_info_url, params={'apiKey': api_key})
-                instructions_data = instructions_response.json() # Umwandeln in json
+                    api_info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
+                    instructions_response = requests.get(api_info_url, params={'apiKey': api_key})
+                    instructions_data = instructions_response.json() # Umwandeln in json
 
 # Überprüfen, ob detailierte Zubereitungsschrite in API verfügbar sind
-                if 'analyzedInstructions' in instructions_data:
-                    steps = instructions_data['analyzedInstructions'] # Liste der Zubereitungsschritte
-                    if steps: # Wenn Zubereitungsschritte vorhanden sind:
-                        st.subheader("Instructions:") # Titel der Schritte
-                        for section in steps:
-                            for step in section['steps']:
-                                st.write(f"Step {step['number']}: {step['step']}")  # Detaillierte Schritte anzeigen
-                    else:
-                        st.write("No detailed instructions found.")
-                else:
-                    st.write("No instructions available.")  
+                    with st.expander("🔍 Ready to cook? Click here for step-by-step instructions"):
+                        if 'analyzedInstructions' in instructions_data:
+                            steps = instructions_data['analyzedInstructions'] # Liste der Zubereitungsschritte
+                            if steps: # Wenn Zubereitungsschritte vorhanden sind:
+                                st.subheader("📝 Let's Get Cooking!") # Titel der Schritte
+                                for section in steps:
+                                    for step in section['steps']:
+                                        st.write(f"Step {step['number']}: {step['step']}")  # Detaillierte Schritte anzeigen
+                                        st.divider() # Trennstrich, um die verschiedenen Abschnitte zu markieren
+                            else:
+                                st.write("Looks like there are no instructions - what about just going freestyle?")
+                                st.divider() # Trennstrich, um die verschiedenen Abschnitte zu markieren
+                        else:
+                            st.write("No instructions available.") 
+                            st.divider() # Trennstrich, um die verschiedenen Abschnitte zu markieren 
+
+if __name__ == "__main__":
+    main()
+
 
 # Fusszeile der Anwendung
 st.markdown("---")
