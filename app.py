@@ -1,7 +1,7 @@
     # Importieren der verschiedenen Bibliotheken
 import streamlit as st # Streamlit
-import streamlit_chat
-from streamlit_chat import message as msg
+import streamlit_chat # Für Chat-Symbole
+from streamlit_chat import message as msg # Für Chat-Symbole
 import requests # HTTP-Anfragen
 import matplotlib.pyplot as plt # Datenvisualisierung
 
