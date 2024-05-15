@@ -18,10 +18,10 @@ st.title("You decide.")
 col1, col2= st.columns(2)
 
 with col1:
-   st.image("https://i.postimg.cc/44rnqrp3/pexels-lisa-fotios-1373915.jpgg") #Stock-Bild
+   st.image("https://i.postimg.cc/44rnqrp3/pexels-lisa-fotios-1373915.jpgg") # Stock-Bild, Quelle: Valeria Boltneva,https://www.pexels.com/photo/burger-with-fried-fries-on-black-plate-with-sauce-on-the-side-1199957/ 
 
 with col2:
-   st.image("https://i.postimg.cc/RZ0FH4BX/pexels-valeria-boltneva-1199957.jpg") #Stock-Bild
+   st.image("https://i.postimg.cc/RZ0FH4BX/pexels-valeria-boltneva-1199957.jpg") # Stock-Bild, Quelle: Lisa Fotios, https://www.pexels.com/photo/pasta-dish-with-vegetables-1373915/
 
 # Einführung in App mit entsprechenden Untertiteln
 st.title("🍽️ How does it work?")
@@ -40,7 +40,7 @@ st.write("")
 # Konfiguration für Spoonacular-API (key)
 api_key = "06491aabe3d2435b8b21a749de46b765"
 
-@st.cache # Dektrator von Streamlit, um ein erneutes Senden der Anfrage an die API zu limitieren
+@st.cache # Dektrator von Streamlit, um ein erneutes Senden der Anfrage an die API zu limitieren / E
 def get_recipes(query, cuisine, diet, intolerances,number_of_recipes=3):
     url = f"https://api.spoonacular.com/recipes/complexSearch?apiKey={api_key}&query={query}&cuisine={cuisine}&diet={diet}&intolerances={intolerances}&number={number_of_recipes}"
     response = requests.get(url)
@@ -164,3 +164,5 @@ if __name__ == "__main__":
 # Fusszeile der Anwendung
 st.markdown("---")
 st.write("© 2024 Pantry Pal - Where Leftovers Meets Deliciousness. All rights reserved.")
+
+# ChatGPT-Disclaimer: Wo nicht anders angegeben, wurde ChatGPT einfach fürs Debugging verwendet.
