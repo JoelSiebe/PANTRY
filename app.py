@@ -1,6 +1,10 @@
 # Allgemeine Hinweise
-# 1. Anzahl der API-Anfragen ist beschränkt, daher dient der folgende API-Key als Backup: ..
-# 2. Chat-GPT für Debugging
+# 1. Die Anzahl der API-Anfragen ist seitens der API beschränkt, daher dient der folgende API-Key als Backup,
+#    falls die Anfragen nicht mehr ausgeführt werden: "4f7e1499f8784e6aa5cd54ae451fce53"
+# 2. Wir nahmen ChatGPT in Anspruch, um uns beim Debugging-Prozess zu unterstützen. 
+#    Aufgrund der vereinzelten Ausbesserungen in den unterschiedlichen Codeblocks haben wir dies nicht
+#    in der jeweiligen Codezeile zitiert.
+
 
 # Importieren der verschiedenen Bibliotheken
 import streamlit as st # Streamlit
@@ -17,9 +21,9 @@ st.title("Tame your kitchen with Pantry Pal",)
 st.divider() # Trennstrich, um die verschiedenen Abschnitte zu markieren
 
 
-# Chatnachrichten sowie Bilder in 2 Kolonnen anzeigen
-# Quelle für Streamlit Layout: https://docs.streamlit.io/library/api-reference/layout/st.columns) und https://github.com/AI-Yash/st-chat/blob/8ac13aa3fdf98bacb971f24c759c3daa16669183/streamlit_chat/__init__.py#L24
-col1, col2= st.columns(2)
+# Anzeigen der Chatnachrichten
+# Quelle für Streamlit-Layout: https://docs.streamlit.io/library/api-reference/layout/st.columns) und https://github.com/AI-Yash/st-chat/blob/8ac13aa3fdf98bacb971f24c759c3daa16669183/streamlit_chat/__init__.py#L24
+col1, col2= st.columns(2) # Erstellen der 2 Kolonnen für die Bilder
 def message(txt:str, size="1.25rem", **kwargs):
     styled_text = f"""<p style="font-size:{size};">{txt}</p>"""
     msg(styled_text, allow_html=True, **kwargs)
@@ -28,6 +32,7 @@ message("Is it Italian? Or maybe a tasty burger?", is_user=True, avatar_style="b
 message("You decide.", size="3rem", avatar_style="personas")
 st.divider() # Trennstrich, um die verschiedenen Abschnitte zu markieren
 
+# Benützen der Kolonnen
 with col1:
    st.image("https://i.postimg.cc/44rnqrp3/pexels-lisa-fotios-1373915.jpgg") # Stock-Bild, Quelle: Valeria Boltneva,https://www.pexels.com/photo/burger-with-fried-fries-on-black-plate-with-sauce-on-the-side-1199957/ 
 
@@ -53,6 +58,7 @@ st.write("")
 api_key = "06491aabe3d2435b8b21a749de46b765"
 
 @st.cache_data # Dektrator von Streamlit, um ein erneutes Senden der Anfrage an die API zu limitieren
+# Definieren der Funktion get_recipes, um die Eigenschaften der Rezepte von der API abzurufen
 def get_recipes(query, cuisine, diet, intolerances,number_of_recipes=5):
     url = f"https://api.spoonacular.com/recipes/complexSearch?apiKey={api_key}&query={query}&cuisine={cuisine}&diet={diet}&intolerances={intolerances}&number={number_of_recipes}"
     response = requests.get(url)
@@ -71,14 +77,14 @@ def get_nutrition_info(recipe_id):
 
 # Funktion, um die Nährwerte als Float zurückzugeben (ansonsten funtioniert der Chart auf Streamlit nicht)
     def parse_nutrition_value(value):
-        if isinstance(value, (int, float)):
-            return float(value)
+        if isinstance(value, (int, float)): # Überprüfen, ob übergebener Wert bereits int oder Float ist
+            return float(value) # Wenn ja, als Float zurückgeben
         # Entfernen von Nicht-Zahlen (ungleich isdigit) und Umwandeln
-        clean_value = ''.join([ch for ch in value if ch.isdigit() or ch == '.'])
+        clean_value = ''.join([ch for ch in value if ch.isdigit() or ch == '.']) # Überprüfen, ob eine Ziffer oder Punkt (und kein String) vorliegt und der Liste anhängen
         return float(clean_value) if clean_value else 0
 
  # Die relevanten Nährwerte (Kohlenhydrate, Protein, Fett) extrahieren
- # und mittels zuvor definierter Funktion Float umwandeln
+ # und mittels zuvor definierter Funktion in Float umwandeln
     carbs = parse_nutrition_value(data['carbs']) 
     protein = parse_nutrition_value(data['protein']) 
     fat = parse_nutrition_value(data['fat']) 
@@ -86,7 +92,10 @@ def get_nutrition_info(recipe_id):
 # Return eines Dictionaries mit den entsprechenden Nährwerten
     return {'carbs': carbs, 'protein': protein, 'fat': fat}
 
-def main(): # If_main genau erklären in wenigen Worten
+# Definiert den Hauptteil des Code innerhalb der Funktion main() und führt in aus, wenn der Code direkt ausgeführt wird.
+# Da der Code nur in einer Datei dargestellt wird, ist dies eigentlich nicht notwendig. Das Programm wies jedoch immer wieder Bugs auf, worauf diese Vorgehensweise
+# von ChatGPT vorgeschlagen wurde.
+def main(): 
     # Zwei Kolonnen als Platzhalter für Eingabefelder (Filteroptionen) erstellen
     with st.form(key='recipe_form'):
         col1, col2 = st.columns(2)
@@ -130,10 +139,11 @@ def main(): # If_main genau erklären in wenigen Worten
                     st.write("---")
 
                    
-# Aufrufen der Nährwerte-Funktion
+# Aufrufen der Nährwerte-Funktion und Anzeigen des Headers
                     nutrition_info = get_nutrition_info(recipe['id'])
                     if nutrition_info is not None:
                         with st.expander("🏖️ Dreaming of that summer body? Let's check the nutrition!"):
+                            # Durch Klicken auf den "Expander" wird der Piechart ersichtlich
                             st.subheader("🍎 Nutrition breakdown")
 
 # Anzeigen des Piecharts (Konfiguration von Grösse und Darstellung)
@@ -146,6 +156,7 @@ def main(): # If_main genau erklären in wenigen Worten
                             ax.axis('equal')  # "Rund" machen
                             st.pyplot(fig) # Anzeigen des Diagramms
                     else:
+                        # Fehlermeldung, falls die Nährwerte nicht angezeigt werden können
                         st.write("Looks like we hit a speed bump with the nutrition score 🚧")
                       
 
@@ -171,7 +182,7 @@ def main(): # If_main genau erklären in wenigen Worten
                             st.write("No instructions available.") 
                             st.divider() # Trennstrich, um die verschiedenen Abschnitte zu markieren 
 
-if __name__ == "__main__": # Müsste eigentlich ohne Funktionieren, aber laut Debugging-Rückgabe von ChatGPT wird damit sichergestellt, dass es jedes Mal funktioniert
+if __name__ == "__main__": # Code wird nur ausgeführt, wenn das Skript als Hauptprogramm ausgeführt wird. Siehe Erläuterungen unter def main()
     main()
 
 
