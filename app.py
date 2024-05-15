@@ -1,4 +1,8 @@
-    # Importieren der verschiedenen Bibliotheken
+# Allgemeine Hinweise
+# 1. Anzahl der API-Anfragen ist beschränkt, daher dient der folgende API-Key als Backup: ..
+# 2. Chat-GPT für Debugging
+
+# Importieren der verschiedenen Bibliotheken
 import streamlit as st # Streamlit
 import streamlit_chat # Für Chat-Symbole
 from streamlit_chat import message as msg # Für Chat-Symbole
@@ -25,10 +29,10 @@ message("You decide.", size="3rem", avatar_style="personas")
 st.divider() # Trennstrich, um die verschiedenen Abschnitte zu markieren
 
 with col1:
-   st.image("https://i.postimg.cc/44rnqrp3/pexels-lisa-fotios-1373915.jpgg") #Stock-Bild
+   st.image("https://i.postimg.cc/44rnqrp3/pexels-lisa-fotios-1373915.jpgg") # Stock-Bild, Quelle: Valeria Boltneva,https://www.pexels.com/photo/burger-with-fried-fries-on-black-plate-with-sauce-on-the-side-1199957/ 
 
 with col2:
-   st.image("https://i.postimg.cc/RZ0FH4BX/pexels-valeria-boltneva-1199957.jpg") #Stock-Bild
+   st.image("https://i.postimg.cc/RZ0FH4BX/pexels-valeria-boltneva-1199957.jpg") # Stock-Bild, Quelle: Lisa Fotios, https://www.pexels.com/photo/pasta-dish-with-vegetables-1373915/
 
 # Einführung in App mit entsprechenden Untertiteln
 st.markdown("<h1 style='text-align: left; font-size:50px; color: black;'>How does it work?🍽️ </h1>", unsafe_allow_html=True)
@@ -49,7 +53,7 @@ st.write("")
 api_key = "06491aabe3d2435b8b21a749de46b765"
 
 @st.cache_data # Dektrator von Streamlit, um ein erneutes Senden der Anfrage an die API zu limitieren
-def get_recipes(query, cuisine, diet, intolerances,number_of_recipes=3):
+def get_recipes(query, cuisine, diet, intolerances,number_of_recipes=5):
     url = f"https://api.spoonacular.com/recipes/complexSearch?apiKey={api_key}&query={query}&cuisine={cuisine}&diet={diet}&intolerances={intolerances}&number={number_of_recipes}"
     response = requests.get(url)
     return response.json()
@@ -82,7 +86,7 @@ def get_nutrition_info(recipe_id):
 # Return eines Dictionaries mit den entsprechenden Nährwerten
     return {'carbs': carbs, 'protein': protein, 'fat': fat}
 
-def main():
+def main(): # If_main genau erklären in wenigen Worten
     # Zwei Kolonnen als Platzhalter für Eingabefelder (Filteroptionen) erstellen
     with st.form(key='recipe_form'):
         col1, col2 = st.columns(2)
@@ -99,7 +103,7 @@ def main():
         submit_button = st.form_submit_button("Show recipes") 
 
         if submit_button: # Schaltfläche zum Absenden der Eingaben, resp. Anzeigen der entspr. Rezepten
-            recipes = get_recipes(query, cuisine, diet, intolerances, number_of_recipes=3) # Aufrufen der Funktion get_recipes, um Rezepte auf Basis der eingegebenen Kriterien abzurufen
+            recipes = get_recipes(query, cuisine, diet, intolerances, number_of_recipes=5) # Aufrufen der Funktion get_recipes, um Rezepte auf Basis der eingegebenen Kriterien abzurufen
             if 'results' in recipes: # Schleifen, um zu überprüfen, ob es Resultate gibt und wenn ja, dann die weiteren Informationen anzeigen
                 for recipe in recipes["results"]:
                     st.header(f"🍽️ {recipe['title']}")
@@ -167,7 +171,7 @@ def main():
                             st.write("No instructions available.") 
                             st.divider() # Trennstrich, um die verschiedenen Abschnitte zu markieren 
 
-if __name__ == "__main__":
+if __name__ == "__main__": # Müsste eigentlich ohne Funktionieren, aber laut Debugging-Rückgabe von ChatGPT wird damit sichergestellt, dass es jedes Mal funktioniert
     main()
 
 
