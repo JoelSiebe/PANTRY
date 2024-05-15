@@ -24,6 +24,7 @@ st.divider() # Trennstrich, um die verschiedenen Abschnitte zu markieren
 # Anzeigen der Chatnachrichten
 # Quelle für Streamlit-Layout: https://docs.streamlit.io/library/api-reference/layout/st.columns) und https://github.com/AI-Yash/st-chat/blob/8ac13aa3fdf98bacb971f24c759c3daa16669183/streamlit_chat/__init__.py#L24
 col1, col2= st.columns(2) # Erstellen der 2 Kolonnen für die Bilder
+# Erstellen der "Chatnachrichten"
 def message(txt:str, size="1.25rem", **kwargs):
     styled_text = f"""<p style="font-size:{size};">{txt}</p>"""
     msg(styled_text, allow_html=True, **kwargs)
@@ -117,10 +118,11 @@ def main():
                 for recipe in recipes["results"]:
                     st.header(f"🍽️ {recipe['title']}")
                     
-                    recipe_info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
-                    recipe_info_response = requests.get(recipe_info_url, params={'apiKey': api_key})
-                    recipe_info = recipe_info_response.json()
-
+                    recipe_info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information" # Erstellt URL, um Informationen zum Rezept abzurufen
+                    recipe_info_response = requests.get(recipe_info_url, params={'apiKey': api_key}) # HTTP-Get-Anfrage an URL senden, um die Informationen aus der API abzurufen
+                    recipe_info = recipe_info_response.json() # Konvertiert die Antwort der Anfrage und speichert es in der Variablen "recipe_info"
+                    
+                    # Schleifen, um die verschiedenen Parameter abzufragen. Wenn Resultate vorliegen, werden diese Angezeigt, anonsten wird eine Fehlermeldung ausgegeben
                     if 'readyInMinutes' in recipe_info:
                         st.write("⏰ Cooking Time:", f"{recipe_info['readyInMinutes']} minutes")
                     else:
@@ -182,7 +184,7 @@ def main():
                             st.write("No instructions available.") 
                             st.divider() # Trennstrich, um die verschiedenen Abschnitte zu markieren 
 
-if __name__ == "__main__": # Code wird nur ausgeführt, wenn das Skript als Hauptprogramm ausgeführt wird. Siehe Erläuterungen unter def main()
+if __name__ == "__main__": # Code wird nur ausgeführt, wenn das Skript als Hauptprogramm ausgeführt wird. Siehe Erläuterungen unter def main() ab Zeile 95
     main()
 
 
