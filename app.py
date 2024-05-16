@@ -1,10 +1,8 @@
 # Allgemeine Hinweise
-# 1. Die Anzahl der API-Anfragen ist seitens der API beschränkt, daher dient der folgende API-Key als Backup,
+# 1. Link zur Streamlit-App: https://pantry-5pqprkzyg8etk2xoofzz3h.streamlit.app/
+# 2. Die Anzahl der API-Anfragen ist seitens der API beschränkt, daher dient der folgende API-Key als Backup,
 #    falls die Anfragen nicht mehr ausgeführt werden: "4f7e1499f8784e6aa5cd54ae451fce53"
-# 2. Wir nahmen ChatGPT in Anspruch, um uns beim Debugging-Prozess zu unterstützen. 
-#    Aufgrund der vereinzelten Ausbesserungen in den unterschiedlichen Codeblocks haben wir dies nicht
-#    in der jeweiligen Codezeile zitiert.
-
+# 3. Wir nahmen ChatGPT in Anspruch, um uns beim Debugging-Prozess zu unterstützen. 
 
 # Importieren der verschiedenen Bibliotheken
 import streamlit as st # Streamlit
@@ -80,7 +78,7 @@ def get_nutrition_info(recipe_id):
     def parse_nutrition_value(value):
         if isinstance(value, (int, float)): # Überprüfen, ob übergebener Wert bereits int oder Float ist
             return float(value) # Wenn ja, als Float zurückgeben
-        # Entfernen von Nicht-Zahlen (ungleich isdigit) und Umwandeln
+        # Entfernen von Nicht-Zahlen (ungleich isdigit) und Umwandeln, Quelle: ChatGPT beim Debugging-Prozess
         clean_value = ''.join([ch for ch in value if ch.isdigit() or ch == '.']) # Überprüfen, ob eine Ziffer oder Punkt (und kein String) vorliegt und der Liste anhängen
         return float(clean_value) if clean_value else 0
 
